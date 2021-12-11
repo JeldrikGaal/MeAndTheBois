@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static GameManager.movementSet;
 
 public class MovementController : MonoBehaviour
 {
@@ -11,7 +12,11 @@ public class MovementController : MonoBehaviour
     public GameObject collisionsG;
     public Tilemap collisionTileMap;
     public Grid ground;
-   
+    public int playerIndex;
+    public GameManager gM;
+
+    // private variables
+    public GameManager.movementSet playerControlls;
 
     // Only Public for Debbung
     public Vector2 currentCell;
@@ -38,6 +43,8 @@ public class MovementController : MonoBehaviour
         // Move Player to SpawnPoint and Movingpoint to Player
         this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
         this.movingPoint.transform.position = this.transform.position;
+
+        playerControlls = gM.controlls[playerIndex - 1];
     }
 
 
@@ -58,19 +65,19 @@ public class MovementController : MonoBehaviour
 
         // Calculate new position for player to move to depeding on input
         Vector3 newPosMP = this.transform.position;
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(playerControlls.forward))
         {
             newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(playerControlls.backward))
         {
             newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(playerControlls.left))
         {
             newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(playerControlls.right))
         {
             newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
         }

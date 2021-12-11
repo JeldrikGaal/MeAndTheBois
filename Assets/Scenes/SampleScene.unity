@@ -5140,16 +5140,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1694741429}
-  ground: {fileID: 162985821}
-  moving: 0
   movingPoint: {fileID: 2047088691}
-  currentCell: {x: 0, y: 0}
   collisionsG: {fileID: 345847353}
-  collisions: {fileID: 345847355}
-  collisionCells: []
-  collisionCellsPos: []
+  collisionTileMap: {fileID: 345847359}
+  ground: {fileID: 162985821}
+  currentCell: {x: 0, y: 0}
+  tileWorldLocations: []
   collisionsInGrid: []
-  test: {fileID: 345847359}
+  moving: 0
 --- !u!4 &1002716255
 Transform:
   m_ObjectHideFlags: 0
