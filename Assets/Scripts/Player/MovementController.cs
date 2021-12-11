@@ -18,6 +18,8 @@ public class MovementController : MonoBehaviour
 
     public List<Vector3Int> collisionsInGrid;
 
+    public List<Vector3>  tileWorldLocations;
+
     public Tilemap test;
 
     // Start is called before the first frame update
@@ -26,11 +28,25 @@ public class MovementController : MonoBehaviour
         collisions = collisionsG.GetComponent<CompositeCollider2D>();
 
         Tilemap tilemap = collisionsG.GetComponent<Tilemap>();
+        tilemap = test;
 
         BoundsInt bounds = tilemap.cellBounds;
         TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
 
-        for (int x = 0; x < bounds.size.x; x++)
+        tileWorldLocations = new List<Vector3>();
+
+        foreach (var pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+            Vector3 place = tilemap.CellToWorld(localPlace);
+            if (tilemap.HasTile(localPlace))
+            {
+                tileWorldLocations.Add(place);
+                collisionsInGrid.Add(ground.WorldToCell(place));
+            }
+        }
+
+        /*for (int x = 0; x < bounds.size.x; x++)
         {
             for (int y = 0; y < bounds.size.y; y++)
             {
@@ -38,7 +54,8 @@ public class MovementController : MonoBehaviour
                 if (tile != null)
                 {
                     collisionCells.Add(new Vector2(x, y));
-                    Vector3 temp = test.CellToWorld(new Vector3Int(x, y));
+                    //Vector3 temp = tilemap.CellToWorld(new Vector3Int(x, y));
+                    Vector3 temp = tilemap.GetCellCenterWorld(new Vector3Int(x, y));
                     collisionCellsPos.Add(temp);
                     collisionsInGrid.Add(ground.WorldToCell(temp));
                 }
@@ -49,8 +66,10 @@ public class MovementController : MonoBehaviour
 
 
             }
-        }
-        this.transform.position = spawnPoint.transform.position;
+        }*/
+
+
+        this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
         this.movingPoint.transform.position = this.transform.position;
     }
 
