@@ -5,129 +5,84 @@ using UnityEngine.Tilemaps;
 
 public class MovementController : MonoBehaviour
 {
+    // Various Objects that are needed as Drag and Drop in Inspector
     public GameObject spawnPoint;
-    public Grid ground;
-    public bool moving = false;
     public GameObject movingPoint;
-
-    public Vector2 currentCell;
     public GameObject collisionsG;
-    public CompositeCollider2D collisions;
-    public List<Vector2> collisionCells;
-    public List<Vector2> collisionCellsPos;
+    public Tilemap collisionTileMap;
+    public Grid ground;
+   
 
-    public List<Vector3Int> collisionsInGrid;
-
+    // Only Public for Debbung
+    public Vector2 currentCell;
     public List<Vector3>  tileWorldLocations;
+    public List<Vector3Int> collisionsInGrid;
+    public bool moving = false;
 
-    public Tilemap test;
 
-    // Start is called before the first frame update
     void Start()
     {
-        collisions = collisionsG.GetComponent<CompositeCollider2D>();
-
-        Tilemap tilemap = collisionsG.GetComponent<Tilemap>();
-        tilemap = test;
-
-        BoundsInt bounds = tilemap.cellBounds;
-        TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
-
+        // Get all cell positions that have a collision
         tileWorldLocations = new List<Vector3>();
-
-        foreach (var pos in tilemap.cellBounds.allPositionsWithin)
+        foreach (var pos in collisionTileMap.cellBounds.allPositionsWithin)
         {
             Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
-            Vector3 place = tilemap.CellToWorld(localPlace);
-            if (tilemap.HasTile(localPlace))
+            Vector3 place = collisionTileMap.CellToWorld(localPlace);
+            if (collisionTileMap.HasTile(localPlace))
             {
                 tileWorldLocations.Add(place);
                 collisionsInGrid.Add(ground.WorldToCell(place));
             }
         }
 
-        /*for (int x = 0; x < bounds.size.x; x++)
-        {
-            for (int y = 0; y < bounds.size.y; y++)
-            {
-                TileBase tile = allTiles[x + y * bounds.size.x];
-                if (tile != null)
-                {
-                    collisionCells.Add(new Vector2(x, y));
-                    //Vector3 temp = tilemap.CellToWorld(new Vector3Int(x, y));
-                    Vector3 temp = tilemap.GetCellCenterWorld(new Vector3Int(x, y));
-                    collisionCellsPos.Add(temp);
-                    collisionsInGrid.Add(ground.WorldToCell(temp));
-                }
-                else
-                {
-
-                }
-
-
-            }
-        }*/
-
-
+        // Move Player to SpawnPoint and Movingpoint to Player
         this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
         this.movingPoint.transform.position = this.transform.position;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        Debug.Log(test.WorldToCell(movingPoint.transform.position));
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Debug.Log(ground.WorldToCell(this.transform.position));
-
-            Vector3 newPos = ground.GetCellCenterWorld(ground.WorldToCell(this.transform.position));
-            //newPos = new Vector3(newPos.x + (ground.cellSize.x / 2), newPos.y + (ground.cellSize.y / 2), newPos.z);
-            this.transform.position = newPos;
-            Debug.Log(newPos);
-        }
-
+        // Toggle Movement
         if (Input.GetKeyDown(KeyCode.M))
         {
             moving = !moving;
         }
 
+        // Move player to moving point TODO: calculate delta time to make undepeding of fps
         if (moving)
         {
-            if (!collisions.bounds.Contains(movingPoint.transform.position))
-            {
-
-                this.transform.position = Vector3.MoveTowards(this.transform.position, movingPoint.transform.position, 0.01f);
-            }
-
+            this.transform.position = Vector3.MoveTowards(this.transform.position, movingPoint.transform.position, 0.01f);
         }
 
+
+        // Calculate new position for player to move to depeding on input
         Vector3 newPosMP = this.transform.position;
-        if (true)
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-            }
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-            }
-
-            bool moveallowed = !collisionsInGrid.Contains(ground.WorldToCell(newPosMP));
-            if ((Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f || collisions.bounds.Contains(transform.position)) && moveallowed)
-            {
-                movingPoint.transform.position = newPosMP;
-            }
-
+            newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
         }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+        }
+
+        // Check if new position is valid and if so move moving point there
+        bool moveallowed = !collisionsInGrid.Contains(ground.WorldToCell(newPosMP));
+        bool changeAllowed = collisionsInGrid.Contains(ground.WorldToCell(transform.position));
+        // Only Allow change of position if player is already at moving point or moving point is in an invalid position
+        if ((Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f || changeAllowed) && moveallowed)
+        {
+            movingPoint.transform.position = newPosMP;
+        }
+
     }
 }
