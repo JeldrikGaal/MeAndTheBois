@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Box
+  - VineMovingPoint
   layers:
   - Default
   - TransparentFX
@@ -43,4 +45,7 @@ TagManager:
     locked: 0
   - name: test
     uniqueID: 1624066507
+    locked: 0
+  - name: Interactable
+    uniqueID: 2898568371
     locked: 0

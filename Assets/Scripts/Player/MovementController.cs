@@ -15,6 +15,10 @@ public class MovementController : MonoBehaviour
     public int playerIndex;
     public GameManager gM;
 
+    // Needs to be accessible for other Scripts
+    public int directionFacing;
+
+
     // private variables
     public GameManager.movementSet playerControlls;
 
@@ -23,7 +27,7 @@ public class MovementController : MonoBehaviour
     public List<Vector3>  tileWorldLocations;
     public List<Vector3Int> collisionsInGrid;
     public bool moving = false;
-
+    
 
     void Start()
     {
@@ -41,7 +45,8 @@ public class MovementController : MonoBehaviour
         }
 
         // Move Player to SpawnPoint and Movingpoint to Player
-        this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
+        //this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
+        this.transform.position = spawnPoint.transform.position;
         this.movingPoint.transform.position = this.transform.position;
 
         playerControlls = gM.controlls[playerIndex - 1];
@@ -68,18 +73,22 @@ public class MovementController : MonoBehaviour
         if (Input.GetKeyDown(playerControlls.forward))
         {
             newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+            directionFacing = 0;
         }
         if (Input.GetKeyDown(playerControlls.backward))
         {
             newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+            directionFacing = 1;
         }
         if (Input.GetKeyDown(playerControlls.left))
         {
             newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+            directionFacing = 2;
         }
         if (Input.GetKeyDown(playerControlls.right))
         {
             newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+            directionFacing = 3;
         }
 
         // Check if new position is valid and if so move moving point there
