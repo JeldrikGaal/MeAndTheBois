@@ -36,7 +36,7 @@ public class Solar : MonoBehaviour
         }
         else
         {
-            Debug.DrawLine(this.transform.position, this.vineMovementPoint.transform.position, Color.green);
+            showVine();
         }
 
         if (Input.GetKeyDown(movC.playerControlls.ability1))
@@ -49,11 +49,6 @@ public class Solar : MonoBehaviour
 
     void TryVineMove()
     {
-        if (!vineMovS.currentBox)
-        {
-            showVine();
-            //return;
-        }
         Vector3 newPosMP = this.transform.position;
         Grid ground = movC.ground;
         if (!vineExtended)
@@ -124,6 +119,9 @@ public class Solar : MonoBehaviour
 
     void showVine()
     {
-
+        if (movC.gM.isBoxOnCell(vineCell, movC.ground))
+        {
+            Debug.DrawLine(this.transform.position, this.vineMovementPoint.transform.position, Color.green);
+        } 
     }
 }

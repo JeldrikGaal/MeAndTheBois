@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
 
     public List<Box> boxxes = new List<Box>();
+    public EnergyManager EM;
 
     public class movementSet
     {
