@@ -9,6 +9,7 @@ public class Solar : MonoBehaviour
 
     // Vine Mechanic variables
     public GameObject vineMovementPoint;
+    public Vector3Int vineCell;
     public VineMovingPoint vineMovS;
     public int vineRange;
     bool vineExtended;
@@ -22,12 +23,20 @@ public class Solar : MonoBehaviour
         vineRange = 3;
     }
 
+    
 
     void Update()
     {
+        vineCell = movC.ground.WorldToCell(vineMovementPoint.transform.position);
+
+
         if (!vineExtended)
         {
             vineMovementPoint.transform.position = this.transform.position;
+        }
+        else
+        {
+            Debug.DrawLine(this.transform.position, this.vineMovementPoint.transform.position, Color.green);
         }
 
         if (Input.GetKeyDown(movC.playerControlls.ability1))
@@ -35,7 +44,7 @@ public class Solar : MonoBehaviour
             TryVineMove();
         }
 
-
+        
     }
 
     void TryVineMove()
@@ -76,23 +85,30 @@ public class Solar : MonoBehaviour
         {
             if (vineMovS.currentBox != null)
             {
-                switch (movC.directionFacing)
+
+                if (this.transform.position.x > vineMovS.currentBox.transform.position.x)
                 {
-                    case 0:
-                        newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                        break;
-                    case 1:
-                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                        break;
-                    case 2:
-                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2)  + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                        break;
-                    case 3:
-                        newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2)  + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                        break;
-                    default:
-                        break;
+                    if (this.transform.position.y > vineMovS.currentBox.transform.position.y)
+                    {
+                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+                    }
+                    else
+                    {
+                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                    }
                 }
+                else
+                {
+                    if (this.transform.position.y > vineMovS.currentBox.transform.position.y)
+                    {
+                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                    }
+                    else
+                    {
+                        newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                    }
+                }
+
                 vineMovS.currentBox.GetComponent<Box>().destination = newPosMP;
                 vineMovS.currentBox.GetComponent<Box>().moving = true;
             }

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
+
+    public List<Box> boxxes = new List<Box>();
 
     public class movementSet
     {
@@ -40,6 +43,26 @@ public class GameManager : MonoBehaviour
         controlls.Add(p2);
 
     }
+
+    public void Start()
+    {
+        foreach (GameObject b in GameObject.FindGameObjectsWithTag("Box"))
+        {
+            boxxes.Add(b.GetComponent<Box>());
+        }
+    }
+
+    public bool isBoxOnCell(Vector3Int cell, Grid ground)
+    {
+        foreach (Box b in boxxes)
+        {
+            if (ground.WorldToCell(b.transform.position) == cell)
+            {
+                return true;
+            }
+        }
+        return false;
+    } 
 
     void Update()
     {

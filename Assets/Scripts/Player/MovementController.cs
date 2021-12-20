@@ -45,8 +45,8 @@ public class MovementController : MonoBehaviour
         }
 
         // Move Player to SpawnPoint and Movingpoint to Player
-        //this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
-        this.transform.position = spawnPoint.transform.position;
+        this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
+        //this.transform.position = spawnPoint.transform.position;
         this.movingPoint.transform.position = this.transform.position;
 
         playerControlls = gM.controlls[playerIndex - 1];
@@ -64,7 +64,7 @@ public class MovementController : MonoBehaviour
         // Move player to moving point TODO: calculate delta time to make undepeding of fps
         if (moving)
         {
-            this.transform.position = Vector3.MoveTowards(this.transform.position, movingPoint.transform.position, 0.01f);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, movingPoint.transform.position, 1* Time.deltaTime);
         }
 
 
@@ -94,6 +94,14 @@ public class MovementController : MonoBehaviour
         // Check if new position is valid and if so move moving point there
         bool moveallowed = !collisionsInGrid.Contains(ground.WorldToCell(newPosMP));
         bool changeAllowed = collisionsInGrid.Contains(ground.WorldToCell(transform.position));
+
+        if (moveallowed)
+        {
+            if (gM.isBoxOnCell(ground.WorldToCell(newPosMP), ground))
+            {
+                moveallowed = false;
+            }
+        }
         // Only Allow change of position if player is already at moving point or moving point is in an invalid position
         if ((Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f || changeAllowed) && moveallowed)
         {
