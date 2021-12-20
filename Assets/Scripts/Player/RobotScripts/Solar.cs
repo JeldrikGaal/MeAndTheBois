@@ -90,22 +90,22 @@ public class Solar : MonoBehaviour
                 {
                     if (this.transform.position.y > vineMovS.currentBox.transform.position.y)
                     {
-                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
                     }
                     else
                     {
-                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
                     }
                 }
                 else
                 {
                     if (this.transform.position.y > vineMovS.currentBox.transform.position.y)
                     {
-                        newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                        newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
                     }
                     else
                     {
-                        newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                        newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
                     }
                 }
 
