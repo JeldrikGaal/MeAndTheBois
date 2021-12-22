@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: combi_plate
+  m_Name: Button_Down
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: f1ee0333c8d69f64fad62be8776af6c9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d62f36c4543225b40903c9159955b280, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
