@@ -71,6 +71,30 @@ public class GameManager : MonoBehaviour
         return false;
     } 
 
+    public GameObject getBoxOnCell(Vector3Int cell, Grid ground)
+    {
+        foreach (Box b in boxxes)
+        {
+            if (ground.WorldToCell(b.transform.position) == cell)
+            {
+                return b.gameObject;
+            }
+        }
+        return null;
+    }
+
+    public Box getBoxSOnCell(Vector3Int cell, Grid ground)
+    {
+        foreach (Box b in boxxes)
+        {
+            if (ground.WorldToCell(b.transform.position) == cell)
+            {
+                return b;
+            }
+        }
+        return null;
+    }
+
     void Update()
     {
     }

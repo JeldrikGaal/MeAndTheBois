@@ -143,8 +143,25 @@ public class MovementController : MonoBehaviour
         {
             if (gM.isBoxOnCell(ground.WorldToCell(newPosMP), ground))
             {
-                moveallowed = false;
+                if (playerIndex == 2)
+                {
+                    if (gM.getBoxSOnCell(ground.WorldToCell(newPosMP), ground).elevation <= w.elevation)
+                    {
+
+                    }
+                    else
+                    {
+                        moveallowed = false;
+                    }
+
+                }
+                else
+                {
+                    moveallowed = false;
+                }
+                
             }
+
         }
         // Only Allow change of position if player is already at moving point or moving point is in an invalid position
         if ((Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f || changeAllowed) && moveallowed)

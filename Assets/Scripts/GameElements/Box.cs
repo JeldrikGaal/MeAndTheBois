@@ -6,10 +6,14 @@ public class Box : MonoBehaviour
 {
     public Vector3 destination;
     public bool moving;
+    public int elevation;
+
     // Start is called before the first frame update
     void Start()
     {
         destination = this.transform.position;
+        // Properly calculate elevation !!
+        elevation = 0;
     }
 
     // Update is called once per frame

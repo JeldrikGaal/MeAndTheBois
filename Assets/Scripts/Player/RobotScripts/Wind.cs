@@ -11,7 +11,14 @@ public class Wind : MonoBehaviour
     public MovementController movC;
     public int elevation = 1;
 
+
     public float shadowStartSize;
+
+
+    public bool carryingBox;
+    private GameObject box;
+    private Box boxS;
+
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +29,7 @@ public class Wind : MonoBehaviour
 
         robotSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
         shadowStartSize = shadow.size.x;
+        box = null;
     }
 
     // Update is called once per frame
@@ -41,5 +49,32 @@ public class Wind : MonoBehaviour
         }
 
         shadow.size = new Vector2(shadowStartSize - elevation * 0.02f, shadowStartSize - elevation * 0.02f);
+
+        // Check if box is being carried or can be picked up
+        if (Input.GetKeyDown(movC.playerControlls.ability1))
+        {
+            if (carryingBox)
+            {
+                box = null;
+                boxS = null;
+                carryingBox = false;
+                
+            }
+            else if (gM.isBoxOnCell(movC.currentCell, movC.ground) && !carryingBox )
+            {
+                box = gM.getBoxOnCell(movC.currentCell, movC.ground);
+                boxS = box.GetComponent<Box>();
+                carryingBox = true;
+            }
+
+        }
+
+        if (carryingBox)
+        {
+            boxS.moving = true;
+            boxS.destination = this.transform.position;
+        }
     }
+
+   
 }
