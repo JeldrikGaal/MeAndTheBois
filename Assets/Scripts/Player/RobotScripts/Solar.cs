@@ -104,7 +104,8 @@ public class Solar : MonoBehaviour
                     }
                 }
 
-                vineMovS.currentBox.GetComponent<Box>().destination = newPosMP;
+                Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(newPosMP));
+                vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z); ;
                 vineMovS.currentBox.GetComponent<Box>().moving = true;
             }
             else
