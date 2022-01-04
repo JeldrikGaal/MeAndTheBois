@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Box
   - VineMovingPoint
+  - WP
   layers:
   - Default
   - TransparentFX
