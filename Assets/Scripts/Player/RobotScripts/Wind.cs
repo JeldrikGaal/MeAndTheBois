@@ -13,6 +13,7 @@ public class Wind : MonoBehaviour
 
 
     public float shadowStartSize;
+    public float spriteOffSet;
 
 
     public bool carryingBox;
@@ -28,7 +29,8 @@ public class Wind : MonoBehaviour
         movC = this.transform.GetComponent<MovementController>();
 
         robotSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
-        shadowStartSize = shadow.size.x;
+        shadowStartSize = shadow.size.x - 0.05f;
+        spriteOffSet = 0.1f;
         box = null;
     }
 
@@ -56,6 +58,8 @@ public class Wind : MonoBehaviour
             if (carryingBox)
             {
                 box = null;
+                boxS.boxSprite.transform.localPosition = new Vector3(0, 0, 0);
+                boxS.boxSprite.sortingLayerName = "Interactable";
                 boxS = null;
                 carryingBox = false;
                 
@@ -69,10 +73,13 @@ public class Wind : MonoBehaviour
 
         }
 
-        if (carryingBox)
+        if (carryingBox && box)
         {
             boxS.moving = true;
-            boxS.destination = this.transform.position;
+            Vector3 temp = movC.ground.GetCellCenterWorld(movC.currentCell);
+            boxS.destination = new Vector3(temp.x , temp.y + (movC.ground.cellSize.y * 0.25f), temp.z);
+            boxS.boxSprite.transform.localPosition = new Vector3(0, spriteOffSet + ( movC.ground.cellSize.y * (elevation - boxS.elevation - 1)) , 0);
+            boxS.boxSprite.sortingLayerName = "Flying";
         }
     }
 

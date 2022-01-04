@@ -43,9 +43,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: PlayerShadow0
+    uniqueID: 866550475
+    locked: 0
   - name: test
     uniqueID: 1624066507
     locked: 0
   - name: Interactable
     uniqueID: 2898568371
+    locked: 0
+  - name: PlayerShadow1
+    uniqueID: 2113530435
+    locked: 0
+  - name: Elevation1
+    uniqueID: 775406079
+    locked: 0
+  - name: Flying
+    uniqueID: 4091634711
     locked: 0

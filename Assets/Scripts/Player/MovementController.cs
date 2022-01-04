@@ -145,9 +145,15 @@ public class MovementController : MonoBehaviour
             {
                 if (playerIndex == 2)
                 {
-                    if (gM.getBoxSOnCell(ground.WorldToCell(newPosMP), ground).elevation <= w.elevation)
+                    if (gM.getBoxSOnCell(ground.WorldToCell(newPosMP), ground).elevation < w.elevation)
                     {
-
+                        if (w.carryingBox)
+                        {
+                            if (! (gM.getBoxSOnCell(ground.WorldToCell(newPosMP), ground).elevation < w.elevation - 1))
+                            {
+                                moveallowed = false;
+                            }
+                        }
                     }
                     else
                     {

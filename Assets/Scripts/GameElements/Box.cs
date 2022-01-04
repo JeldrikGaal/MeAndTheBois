@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Box : MonoBehaviour
 {
@@ -8,12 +9,22 @@ public class Box : MonoBehaviour
     public bool moving;
     public int elevation;
 
+    public Grid ground;
+
+    public SpriteRenderer boxSprite;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(this.transform.position));
+        transform.position = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z);
         destination = this.transform.position;
         // Properly calculate elevation !!
         elevation = 0;
+
+        boxSprite = this.GetComponentInChildren<SpriteRenderer>();
+
     }
 
     // Update is called once per frame
