@@ -62,3 +62,6 @@ TagManager:
   - name: Flying
     uniqueID: 4091634711
     locked: 0
+  - name: Light
+    uniqueID: 3558322487
+    locked: 0
