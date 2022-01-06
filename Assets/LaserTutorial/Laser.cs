@@ -13,16 +13,22 @@ public class Laser : MonoBehaviour
 
     public Grid ground;
 
-    
+    Vector2 s, e, sM, eM, cM, c2M;
+
 
     private void Awake()
     {
         m_transform = GetComponent<Transform>();
+        s = e = sM = eM = cM = c2M = new Vector2();
     }
 
 
     void Shoot(float distance)
     {
+        if (distance < 0.1f)
+        {
+            return;
+        }
         Vector3[] temp = Array.Empty<Vector3>();
         lineRenderer.SetPositions(temp);
         if (Physics2D.Raycast(m_transform.position, transform.right))
@@ -44,13 +50,48 @@ public class Laser : MonoBehaviour
                 Vector2 middle2 = new Vector2(middle.x, middle.y);
                 middle2 = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.25f));
 
-                Vector2 s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
-                Vector2 e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+                switch (mir.angle)
+                {
+                    case 0:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
 
-                Vector2 sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
-                Vector2 eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
-                Vector2 cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
-                Vector2 c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
+                        sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
+                        break;
+
+                    case 1:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+
+                        sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
+                        break;
+
+                    case 2:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+
+                        sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
+                        break;
+
+                    case 3:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+
+                        sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
+                        break;
+                }
 
                 Vector2 movingLine = (e - s).normalized;
 
@@ -66,23 +107,10 @@ public class Laser : MonoBehaviour
 
                 refP.position = e - movingLine * distance2;
 
-                
-
-                Vector2 offset = middle2 - _hit.point;
-
-                //refP.position = e + (movingLine * offset.magnitude);
-                //refP.position = middle2;
-
-                //refP.position = mir.startingPos; // + offset
-
                 Vector2 temp1 = new Vector2(refP.position.x, refP.position.y);
                 Vector2 ray = (temp1 - _hit.point).normalized;
 
                 points.Add( ray * tempDist);
-                //points.Add(refP.position);
-
-
-                //Debug.Log((_hit.point, middle2 ));
                 DrawLine(points);
             }
             else
@@ -95,6 +123,122 @@ public class Laser : MonoBehaviour
         {
             Draw2DRay(firingPoint.position, firingPoint.transform.right * distance);
         }
+    }
+
+
+    List<Vector3> Shoot2(float distance, List<Vector3> points)
+    {
+        if (distance < 0.1f)
+        {
+            return null;
+        }
+        Vector3[] temp = Array.Empty<Vector3>();
+        lineRenderer.SetPositions(temp);
+        if (Physics2D.Raycast(m_transform.position, transform.right))
+        {
+            RaycastHit2D _hit = Physics2D.Raycast(firingPoint.position, transform.right);
+
+            if (_hit.transform.CompareTag("Mirror"))
+            {
+                points.Add(firingPoint.position);
+                points.Add(_hit.point);
+                float tempDist = distance - Vector2.Distance(firingPoint.position, _hit.point);
+                //Vector2 ray = (_hit.transform.GetComponent<Mirror>().reflectionPoint.position - _hit.transform.position).normalized;
+
+                Mirror mir = _hit.transform.GetComponent<Mirror>();
+                Transform refP = mir.reflectionPoint.transform;
+
+                Vector3 middle = ground.GetCellCenterWorld(ground.WorldToCell(_hit.transform.position));
+                Vector2 middle2 = new Vector2(middle.x, middle.y);
+                middle2 = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.25f));
+
+                switch (mir.angle)
+                {
+                    case 0:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+
+                        sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
+                        break;
+
+                    case 1:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+
+                        sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
+                        break;
+
+                    case 2:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+
+                        sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
+                        break;
+
+                    case 3:
+                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+
+                        sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                        eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                        c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
+                        break;
+                }
+
+                Vector2 movingLine = (e - s).normalized;
+
+                Vector2 movingLineM = (eM - sM).normalized;
+
+                Vector2 h1 = _hit.point + movingLineM * (ground.cellSize.x * 0.5f);
+
+                List<float> l1 = getABCForLine(cM, c2M);
+                List<float> l2 = getABCForLine(_hit.point, h1);
+
+                Vector2 distanceHelp = getIntersection(l1, l2);
+                float distance2 = Vector2.Distance(distanceHelp, _hit.point);
+
+                refP.position = e - movingLine * distance2;
+
+                Vector2 temp1 = new Vector2(refP.position.x, refP.position.y);
+                Vector2 ray = (temp1 - _hit.point).normalized;
+
+                points.Add(ray * tempDist);
+
+                Vector2 tempp = new Vector2(refP.transform.position.x, refP.transform.position.y);
+                Vector2 rayDirection = tempp - _hit.point;
+                if (Physics2D.Raycast(_hit.point, rayDirection))
+                {
+                    RaycastHit2D _hit2 = Physics2D.Raycast(_hit.point, rayDirection);
+                    if (_hit.transform.CompareTag("Mirror"))
+                    {
+                        return Shoot2(tempDist, points);
+                    }
+                }
+
+                return points;
+                
+            }
+            else
+            {
+                Draw2DRay(firingPoint.position, _hit.point);
+            }
+        }
+
+        else
+        {
+            Draw2DRay(firingPoint.position, firingPoint.transform.right * distance);
+        }
+        return null;
     }
 
     // A = y2 - y1; B = x1 - x2; C = Ax1 + By1
@@ -129,21 +273,18 @@ public class Laser : MonoBehaviour
 
     void DrawLine(List<Vector3> points)
     {
-        lineRenderer.positionCount = points.Count; // add this
+        if (points == null)
+        {
+            return;
+        }
+        lineRenderer.positionCount = points.Count;
         Vector3[] temp = points.ToArray(); 
         lineRenderer.SetPositions(temp);
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Shoot(defDistanceRay);
+        DrawLine(Shoot2(defDistanceRay, new List<Vector3>()));
     }
 }
