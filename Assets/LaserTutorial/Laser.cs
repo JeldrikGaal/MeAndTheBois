@@ -15,6 +15,13 @@ public class Laser : MonoBehaviour
 
     Vector2 s, e, sM, eM, cM, c2M;
 
+    public string name1;
+    public string name2;
+    public string name3;
+
+    public RaycastHit2D show1;
+    public RaycastHit2D show2;
+    public RaycastHit2D show3;
 
     private void Awake()
     {
@@ -126,32 +133,90 @@ public class Laser : MonoBehaviour
     }
 
 
-    List<Vector3> Shoot2(float distance, List<Vector3> points)
+    // Calculate the light beam trajectory through multiple mirrors if found
+    List<Vector3> Shoot2(float distance, List<Vector3> points, Vector2 startPos, int level, Mirror mir2 = null)
     {
+        // Cancel Shooting the Laser if not enough distance is left
         if (distance < 0.1f)
         {
-            return null;
+            return points;
         }
+
+        // Cancel the Shooting if too many recursions occur. Only for debugging shouldnt happen later
+        if (level > 10)
+        {
+            Debug.Log("=====CANCEL=======");
+            return points;
+        }
+
+        // Resetting the positions of the lineRenderer to properly redraw them
         Vector3[] temp = Array.Empty<Vector3>();
         lineRenderer.SetPositions(temp);
-        if (Physics2D.Raycast(m_transform.position, transform.right))
-        {
-            RaycastHit2D _hit = Physics2D.Raycast(firingPoint.position, transform.right);
 
+        // If its the first call from the update function check if anything has been hit. If its not the first call check if a mirror has been hit
+        bool condition;
+        if (level == 0)
+        {
+            RaycastHit2D _hitHelp = Physics2D.Raycast(m_transform.position, transform.right);
+            condition = _hitHelp.transform.CompareTag("Mirror");
+            condition = Physics2D.Raycast(m_transform.position, transform.right);
+            Debug.DrawLine(m_transform.position, transform.right * distance, Color.black);
+        }
+        else
+        {
+            name3 = mir2.name;
+            Vector2 temp1 = new Vector2(mir2.reflectionPoint.position.x, mir2.reflectionPoint.position.y);
+            Vector2 ray = (temp1 - startPos).normalized;
+            RaycastHit2D _hitHelp = Physics2D.Raycast(startPos, ray);
+            condition = _hitHelp.transform.CompareTag("Mirror");
+            Debug.DrawLine(startPos, ray * distance, Color.magenta);
+        }
+
+        // Depending on the condition set before either 
+        if (condition)
+        {
+            RaycastHit2D _hit;
+            if (level == 0)
+            {
+                // Send Ray from laserFiringPoint
+                 _hit = Physics2D.Raycast(startPos, transform.right);
+                Debug.DrawLine(startPos, transform.right * distance, Color.yellow);
+            }
+
+            else
+            {
+                // Send Ray from already hit mirror in direction of the mirrors reflectionPoint
+                Vector2 posAsV2 = new Vector2(mir2.reflectionPoint.position.x, mir2.reflectionPoint.position.y);
+                Vector2 direction2 = (posAsV2 - startPos).normalized;
+                 _hit = Physics2D.Raycast(startPos, direction2);
+                Debug.DrawLine(startPos, direction2 * distance, Color.cyan);
+            }
+
+            show2 = _hit;
+            name1 = _hit.transform.name;
+
+            // Check if a Mirror has been hit
             if (_hit.transform.CompareTag("Mirror"))
             {
-                points.Add(firingPoint.position);
+                // Maybe not correct to add those here ?
+                if (level == 0) points.Add(startPos);
                 points.Add(_hit.point);
-                float tempDist = distance - Vector2.Distance(firingPoint.position, _hit.point);
-                //Vector2 ray = (_hit.transform.GetComponent<Mirror>().reflectionPoint.position - _hit.transform.position).normalized;
 
-                Mirror mir = _hit.transform.GetComponent<Mirror>();
-                Transform refP = mir.reflectionPoint.transform;
+                // reduce distance based on already travelled line
+                float tempDist = distance - Vector2.Distance(startPos, _hit.point);
 
+                // Get Mirror Object and refPoint of that Mirror
+                Mirror mir;
+                Transform refP;
+                mir = _hit.transform.GetComponent<Mirror>();
+                refP = mir.reflectionPoint.transform;
+
+                // Get Middle Point of Cell that has been hit
                 Vector3 middle = ground.GetCellCenterWorld(ground.WorldToCell(_hit.transform.position));
                 Vector2 middle2 = new Vector2(middle.x, middle.y);
                 middle2 = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.25f));
 
+                // Depending on the angle set in the mirror object choose reference points to properly position the refPoint
                 switch (mir.angle)
                 {
                     case 0:
@@ -195,50 +260,101 @@ public class Laser : MonoBehaviour
                         break;
                 }
 
+                // Get an imaginary line that the ref point is supposed to move on
                 Vector2 movingLine = (e - s).normalized;
 
+                // Get an imaginary line that the laser is impacting on the object 
                 Vector2 movingLineM = (eM - sM).normalized;
 
+                // ??? could be a fault
                 Vector2 h1 = _hit.point + movingLineM * (ground.cellSize.x * 0.5f);
 
+                // Calculate elements needed for line intersection calculation
                 List<float> l1 = getABCForLine(cM, c2M);
                 List<float> l2 = getABCForLine(_hit.point, h1);
 
+                // Get point where imaginary lines are intersecting to calculate offset
                 Vector2 distanceHelp = getIntersection(l1, l2);
+
+                // Calculate distance between intersecting point and actual hit point 
                 float distance2 = Vector2.Distance(distanceHelp, _hit.point);
 
+                // Use the distance to position the refPoint somewhere on the movingline
                 refP.position = e - movingLine * distance2;
 
+                // Get refPoint position in Vector 2 and calculate vector from impact point to refPoint
                 Vector2 temp1 = new Vector2(refP.position.x, refP.position.y);
                 Vector2 ray = (temp1 - _hit.point).normalized;
 
-                points.Add(ray * tempDist);
-
-                Vector2 tempp = new Vector2(refP.transform.position.x, refP.transform.position.y);
-                Vector2 rayDirection = tempp - _hit.point;
-                if (Physics2D.Raycast(_hit.point, rayDirection))
+                // Debugging Lines
+                if (level == 0)
                 {
-                    RaycastHit2D _hit2 = Physics2D.Raycast(_hit.point, rayDirection);
-                    if (_hit.transform.CompareTag("Mirror"))
-                    {
-                        return Shoot2(tempDist, points);
-                    }
+                    Debug.DrawLine(_hit.point, ray * tempDist, Color.green);
                 }
-
-                return points;
+                else
+                {
+                    Debug.DrawLine(_hit.point, ray * tempDist, Color.red);
+                }
                 
+
+                if (Physics2D.Raycast(_hit.point, ray))
+                {
+                    RaycastHit2D _hit2 = Physics2D.Raycast(_hit.point, ray);
+
+                    show1 = _hit2;
+                    name2 = _hit2.transform.name;
+                    if (_hit2.transform.CompareTag("Mirror"))
+                    {
+                        points.Add(_hit2.point);
+                        Mirror mirr2 = _hit2.transform.GetComponent<Mirror>();
+                        level += 1;
+                        //return points;
+                        return Shoot2(tempDist, points, _hit2.point, level, mirr2);
+                    }
+                    else
+                    {
+                        points.Add(ray * tempDist);
+                        return points;
+                    }
+                   
+                }
+                else
+                {
+                    points.Add(ray * tempDist);
+                    return points;
+                }
+  
             }
             else
             {
-                Draw2DRay(firingPoint.position, _hit.point);
+                Draw2DRay(startPos, _hit.point);
+                Debug.Log("ONLY!!");
+                return points;
             }
         }
 
         else
         {
-            Draw2DRay(firingPoint.position, firingPoint.transform.right * distance);
+            Debug.Log("===========ELSE=============");
+            if (level == 0)
+            {
+                Draw2DRay(firingPoint.position, firingPoint.right);
+                points.Add(firingPoint.position);
+                points.Add(firingPoint.right * distance);
+                return points;
+            }
+            else
+            {
+                Vector2 temp1 = new Vector2(mir2.reflectionPoint.position.x, mir2.reflectionPoint.position.y);
+                Vector2 ray = (temp1 - startPos).normalized;
+                Draw2DRay(startPos, ray * distance);
+                points.Add(startPos);
+                points.Add(ray * distance);
+                return points;
+            }
+
+            
         }
-        return null;
     }
 
     // A = y2 - y1; B = x1 - x2; C = Ax1 + By1
@@ -285,6 +401,11 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DrawLine(Shoot2(defDistanceRay, new List<Vector3>()));
+        name1 = "";
+        name2 = "";
+        name3 = "";
+        DrawLine(Shoot2(defDistanceRay, new List<Vector3>(), firingPoint.position, 0));
+        //Shoot(defDistanceRay);
+        
     }
 }
