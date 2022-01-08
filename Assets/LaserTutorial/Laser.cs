@@ -338,12 +338,15 @@ public class Laser : MonoBehaviour
 
                 if (Physics2D.Raycast(p1V2, ray1))
                 {
-                    _hit = Physics2D.Raycast(p1V2, ray1);
                     if (!_hit.transform.CompareTag("Mirror"))
                     {
                         points2.Add(p1V2 + ray1 * distance);
                         return;
                     }
+                    _hit = Physics2D.Raycast(p1V2, ray1);
+                    m1 = _hit.transform.GetComponent<Mirror>();
+                    p1 = m1.reflectionPoint.transform;
+                    repositionRefPoint(m1, _hit, p1);
                 }
                 else
                 {

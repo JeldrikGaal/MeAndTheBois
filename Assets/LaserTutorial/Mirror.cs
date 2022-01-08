@@ -21,6 +21,10 @@ public class Mirror : MonoBehaviour
 
     public List<Sprite> sprites = new List<Sprite>();
 
+    public Vector3Int currentCell;
+
+    public GameManager gM;
+
     private void Awake()
     {
         reflectionPoint = this.transform.GetChild(0);
@@ -49,14 +53,29 @@ public class Mirror : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha8))
+        currentCell = ground.WorldToCell(this.transform.position);
+
+        bool playerNear = checkAdjacentCells(gM.p1) || checkAdjacentCells(gM.p2);
+
+        if (Input.GetKeyDown(KeyCode.Alpha8) && playerNear)
         {
             TurnLeft();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
+        if (Input.GetKeyDown(KeyCode.Alpha9) && playerNear)
         {
             TurnRight();
         }
+
+
+    }
+
+    bool checkAdjacentCells(MovementController p)
+    {
+        if (p.currentCell == new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z)) return true;
+        if (p.currentCell == new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z)) return true;
+        if (p.currentCell == new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z)) return true;
+        if (p.currentCell == new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z)) return true;
+        return false;
     }
 
     void placeDirectionPoint()

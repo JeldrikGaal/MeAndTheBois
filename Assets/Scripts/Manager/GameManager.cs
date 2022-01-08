@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public List<Box> boxxes = new List<Box>();
     public EnergyManager EM;
+    public MovementController p1;
+    public MovementController p2;
 
     public class movementSet
     {
