@@ -23,6 +23,8 @@ public class Laser : MonoBehaviour
     public RaycastHit2D show2;
     public RaycastHit2D show3;
 
+    public List<Vector3> points2 = new List<Vector3>();
+
     private void Awake()
     {
         m_transform = GetComponent<Transform>();
@@ -143,7 +145,7 @@ public class Laser : MonoBehaviour
         }
 
         // Cancel the Shooting if too many recursions occur. Only for debugging shouldnt happen later
-        if (level > 10)
+        if (level >= 2)
         {
             Debug.Log("=====CANCEL=======");
             return points;
@@ -182,7 +184,6 @@ public class Laser : MonoBehaviour
                  _hit = Physics2D.Raycast(startPos, transform.right);
                 Debug.DrawLine(startPos, transform.right * distance, Color.yellow);
             }
-
             else
             {
                 // Send Ray from already hit mirror in direction of the mirrors reflectionPoint
@@ -211,76 +212,7 @@ public class Laser : MonoBehaviour
                 mir = _hit.transform.GetComponent<Mirror>();
                 refP = mir.reflectionPoint.transform;
 
-                // Get Middle Point of Cell that has been hit
-                Vector3 middle = ground.GetCellCenterWorld(ground.WorldToCell(_hit.transform.position));
-                Vector2 middle2 = new Vector2(middle.x, middle.y);
-                middle2 = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.25f));
-
-                // Depending on the angle set in the mirror object choose reference points to properly position the refPoint
-                switch (mir.angle)
-                {
-                    case 0:
-                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
-                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
-
-                        sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
-                        eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
-                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
-                        c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
-                        break;
-
-                    case 1:
-                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
-                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
-
-                        sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
-                        eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
-                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
-                        c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
-                        break;
-
-                    case 2:
-                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
-                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
-
-                        sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
-                        eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
-                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
-                        c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
-                        break;
-
-                    case 3:
-                        s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
-                        e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
-
-                        sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
-                        eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
-                        cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
-                        c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
-                        break;
-                }
-
-                // Get an imaginary line that the ref point is supposed to move on
-                Vector2 movingLine = (e - s).normalized;
-
-                // Get an imaginary line that the laser is impacting on the object 
-                Vector2 movingLineM = (eM - sM).normalized;
-
-                // ??? could be a fault
-                Vector2 h1 = _hit.point + movingLineM * (ground.cellSize.x * 0.5f);
-
-                // Calculate elements needed for line intersection calculation
-                List<float> l1 = getABCForLine(cM, c2M);
-                List<float> l2 = getABCForLine(_hit.point, h1);
-
-                // Get point where imaginary lines are intersecting to calculate offset
-                Vector2 distanceHelp = getIntersection(l1, l2);
-
-                // Calculate distance between intersecting point and actual hit point 
-                float distance2 = Vector2.Distance(distanceHelp, _hit.point);
-
-                // Use the distance to position the refPoint somewhere on the movingline
-                refP.position = e - movingLine * distance2;
+                repositionRefPoint(mir, _hit, refP);
 
                 // Get refPoint position in Vector 2 and calculate vector from impact point to refPoint
                 Vector2 temp1 = new Vector2(refP.position.x, refP.position.y);
@@ -327,8 +259,17 @@ public class Laser : MonoBehaviour
             }
             else
             {
-                Draw2DRay(startPos, _hit.point);
-                Debug.Log("ONLY!!");
+                //Draw2DRay(startPos, _hit.point);
+                Debug.Log("!!ONLY!!");
+                points.Add(startPos);
+                points.Add(_hit.point);
+
+                // Get refPoint position in Vector 2 and calculate vector from impact point to refPoint
+                Vector2 temp1 = new Vector2(mir2.reflectionPoint.position.x, mir2.reflectionPoint.position.y);
+                Vector2 ray = (temp1 - _hit.point).normalized;
+
+                points.Add(ray * distance);
+
                 return points;
             }
         }
@@ -358,6 +299,139 @@ public class Laser : MonoBehaviour
     }
 
     // A = y2 - y1; B = x1 - x2; C = Ax1 + By1
+    // 1 Shoot Ray from Laser to first mirror                                             |     Add Startingpoint, Add first Mirror hit
+    // 2 Position Reflection point accordingly                                            |
+    // 3 Shoot Ray from reflection point in the direction of the reflection point         |       
+    // 4     If new mirror has been hit shoot from hit to reflection point                |     Add new Mirror
+    //       If not return points                                                         |     Add end point
+    // 5     If new mirror has been hit go back to step 4                                 |     Add new Mirror 
+    //       If not return points                                                         |     Add end point 
+
+
+    void Shoot3()
+    {
+        float distance = defDistanceRay;
+        RaycastHit2D _hit = Physics2D.Raycast(firingPoint.transform.position, transform.right);
+        points2.Add(firingPoint.transform.position);
+
+        if (!_hit)
+        {
+            points2.Add(firingPoint.position + transform.right * distance);
+            return;
+        }
+
+        if (_hit.transform.CompareTag("Mirror"))
+        {
+            while (distance > 0.1f)
+            {
+                Mirror m1 = _hit.transform.GetComponent<Mirror>();
+                Transform p1 = m1.reflectionPoint.transform;
+                repositionRefPoint(m1, _hit, p1);
+                points2.Add(_hit.point);
+                points2.Add(p1.position);
+
+                distance -= Vector2.Distance(firingPoint.transform.position, _hit.point);
+                distance -= Vector2.Distance(_hit.point, p1.position);
+
+                Vector2 p1V2 = new Vector2(p1.position.x, p1.position.y);
+                Vector2 ray1 = (p1V2 - _hit.point).normalized;
+
+                if (Physics2D.Raycast(p1V2, ray1))
+                {
+                    _hit = Physics2D.Raycast(p1V2, ray1);
+                    if (!_hit.transform.CompareTag("Mirror"))
+                    {
+                        points2.Add(p1V2 + ray1 * distance);
+                        return;
+                    }
+                }
+                else
+                {
+                    points2.Add(p1V2 + ray1 * distance);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            points2.Add(firingPoint.position + transform.right * distance);
+        }
+
+    }
+
+    void repositionRefPoint(Mirror mir, RaycastHit2D _hit, Transform refP)
+    {
+        // Get Middle Point of Cell that has been hit
+        Vector3 middle = ground.GetCellCenterWorld(ground.WorldToCell(_hit.transform.position));
+        Vector2 middle2 = new Vector2(middle.x, middle.y);
+        middle2 = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.25f));
+
+        // Depending on the angle set in the mirror object choose reference points to properly position the refPoint
+        switch (mir.angle)
+        {
+            case 0:
+                s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+                e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+
+                sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
+                break;
+
+            case 1:
+                s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+                e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+
+                sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
+                break;
+
+            case 2:
+                s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+                e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+
+                sM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                eM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                c2M = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.5f));
+                break;
+
+            case 3:
+                s = new Vector2(mir.startingPos.x + (ground.cellSize.x * 0.25f), mir.startingPos.y - (ground.cellSize.y * 0.25f));
+                e = new Vector2(mir.startingPos.x - (ground.cellSize.x * 0.25f), mir.startingPos.y + (ground.cellSize.y * 0.25f));
+
+                sM = new Vector2(middle2.x - (ground.cellSize.x * 0.25f), middle2.y + (ground.cellSize.y * 0.25f));
+                eM = new Vector2(middle2.x + (ground.cellSize.x * 0.25f), middle2.y - (ground.cellSize.y * 0.25f));
+                cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
+                c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
+                break;
+        }
+
+        // Get an imaginary line that the ref point is supposed to move on
+        Vector2 movingLine = (e - s).normalized;
+
+        // Get an imaginary line that the laser is impacting on the object 
+        Vector2 movingLineM = (eM - sM).normalized;
+
+        // ??? could be a fault
+        Vector2 h1 = _hit.point + movingLineM * (ground.cellSize.x * 0.5f);
+
+        // Calculate elements needed for line intersection calculation
+        List<float> l1 = getABCForLine(cM, c2M);
+        List<float> l2 = getABCForLine(_hit.point, h1);
+
+        // Get point where imaginary lines are intersecting to calculate offset
+        Vector2 distanceHelp = getIntersection(l1, l2);
+
+        // Calculate distance between intersecting point and actual hit point 
+        float distance2 = Vector2.Distance(distanceHelp, _hit.point);
+
+        // Use the distance to position the refPoint somewhere on the movingline
+        refP.position = e - movingLine * distance2;
+    }
 
     List<float> getABCForLine(Vector2 pA, Vector2 pB)
     {
@@ -404,8 +478,11 @@ public class Laser : MonoBehaviour
         name1 = "";
         name2 = "";
         name3 = "";
-        DrawLine(Shoot2(defDistanceRay, new List<Vector3>(), firingPoint.position, 0));
+        //DrawLine(Shoot2(defDistanceRay, new List<Vector3>(), firingPoint.position, 0));
         //Shoot(defDistanceRay);
+        points2 = new List<Vector3>();
+        Shoot3();
+        DrawLine(points2);
         
     }
 }
