@@ -28,12 +28,26 @@ public class MovementController : MonoBehaviour
     public List<Vector3>  tileWorldLocations;
     public List<Vector3Int> collisionsInGrid;
     public List<Vector3Int> elevationsInGrid;
-    public bool moving = false;
+    public bool moving = true;
 
     private Wind w;
+    private SpriteRenderer sR;
 
+    public Sprite sprite1;
+    public Sprite sprite2;
+    public Sprite sprite3;
+    public Sprite sprite4;
+
+    public List<Sprite> sprites;
     void Start()
     {
+        sprites.Add(sprite4);
+        sprites.Add(sprite3);
+        sprites.Add(sprite2);
+        sprites.Add(sprite1);
+
+        sR = this.transform.GetComponent<SpriteRenderer>();
+        sR.sprite = sprites[directionFacing];
         if (playerIndex == 2)
         {
             w = this.GetComponent<Wind>();
@@ -71,15 +85,51 @@ public class MovementController : MonoBehaviour
         
     }
 
+    Vector3 Move(int dir)
+    {
+        switch (dir)
+        {
+            case 0:
+                return ground.GetCellCenterWorld(new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z));
+            case 1:
+                return ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z));
+            case 2:
+                return ground.GetCellCenterWorld(new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z));
+            case 3:
+                return ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z));
+        }
+        return new Vector3();
+    }
+
+    int incDir(int t)
+    {
+        if (t == 3)
+        {
+            t = 0;
+        }
+        else
+        {
+            t += 1;
+        }
+        return t;
+    }
+
+    int decDir(int t)
+    {
+        if (t == 0)
+        {
+            t = 3;
+        }
+        else
+        {
+            t -= 1;
+        }
+        return t;
+    }
 
     void Update()
     {
         currentCell = ground.WorldToCell(transform.position);
-        // Toggle Movement
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            moving = !moving;
-        }
 
         // Move player to moving point TODO: calculate delta time to make undepeding of fps
         if (moving)
@@ -96,26 +146,35 @@ public class MovementController : MonoBehaviour
         if (Input.GetKeyDown(playerControlls.forward))
         {
             //newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
-            newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z));
-            directionFacing = 0;
+            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z));
+            //directionFacing = 0;
+            newPosMP = Move(directionFacing);
         }
         if (Input.GetKeyDown(playerControlls.backward))
         {
             //newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-            newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z));
-            directionFacing = 1;
+            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z));
+            //directionFacing = 1;
+
+            newPosMP = Move(incDir(incDir(directionFacing)));
         }
         if (Input.GetKeyDown(playerControlls.left))
         {
             //newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
-            newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z));
-            directionFacing = 2;
+            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z));
+            //directionFacing = 2;
+            directionFacing = incDir(directionFacing);
+            sR.sprite = sprites[directionFacing];
+
         }
         if (Input.GetKeyDown(playerControlls.right))
         {
             //newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-            newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z));
-            directionFacing = 3;
+            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z));
+            //directionFacing = 3;
+
+            directionFacing = decDir(directionFacing);
+            sR.sprite = sprites[directionFacing];
         }
 
         // Check if new position is valid and if so move moving point there
