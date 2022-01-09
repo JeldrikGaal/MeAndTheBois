@@ -324,6 +324,7 @@ public class Laser : MonoBehaviour
         {
             while (distance > 0.1f)
             {
+                RaycastHit2D _hitSave = _hit;
                 Mirror m1 = _hit.transform.GetComponent<Mirror>();
                 Transform p1 = m1.reflectionPoint.transform;
                 repositionRefPoint(m1, _hit, p1);
@@ -344,6 +345,15 @@ public class Laser : MonoBehaviour
                         return;
                     }
                     _hit = Physics2D.Raycast(p1V2, ray1);
+
+                    // If other objects has been hit draw line to that object
+                    if (!_hit.transform.CompareTag("Mirror"))
+                    {
+                        p1V2 = new Vector2(p1.position.x, p1.position.y);
+                        ray1 = (p1V2 - _hitSave.point).normalized;
+                        points2.Add(_hit.point);
+                        return;
+                    }
                     m1 = _hit.transform.GetComponent<Mirror>();
                     p1 = m1.reflectionPoint.transform;
                     repositionRefPoint(m1, _hit, p1);

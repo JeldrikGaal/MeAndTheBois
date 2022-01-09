@@ -25,6 +25,10 @@ public class Mirror : MonoBehaviour
 
     public GameManager gM;
 
+    public bool timed;
+    public float timer;
+    private float timerSave;
+
     private void Awake()
     {
         reflectionPoint = this.transform.GetChild(0);
@@ -47,7 +51,7 @@ public class Mirror : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        timerSave = timer;
     }
 
     // Update is called once per frame
@@ -66,6 +70,16 @@ public class Mirror : MonoBehaviour
             TurnRight();
         }
 
+        if (timed)
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+            {
+                TurnLeft();
+                timer = timerSave;
+            }
+
+        }
 
     }
 
