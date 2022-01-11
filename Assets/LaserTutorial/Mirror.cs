@@ -29,6 +29,11 @@ public class Mirror : MonoBehaviour
     public float timer;
     private float timerSave;
 
+    public bool portable;
+
+    public bool playerNear;
+    public int playerNearInt;
+
     private void Awake()
     {
         reflectionPoint = this.transform.GetChild(0);
@@ -59,7 +64,21 @@ public class Mirror : MonoBehaviour
     {
         currentCell = ground.WorldToCell(this.transform.position);
 
-        bool playerNear = checkAdjacentCells(gM.p1) || checkAdjacentCells(gM.p2);
+        if (checkAdjacentCells(gM.p1))
+        {
+            playerNear = true;
+            playerNearInt = 1;
+        }
+        else if (checkAdjacentCells(gM.p2))
+        {
+            playerNear = true;
+            playerNearInt = 2;
+        }
+        else
+        {
+            playerNear = false;
+            playerNearInt = 0;
+        }
 
         if (Input.GetKeyDown(KeyCode.Alpha8) && playerNear)
         {
