@@ -60,6 +60,15 @@ TagManager:
   - name: Elevation1
     uniqueID: 775406079
     locked: 0
+  - name: Elevation 2
+    uniqueID: 2476809557
+    locked: 0
+  - name: Elevation 3
+    uniqueID: 3075908909
+    locked: 0
+  - name: Elevation 4
+    uniqueID: 846601297
+    locked: 0
   - name: Flying
     uniqueID: 4091634711
     locked: 0
