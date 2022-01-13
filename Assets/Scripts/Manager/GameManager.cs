@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
 
     public bool isBoxOnCell(Vector3Int cell, Grid ground)
     {
+        Debug.Log(cell);
         foreach (Box b in boxxes)
         {
             if (ground.WorldToCell(b.transform.position) == cell)
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject getBoxOnCell(Vector3Int cell, Grid ground)
     {
+        
         foreach (Box b in boxxes)
         {
             if (ground.WorldToCell(b.transform.position) == cell)

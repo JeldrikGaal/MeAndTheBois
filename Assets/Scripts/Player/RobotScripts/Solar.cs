@@ -36,6 +36,7 @@ public class Solar : MonoBehaviour
         }
         else
         {
+            positionVinePoint(movC.ground);
             showVine();
         }
 
@@ -47,6 +48,31 @@ public class Solar : MonoBehaviour
         
     }
 
+    Vector3 positionVinePoint(Grid ground)
+    {
+        Vector3 temp = new Vector3();
+        switch (movC.directionFacing)
+        {
+            case 0:
+                temp = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
+                break;
+            case 1:
+                temp = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
+                break;
+            case 2:
+                temp = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
+                break;
+            case 3:
+                temp = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
+                break;
+            default:
+                break;
+        }
+
+        vineMovementPoint.transform.position = temp;
+        return temp;
+    }
+
     void TryVineMove()
     {
         Vector3 newPosMP = this.transform.position;
@@ -54,26 +80,8 @@ public class Solar : MonoBehaviour
         if (!vineExtended)
         {
             vineExtended = true;
-            
-            switch (movC.directionFacing)
-            {
-                case 0:
-                    newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                    break;
-                case 1:
-                    newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                    break;
-                case 2:
-                    newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y + (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                    break;
-                case 3:
-                    newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2) * vineRange + (ground.cellGap.x / 2)), this.transform.position.y - (ground.cellSize.y / 2) * vineRange, this.transform.position.z);
-                    break;
-                default:
-                    break;
-            }
 
-            vineMovementPoint.transform.position = newPosMP;
+            newPosMP = positionVinePoint(ground);
         }
 
         else
@@ -105,7 +113,8 @@ public class Solar : MonoBehaviour
                 }
 
                 Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(newPosMP));
-                vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z); ;
+                vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z);
+                vineMovS.currentBox.GetComponent<Box>().destination = temp; 
                 vineMovS.currentBox.GetComponent<Box>().moving = true;
             }
             else
@@ -122,7 +131,9 @@ public class Solar : MonoBehaviour
     {
         if (movC.gM.isBoxOnCell(vineCell, movC.ground))
         {
-            Debug.DrawLine(this.transform.position, this.vineMovementPoint.transform.position, Color.green);
-        } 
+            //Debug.DrawLine(this.transform.position, this.vineMovementPoint.transform.position, Color.green);
+        }
+
+        Debug.DrawLine(this.transform.position, this.vineMovementPoint.transform.position, Color.green);
     }
 }

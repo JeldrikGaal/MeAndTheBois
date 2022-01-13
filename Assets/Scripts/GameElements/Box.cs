@@ -13,13 +13,15 @@ public class Box : MonoBehaviour
 
     public SpriteRenderer boxSprite;
 
+    public Vector3Int currentCell;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
 
         Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(this.transform.position));
-        transform.position = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z);
-        destination = this.transform.position;
+        //transform.position = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z);
+        transform.position = temp;
         // Properly calculate elevation !!
         elevation = 0;
 
@@ -30,6 +32,8 @@ public class Box : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentCell = ground.WorldToCell(transform.position);
+
         if (moving)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, destination, 0.01f);

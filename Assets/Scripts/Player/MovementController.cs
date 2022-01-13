@@ -41,6 +41,7 @@ public class MovementController : MonoBehaviour
     public List<Sprite> sprites;
     void Start()
     {
+        moving = true;
         sprites.Add(sprite4);
         sprites.Add(sprite3);
         sprites.Add(sprite2);
@@ -85,6 +86,7 @@ public class MovementController : MonoBehaviour
         
     }
 
+    // Get the position of the center of the cell one cell away from the player in the direction given to the function
     Vector3 Move(int dir)
     {
         switch (dir)
@@ -145,34 +147,19 @@ public class MovementController : MonoBehaviour
         Vector3 newPosMP = this.transform.position;
         if (Input.GetKeyDown(playerControlls.forward))
         {
-            //newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
-            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z));
-            //directionFacing = 0;
             newPosMP = Move(directionFacing);
         }
         if (Input.GetKeyDown(playerControlls.backward))
         {
-            //newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z));
-            //directionFacing = 1;
-
             newPosMP = Move(incDir(incDir(directionFacing)));
         }
         if (Input.GetKeyDown(playerControlls.left))
         {
-            //newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
-            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z));
-            //directionFacing = 2;
             directionFacing = incDir(directionFacing);
             sR.sprite = sprites[directionFacing];
-
         }
         if (Input.GetKeyDown(playerControlls.right))
         {
-            //newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-            //newPosMP = ground.GetCellCenterWorld(new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z));
-            //directionFacing = 3;
-
             directionFacing = decDir(directionFacing);
             sR.sprite = sprites[directionFacing];
         }
