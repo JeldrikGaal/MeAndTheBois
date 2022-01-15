@@ -42,17 +42,28 @@ Material:
     m_Ints: []
     m_Floats:
     - _Float: 0.62
+    - _Opasity: 0.35
     - _Power: 4
     - _Refection_Amount: 0.05
     - _Refection_Movement: -4.5
-    - _Refection_Scaling: 13.7
+    - _Refection_Scaling: 10
+    - _Scale: 0
+    - _Secondary_Noise_Intensity: 1
+    - _Secondary_Noise_Opasity: 1
+    - _Voronoi_Amount: 0.2
+    - _Voronoi_Movement: 2
+    - _Voronoi_Power: 3
+    - _Voronoi_Scaling: 6
     m_Colors:
+    - _Base_Colour: {r: 0.3058824, g: 0.627451, b: 0.6313726, a: 0}
     - _Intensity: {r: 0, g: 0, b: 0, a: 0}
     - _Noise_Colour: {r: 0.77254903, g: 0.8784314, b: 0.5803922, a: 0}
     - _Noise_Direction: {r: -0.05, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: 0.05, b: 0, a: 0}
-    - _Refection_Colour: {r: 1, g: 1, b: 1, a: 0}
+    - _Refection_Colour: {r: 0.10980392, g: 0.10980392, b: 0.10980392, a: 0}
     - _Refection_Speed: {r: 0, g: 0.1, b: 0, a: 0}
     - _Second_Noise_Colour: {r: 0.5241189, g: 0.7026521, b: 0.735849, a: 0}
     - _Second_Noise_Direction: {r: -0.01, g: 0.025, b: 0, a: 0}
+    - _Voronoi_Colour: {r: 0.099509805, g: 0.11666667, b: 0.11470588, a: 0}
+    - _Voronoi_Speed: {r: 0, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
