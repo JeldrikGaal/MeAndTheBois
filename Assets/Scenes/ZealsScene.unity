@@ -518,7 +518,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 4
-      m_TileSpriteIndex: 5
+      m_TileSpriteIndex: 6
       m_TileMatrixIndex: 0
       m_TileColorIndex: 4
       m_TileObjectToInstantiateIndex: 65535
@@ -679,10 +679,10 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: eadf31ca8b7568949aea29c48e2310a2, type: 3}
   - m_RefCount: 14
     m_Data: {fileID: 21300000, guid: 4172993404a1ed34fb0237ca19808594, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 9cb022e34b3854440b0f057e3bbce1fd, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 9cb022e34b3854440b0f057e3bbce1fd, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 21300000, guid: 8443f43fcbf41ba479c86c63a322d30d, type: 3}
   - m_RefCount: 1
@@ -11990,7 +11990,7 @@ Tilemap:
   - first: {x: 69, y: -108, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 15
+      m_TileIndex: 42
       m_TileSpriteIndex: 34
       m_TileMatrixIndex: 0
       m_TileColorIndex: 15
@@ -14232,7 +14232,7 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 33
       m_TileSpriteIndex: 38
-      m_TileMatrixIndex: 0
+      m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -15359,8 +15359,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 7c35a9c5ac35f43408b0a733a4d21735, type: 2}
   - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: 12be3405aeac48441b2c69faab326355, type: 2}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 1bc59ee389024ab48b577b9e36bd276e, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 9
     m_Data: {fileID: 11400000, guid: d2364f764043dae4eaf1f000faf3939f, type: 2}
   - m_RefCount: 3
@@ -15413,8 +15413,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: a41a5f7f7faa07542894a200934cdc6c, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: edec3f8bd5da25542a134d9a79905960, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: a4a7c4a0321edac47881d1567eb5cc93, type: 2}
   - m_RefCount: 2
@@ -15489,7 +15489,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 248ea377e09d2fb489539a75ffb92f66, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 86387458d50a6fe49b3d2ae8891ef538, type: 3}
+    m_Data: {fileID: 21300000, guid: 9dbb5eb5e89d2e54ab06fed3824d38a1, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: b8b3bb94a58f894479665cee819878ba, type: 3}
   - m_RefCount: 1
@@ -15505,7 +15505,7 @@ Tilemap:
   - m_RefCount: 2
     m_Data: {fileID: 21300000, guid: 9c2a9e5337954114c9edff6d6c59715b, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 352
+  - m_RefCount: 351
     m_Data:
       e00: 1
       e01: 0
@@ -15516,6 +15516,24 @@ Tilemap:
       e12: 0
       e13: 0
       e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+  - m_RefCount: 1
+    m_Data:
+      e00: -1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: -0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: -0
       e21: 0
       e22: 1
       e23: 0
@@ -16456,9 +16474,9 @@ Tilemap:
   - first: {x: 57, y: -65, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 3
-      m_TileSpriteIndex: 18
-      m_TileMatrixIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 17
+      m_TileMatrixIndex: 1
       m_TileColorIndex: 7
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -16696,9 +16714,9 @@ Tilemap:
   - first: {x: 56, y: -56, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 3
-      m_TileSpriteIndex: 18
-      m_TileMatrixIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 17
+      m_TileMatrixIndex: 1
       m_TileColorIndex: 7
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -17016,9 +17034,9 @@ Tilemap:
   - first: {x: 23, y: -45, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 3
-      m_TileSpriteIndex: 18
-      m_TileMatrixIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 17
+      m_TileMatrixIndex: 1
       m_TileColorIndex: 7
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -17187,12 +17205,12 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: eb2476091c9c55c44b8e3a22df010892, type: 2}
-  - m_RefCount: 1
+  - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: 1bc59ee389024ab48b577b9e36bd276e, type: 2}
   - m_RefCount: 22
     m_Data: {fileID: 11400000, guid: f115ebef943c6e944946573fdb8c2e29, type: 2}
-  - m_RefCount: 3
-    m_Data: {fileID: 11400000, guid: edec3f8bd5da25542a134d9a79905960, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 6
     m_Data: {fileID: 11400000, guid: 34b15dea2d2e4a44399b5898e7b4347f, type: 2}
   - m_RefCount: 1
@@ -17278,10 +17296,10 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 96e690a610a0479478703d1fa5d101e6, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 6a04d808f95a1184fb0064de7338db88, type: 3}
-  - m_RefCount: 1
+  - m_RefCount: 4
     m_Data: {fileID: 21300000, guid: 86387458d50a6fe49b3d2ae8891ef538, type: 3}
-  - m_RefCount: 3
-    m_Data: {fileID: 21300000, guid: 9dbb5eb5e89d2e54ab06fed3824d38a1, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: e938958c80a7cdd4bb8a34af54842b34, type: 3}
   - m_RefCount: 1
@@ -17299,7 +17317,7 @@ Tilemap:
   - m_RefCount: 2
     m_Data: {fileID: 21300000, guid: a199f1844db0d3242b4bcf91fc162a80, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 131
+  - m_RefCount: 128
     m_Data:
       e00: 1
       e01: 0
@@ -17310,6 +17328,24 @@ Tilemap:
       e12: 0
       e13: 0
       e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+  - m_RefCount: 3
+    m_Data:
+      e00: -1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: -0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: -0
       e21: 0
       e22: 1
       e23: 0
