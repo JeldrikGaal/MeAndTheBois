@@ -312,6 +312,7 @@ public class Laser : MonoBehaviour
     {
         float distance = defDistanceRay;
         RaycastHit2D _hit = Physics2D.Raycast(firingPoint.transform.position, transform.right);
+        Debug.DrawRay(firingPoint.transform.position, transform.right, Color.red);
         points2.Add(firingPoint.transform.position);
 
         if (!_hit)
@@ -379,6 +380,11 @@ public class Laser : MonoBehaviour
         Vector2 middle2 = new Vector2(middle.x, middle.y);
         middle2 = new Vector2(middle2.x, middle2.y - (ground.cellSize.y * 0.25f));
 
+        // Get Middle Point of Cell that has been hit
+        Vector3 middleRefP = ground.GetCellCenterWorld(mir.refStartCell);
+        Vector2 middle2RefP = new Vector2(middleRefP.x, middleRefP.y);
+        middle2RefP = new Vector2(middle2RefP.x, middle2RefP.y - (ground.cellSize.y * 0.25f));
+
         // Depending on the angle set in the mirror object choose reference points to properly position the refPoint
         switch (mir.angle)
         {
@@ -421,20 +427,31 @@ public class Laser : MonoBehaviour
                 cM = new Vector2(middle2.x - (ground.cellSize.x * 0.5f), middle2.y);
                 c2M = new Vector2(middle2.x, middle2.y + (ground.cellSize.y * 0.5f));
                 break;
+
         }
+
+        
 
         // Get an imaginary line that the ref point is supposed to move on
         Vector2 movingLine = (e - s).normalized;
+        //Debug.DrawLine(e, s, Color.black);
 
         // Get an imaginary line that the laser is impacting on the object 
         Vector2 movingLineM = (eM - sM).normalized;
+        //Debug.DrawLine(eM, sM, Color.green);
+
+        
 
         // ??? could be a fault
         Vector2 h1 = _hit.point + movingLineM * (ground.cellSize.x * 0.5f);
+        //Debug.DrawLine(_hit.point, h1, Color.red);
 
         // Calculate elements needed for line intersection calculation
         List<float> l1 = getABCForLine(cM, c2M);
         List<float> l2 = getABCForLine(_hit.point, h1);
+
+        //Debug.DrawLine(cM, c2M, Color.magenta);
+        //Debug.DrawLine(_hit.point, h1, Color.blue);
 
         // Get point where imaginary lines are intersecting to calculate offset
         Vector2 distanceHelp = getIntersection(l1, l2);
@@ -442,8 +459,29 @@ public class Laser : MonoBehaviour
         // Calculate distance between intersecting point and actual hit point 
         float distance2 = Vector2.Distance(distanceHelp, _hit.point);
 
-        // Use the distance to position the refPoint somewhere on the movingline
-        refP.position = e - movingLine * distance2;
+        if (mir.startingMir)
+        {
+            // Use the distance to position the refPoint somewhere on the movingline
+            refP.position = e - movingLine * distance2;
+        }
+        else
+        {
+            Vector2 upray = (_hit.point - middle2).normalized;
+           
+            float distanceUp = Vector2.Distance(middle2, _hit.point);
+
+            s = middle2RefP;
+            e = middle2RefP + (upray * distanceUp);
+
+            Debug.DrawLine(middle2, _hit.point, Color.red);
+            Debug.DrawLine(s, e, Color.yellow);
+
+            Debug.DrawRay(middle2RefP, upray, Color.yellow);
+
+
+            refP.position = e;
+        }
+        
     }
 
     List<float> getABCForLine(Vector2 pA, Vector2 pB)

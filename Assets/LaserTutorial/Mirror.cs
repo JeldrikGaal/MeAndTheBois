@@ -36,6 +36,9 @@ public class Mirror : MonoBehaviour
 
     public float yOffset;
 
+    public Vector3Int refStartCell;
+    public bool startingMir;
+
     private void Awake()
     {
         reflectionPoint = this.transform.GetChild(0);
@@ -54,7 +57,9 @@ public class Mirror : MonoBehaviour
         sprites.Add(one);
         sprites.Add(two);
         sprites.Add(three);
-    }
+
+        refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
+    } 
     // Start is called before the first frame update
     void Start()
     {
@@ -131,6 +136,7 @@ public class Mirror : MonoBehaviour
                 break;
         }
         startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
+        refStartCell = ground.WorldToCell(startingPos);
     }
 
     void TurnLeft()
