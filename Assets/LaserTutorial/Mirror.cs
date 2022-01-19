@@ -139,8 +139,22 @@ public class Mirror : MonoBehaviour
         refStartCell = ground.WorldToCell(startingPos);
     }
 
+    void Flip()
+    {
+        if (!startingMir) return; 
+        if (angle == 0 || angle == 2)
+        {
+            this.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else
+        {
+            this.GetComponent<SpriteRenderer>().flipX = false;
+        }
+    }
+
     void TurnLeft()
     {
+        
         if (angle == 0)
         {
             angle = 3;
@@ -151,6 +165,8 @@ public class Mirror : MonoBehaviour
         }
         placeDirectionPoint();
         this.GetComponent<SpriteRenderer>().sprite = sprites[angle];
+        Flip();
+        
     }
 
     void TurnRight()
@@ -165,5 +181,6 @@ public class Mirror : MonoBehaviour
         }
         placeDirectionPoint();
         this.GetComponent<SpriteRenderer>().sprite = sprites[angle];
+        Flip();
     }
 }
