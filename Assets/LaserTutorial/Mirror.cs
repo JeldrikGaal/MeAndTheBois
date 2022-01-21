@@ -4,73 +4,66 @@ using UnityEngine;
 
 public class Mirror : MonoBehaviour
 {
-
-    public int angle;
-
-    public Transform reflectionPoint;
-    public Vector2 startingPos;
+    // Need to be dragged into script
+    public GameManager gM;
     public Grid ground;
-    public Vector3 midPoint;
 
-    Transform laserBox;
-
+    // Sprites (need to be public to easily change in prefab)
     public Sprite zero;
     public Sprite one;
     public Sprite two;
     public Sprite three;
+    private List<Sprite> sprites = new List<Sprite>();
 
-    public List<Sprite> sprites = new List<Sprite>();
-
-    public Vector3Int currentCell;
-
-    public GameManager gM;
-
+    // Setting in script
+    public int angle;
+    public bool portable;
+    public float yOffset;
     public bool timed;
     public float timer;
     private float timerSave;
 
-    public bool portable;
-
+    // Various Variables other scripts may need to access
+    public Vector3 midPoint;
+    public Transform reflectionPoint;
+    public Vector2 startingPos;
+    public bool startingMir;
+    public bool beingCarried;
     public bool playerNear;
     public int playerNearInt;
-
-    public float yOffset;
-
     public Vector3Int refStartCell;
-    public bool startingMir;
-
-    public bool beingCarried;
-
+    public Vector3Int currentCell;
     public SpriteRenderer sR;
 
     private void Awake()
     {
         reflectionPoint = this.transform.GetChild(0);
 
+        // Initial placment of reflection point
+        placeDirectionPoint();
         Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(reflectionPoint.position));
         reflectionPoint.transform.position = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.25f) + yOffset, temp.z);
+        refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
 
+        // Save variables needed for ray placment
         startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
-
-        laserBox = this.transform.parent;
-
         midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
         midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
 
+        // Initialize sprite List
         sprites.Add(zero);
         sprites.Add(one);
         sprites.Add(two);
         sprites.Add(three);
-
-        refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
-
+        
+        // Initialize SpriteRenderer reference
         sR = GetComponentInChildren<SpriteRenderer>();
     } 
-    // Start is called before the first frame update
+
+
     void Start()
     {
         timerSave = timer;
-        placeDirectionPoint();
         sR.sprite = sprites[angle];
     }
 
@@ -161,6 +154,7 @@ public class Mirror : MonoBehaviour
         refStartCell = ground.WorldToCell(startingPos);
     }
 
+    // Flip the Mirrorsprite for the starting mirror type 
     void Flip()
     {
         if (!startingMir) return; 
@@ -174,6 +168,7 @@ public class Mirror : MonoBehaviour
         }
     }
 
+    // Turn refelection point one step to the left and update sprite
     void TurnLeft()
     {
         
@@ -191,6 +186,7 @@ public class Mirror : MonoBehaviour
         
     }
 
+    // Turn refelection point one step to the right and update sprite
     void TurnRight()
     {
         if (angle == 3)
