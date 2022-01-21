@@ -39,6 +39,10 @@ public class Mirror : MonoBehaviour
     public Vector3Int refStartCell;
     public bool startingMir;
 
+    public bool beingCarried;
+
+    public SpriteRenderer sR;
+
     private void Awake()
     {
         reflectionPoint = this.transform.GetChild(0);
@@ -59,18 +63,24 @@ public class Mirror : MonoBehaviour
         sprites.Add(three);
 
         refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
+
+        sR = GetComponentInChildren<SpriteRenderer>();
     } 
     // Start is called before the first frame update
     void Start()
     {
         timerSave = timer;
+        placeDirectionPoint();
+        sR.sprite = sprites[angle];
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Keep current cell updated
         currentCell = ground.WorldToCell(this.transform.position);
 
+        // check if one of the players is adjacent
         if (checkAdjacentCells(gM.p1))
         {
             playerNear = true;
@@ -87,6 +97,8 @@ public class Mirror : MonoBehaviour
             playerNearInt = 0;
         }
 
+
+        // Let the mirror turn if a player is nearby
         if (Input.GetKeyDown(KeyCode.Alpha8) && playerNear)
         {
             TurnLeft();
@@ -96,7 +108,8 @@ public class Mirror : MonoBehaviour
             TurnRight();
         }
 
-        if (timed)
+        // Handle logic of a timed mirror turning
+        if (timed && !beingCarried)
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
@@ -107,6 +120,15 @@ public class Mirror : MonoBehaviour
 
         }
 
+        // Handle logic of player carrying mirror
+        if (beingCarried) 
+        {
+            midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
+            midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+            placeDirectionPoint();
+        }
+
+        
     }
 
     bool checkAdjacentCells(MovementController p)
@@ -144,11 +166,11 @@ public class Mirror : MonoBehaviour
         if (!startingMir) return; 
         if (angle == 0 || angle == 2)
         {
-            this.GetComponent<SpriteRenderer>().flipX = true;
+            sR.flipX = true;
         }
         else
         {
-            this.GetComponent<SpriteRenderer>().flipX = false;
+            sR.flipX = false;
         }
     }
 
@@ -164,7 +186,7 @@ public class Mirror : MonoBehaviour
             angle -= 1;
         }
         placeDirectionPoint();
-        this.GetComponent<SpriteRenderer>().sprite = sprites[angle];
+        sR.sprite = sprites[angle];
         Flip();
         
     }
@@ -180,7 +202,7 @@ public class Mirror : MonoBehaviour
             angle += 1;
         }
         placeDirectionPoint();
-        this.GetComponent<SpriteRenderer>().sprite = sprites[angle];
+        sR.sprite = sprites[angle];
         Flip();
     }
 }

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
 
     public List<Box> boxxes = new List<Box>();
+    public List<Mirror> mirrors = new List<Mirror>();
     public EnergyManager EM;
     public MovementController p1;
     public MovementController p2;
@@ -59,6 +60,10 @@ public class GameManager : MonoBehaviour
         {
             boxxes.Add(b.GetComponent<Box>());
         }
+        foreach (GameObject b in GameObject.FindGameObjectsWithTag("Mirror"))
+        {
+            mirrors.Add(b.GetComponent<Mirror>());
+        }
     }
 
     public bool isBoxOnCell(Vector3Int cell, Grid ground)
@@ -72,7 +77,20 @@ public class GameManager : MonoBehaviour
             }
         }
         return false;
-    } 
+    }
+
+    public bool isMirrorOnCell(Vector3Int cell, Grid ground)
+    {
+        //Debug.Log(cell);
+        foreach (Mirror m in mirrors)
+        {
+            if (ground.WorldToCell(m.transform.position) == cell)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public GameObject getBoxOnCell(Vector3Int cell, Grid ground)
     {
@@ -87,6 +105,19 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    public GameObject getMirOnCell(Vector3Int cell, Grid ground)
+    {
+
+        foreach (Mirror m in mirrors)
+        {
+            if (ground.WorldToCell(m.transform.position) == cell)
+            {
+                return m.gameObject;
+            }
+        }
+        return null;
+    }
+
     public Box getBoxSOnCell(Vector3Int cell, Grid ground)
     {
         foreach (Box b in boxxes)
@@ -94,6 +125,18 @@ public class GameManager : MonoBehaviour
             if (ground.WorldToCell(b.transform.position) == cell)
             {
                 return b;
+            }
+        }
+        return null;
+    }
+
+    public Mirror getMirSOnCell(Vector3Int cell, Grid ground)
+    {
+        foreach (Mirror m in mirrors)
+        {
+            if (ground.WorldToCell(m.transform.position) == cell)
+            {
+                return m;
             }
         }
         return null;

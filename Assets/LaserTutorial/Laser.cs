@@ -440,8 +440,6 @@ public class Laser : MonoBehaviour
         Vector2 movingLineM = (eM - sM).normalized;
         //Debug.DrawLine(eM, sM, Color.green);
 
-        
-
         // ??? could be a fault
         Vector2 h1 = _hit.point + movingLineM * (ground.cellSize.x * 0.5f);
         //Debug.DrawLine(_hit.point, h1, Color.red);
