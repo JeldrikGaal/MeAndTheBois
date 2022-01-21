@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6334838513173546682}
   - component: {fileID: 1184045646108132797}
   m_Layer: 0
-  m_Name: Wind
+  m_Name: Wind Swirl Beginning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254666657290807216}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.20000002, y: 0.20000002, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -180, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &6334838513173546682
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.79607844}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1630,8 +1630,8 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.4843884
-          value: 0.6257335
+          time: 0.47407773
+          value: 0.35546166
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -1639,8 +1639,8 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.7266132
-          value: 0.011689305
+          time: 0.71373516
+          value: -0.40540612
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -1649,7 +1649,7 @@ ParticleSystem:
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 0.8825765
-          value: 0.44444382
+          value: 0.2552539
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -1658,7 +1658,7 @@ ParticleSystem:
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 0
+          value: -0.08108139
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -4887,7 +4887,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 858dec3e357a60e4793dba49db7165d3, type: 2}
   - {fileID: 2100000, guid: 977bf4bbf699cc047962813edff27af6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4907,7 +4907,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1897961143
-  m_SortingLayer: 11
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
