@@ -8,9 +8,15 @@ public class GameManager : MonoBehaviour
 
     public List<Box> boxxes = new List<Box>();
     public List<Mirror> mirrors = new List<Mirror>();
+
+    public List<Mirror> hitMirros = new List<Mirror>();
+    public List<Mirror> hitMirrosStable = new List<Mirror>();
+
     public EnergyManager EM;
     public MovementController p1;
     public MovementController p2;
+
+    private bool modifying;
 
     public class movementSet
     {
@@ -144,5 +150,35 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+    }
+
+    public void UpdateStableMirList()
+    {
+        modifying = true;
+        List<Mirror> help1 = new List<Mirror>();
+        foreach (Mirror m in hitMirrosStable)
+        {
+            if (!hitMirros.Contains(m))
+            {
+                help1.Add(m);
+                
+            }
+        }
+
+        foreach(Mirror m2 in help1)
+        {
+            hitMirrosStable.Remove(m2);
+        }
+        modifying = false;
+    }
+
+    public void clearHitMirrors()
+    {
+        if (!modifying) hitMirros = new List<Mirror>();
+    }
+
+    private void LateUpdate()
+    {
+        UpdateStableMirList();
     }
 }

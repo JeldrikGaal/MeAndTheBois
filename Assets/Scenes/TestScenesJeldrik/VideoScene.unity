@@ -4777,28 +4777,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67af54c75550d6449b6d50f20f30556c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle: 4
-  reflectionPoint: {fileID: 0}
-  startingPos: {x: 0, y: 0}
+  gM: {fileID: 2044340015}
   ground: {fileID: 162985821}
-  midPoint: {x: 0, y: 0, z: 0}
   zero: {fileID: 21300000, guid: e14ac8f9393675747b98e0acb77187e3, type: 3}
   one: {fileID: 21300000, guid: d613cb807bed81046810987013551976, type: 3}
   two: {fileID: 21300000, guid: 7215ad38b8e15944bb611e44fd54361d, type: 3}
   three: {fileID: 21300000, guid: b8b3bb94a58f894479665cee819878ba, type: 3}
-  sprites: []
-  currentCell: {x: 0, y: 0, z: 0}
-  gM: {fileID: 2044340015}
+  angle: 4
+  portable: 0
+  yOffset: 0
   timed: 0
   timer: 0
-  portable: 0
-  playerNear: 0
-  playerNearInt: 0
-  yOffset: 0
   refStartCell: {x: 0, y: 0, z: 0}
+  currentCell: {x: 0, y: 0, z: 0}
+  midPoint: {x: 0, y: 0, z: 0}
+  startingPos: {x: 0, y: 0}
   startingMir: 0
   beingCarried: 0
+  playerNear: 0
+  playerNearInt: 0
+  reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
+  angleReceived: 0
+  beingHit: 0
 --- !u!4 &499280826
 Transform:
   m_ObjectHideFlags: 0
@@ -5779,28 +5780,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67af54c75550d6449b6d50f20f30556c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle: 4
-  reflectionPoint: {fileID: 0}
-  startingPos: {x: 0, y: 0}
+  gM: {fileID: 2044340015}
   ground: {fileID: 162985821}
-  midPoint: {x: 0, y: 0, z: 0}
   zero: {fileID: 21300000, guid: e14ac8f9393675747b98e0acb77187e3, type: 3}
   one: {fileID: 21300000, guid: d613cb807bed81046810987013551976, type: 3}
   two: {fileID: 21300000, guid: 7215ad38b8e15944bb611e44fd54361d, type: 3}
   three: {fileID: 21300000, guid: b8b3bb94a58f894479665cee819878ba, type: 3}
-  sprites: []
-  currentCell: {x: 0, y: 0, z: 0}
-  gM: {fileID: 2044340015}
+  angle: 4
+  portable: 0
+  yOffset: 0
   timed: 0
   timer: 0
-  portable: 0
-  playerNear: 0
-  playerNearInt: 0
-  yOffset: 0
   refStartCell: {x: 0, y: 0, z: 0}
+  currentCell: {x: 0, y: 0, z: 0}
+  midPoint: {x: 0, y: 0, z: 0}
+  startingPos: {x: 0, y: 0}
   startingMir: 0
   beingCarried: 0
+  playerNear: 0
+  playerNearInt: 0
+  reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
+  angleReceived: 0
+  beingHit: 0
 --- !u!212 &1416673104
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6233,28 +6235,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67af54c75550d6449b6d50f20f30556c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle: 1
-  reflectionPoint: {fileID: 0}
-  startingPos: {x: 0, y: 0}
+  gM: {fileID: 2044340015}
   ground: {fileID: 162985821}
-  midPoint: {x: 0, y: 0, z: 0}
   zero: {fileID: 21300000, guid: e14ac8f9393675747b98e0acb77187e3, type: 3}
   one: {fileID: 21300000, guid: d613cb807bed81046810987013551976, type: 3}
   two: {fileID: 21300000, guid: 7215ad38b8e15944bb611e44fd54361d, type: 3}
   three: {fileID: 21300000, guid: b8b3bb94a58f894479665cee819878ba, type: 3}
-  sprites: []
-  currentCell: {x: 0, y: 0, z: 0}
-  gM: {fileID: 2044340015}
+  angle: 1
+  portable: 0
+  yOffset: 0
   timed: 0
   timer: 0
-  portable: 0
-  playerNear: 0
-  playerNearInt: 0
-  yOffset: 0
   refStartCell: {x: 0, y: 0, z: 0}
+  currentCell: {x: 0, y: 0, z: 0}
+  midPoint: {x: 0, y: 0, z: 0}
+  startingPos: {x: 0, y: 0}
   startingMir: 0
   beingCarried: 0
+  playerNear: 0
+  playerNearInt: 0
+  reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
+  angleReceived: 0
+  beingHit: 0
 --- !u!212 &1831472315
 SpriteRenderer:
   m_ObjectHideFlags: 0

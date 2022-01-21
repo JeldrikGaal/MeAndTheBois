@@ -25,13 +25,15 @@ public class Laser : MonoBehaviour
 
     public List<Vector3> points2 = new List<Vector3>();
 
+    public GameManager gM;
+
     private void Awake()
     {
         m_transform = GetComponent<Transform>();
         s = e = sM = eM = cM = c2M = new Vector2();
     }
 
-
+    // ===================== Old Code I dont dare to delete because it was a lot of work =============================
     void Shoot(float distance)
     {
         if (distance < 0.1f)
@@ -306,9 +308,9 @@ public class Laser : MonoBehaviour
     //       If not return points                                                         |     Add end point
     // 5     If new mirror has been hit go back to step 4                                 |     Add new Mirror 
     //       If not return points                                                         |     Add end point 
+    // ==============================================================================================================
 
-
-    void Shoot3()
+    void Shoot3SSS()
     {
         float distance = defDistanceRay;
         RaycastHit2D _hit = Physics2D.Raycast(firingPoint.transform.position, transform.right);
@@ -371,6 +373,129 @@ public class Laser : MonoBehaviour
             points2.Add(firingPoint.position + transform.right * distance);
         }
 
+    }
+
+
+    void Shoot3()
+    {
+        float distance = defDistanceRay;
+        RaycastHit2D _hit = Physics2D.Raycast(firingPoint.transform.position, transform.right);
+        Debug.DrawRay(firingPoint.transform.position, transform.right, Color.red);
+        points2.Add(firingPoint.transform.position);
+
+        if (!_hit)
+        {
+            points2.Add(firingPoint.position + transform.right * distance);
+            return;
+        }
+
+        if (_hit.transform.CompareTag("Mirror"))
+        {
+            while (distance > 0.1f)
+            {
+                RaycastHit2D _hitSave = _hit;
+                Mirror m1 = _hit.transform.GetComponent<Mirror>();
+                Transform p1 = m1.reflectionPoint.transform;
+                repositionRefPoint(m1, _hit, p1);
+                points2.Add(_hit.point);
+                points2.Add(p1.position);
+
+                distance -= Vector2.Distance(firingPoint.transform.position, _hit.point);
+                distance -= Vector2.Distance(_hit.point, p1.position);
+
+                Vector2 p1V2 = new Vector2(p1.position.x, p1.position.y);
+                Vector2 ray1 = (p1V2 - _hit.point).normalized;
+
+
+                if (Physics2D.Raycast(p1V2, ray1))
+                {
+                    if (!_hit.transform.CompareTag("Mirror"))
+                    {
+                        points2.Add(p1V2 + ray1 * distance);
+                        return;
+                    }
+
+                    _hit = Physics2D.Raycast(p1V2, ray1);
+
+                    // If other objects has been hit draw line to that object
+                    if (!_hit.transform.CompareTag("Mirror"))
+                    {
+                        p1V2 = new Vector2(p1.position.x, p1.position.y);
+                        ray1 = (p1V2 - _hitSave.point).normalized;
+                        points2.Add(_hit.point);
+                        return;
+                        
+                    }
+
+                    m1 = _hit.transform.GetComponent<Mirror>();
+                    p1 = m1.reflectionPoint.transform;
+                    repositionRefPoint(m1, _hit, p1);
+                    m1.beingHit = true;
+                    m1.angleReceived = calcRecAngle(m1, points2[points2.Count - 1]);
+                    gM.hitMirros.Add(m1);
+                    if (!gM.hitMirrosStable.Contains(m1)) gM.hitMirrosStable.Add(m1);
+
+                    // Stop the Beam if it goes into a mirror that wants the energy
+                    if (m1.needsChargeToRotate && m1.beingHit && m1.angleReceived == m1.angleToCharge && m1.startingMir)
+                    {
+                        points2.Add(_hit.point);
+                        return;
+                    }
+
+
+                }
+                else
+                {
+                    points2.Add(p1V2 + ray1 * distance);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            points2.Add(firingPoint.position + transform.right * distance);
+        }
+
+    }
+
+    float calcRecAngle(Mirror mir, Vector3 point)
+    {
+        float Mangle;
+        // Mir X > Point X
+        if (mir.transform.position.x > point.x)
+        {
+            // Mir Y > Point Y
+            if (mir.transform.position.y > point.y)
+            {
+                Mangle = 1;
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 2;
+            }
+        }
+        // Mir X < Point X
+        else
+        {
+            // Mir Y > Point Y
+            if (mir.transform.position.y > point.y)
+            {
+                Mangle = 3; // X
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 0; // X
+            }
+        }
+
+        return Mangle;
+    }
+
+    float calcRecAngle1(Mirror mir, Vector3 point)
+    {
+        return 0;
     }
 
     void repositionRefPoint(Mirror mir, RaycastHit2D _hit, Transform refP)
@@ -527,9 +652,9 @@ public class Laser : MonoBehaviour
         name1 = "";
         name2 = "";
         name3 = "";
-        //DrawLine(Shoot2(defDistanceRay, new List<Vector3>(), firingPoint.position, 0));
-        //Shoot(defDistanceRay);
+
         points2 = new List<Vector3>();
+        gM.clearHitMirrors();
         Shoot3();
         DrawLine(points2);
         
