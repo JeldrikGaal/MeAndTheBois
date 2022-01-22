@@ -14,6 +14,9 @@ public class Pipe : MonoBehaviour
     public List<ParticleSystem> pList = new List<ParticleSystem>();
     public List<Vector3> pPositionList = new List<Vector3>();
 
+    private float counterTime;
+    public List<float> counter;
+
     public bool on;
     public float randomInterval;
     public float spawnCount;
@@ -38,19 +41,51 @@ public class Pipe : MonoBehaviour
             pPositionList.Add(p.transform.position);
 
         }
+
+        for (int i = 0; i < pList.Count; i++)
+        {
+            counter.Add(counterTime);
+        }
+        counterTime = 9;
+    }
+
+    void timeParticleSystem()
+    {
+        int i = 0;
+        foreach (ParticleSystem p in pList)
+        {
+            if (p.isPlaying)
+            {
+                counter[i] -= Time.deltaTime;
+            }
+            
+            if (counter[i] <= 0)
+            {
+                var main = p.main;
+                main.loop = false;
+                //p.Stop();
+                //p.Clear();
+                counter[i] = counterTime;
+            }
+
+            i++;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timer <= 0)
+        //timeParticleSystem();
+        /*if (timer <= 0)
         {
             if (on)
             {
                 for (int i = 0; i < spawnCount; i++)
                 {
                     int rand = Random.Range(0, pList.Count - 1);
-                    pList[rand].Play();
+                    //pList[rand].Play();
+                    var main = pList[rand].main;
+                    main.loop = true;
                 }
             }
             timer = randomInterval;
@@ -63,7 +98,7 @@ public class Pipe : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U))
         {
             on = !on;
-        }
+        }*/
 
        
     }
