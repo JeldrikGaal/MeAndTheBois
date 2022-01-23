@@ -10,6 +10,8 @@ public class Pipe : MonoBehaviour
     public ParticleSystem p3;
     public ParticleSystem p4;
     public ParticleSystem p5;
+    public ParticleSystem p6;
+    public ParticleSystem p7;
 
     public List<ParticleSystem> pList = new List<ParticleSystem>();
     public List<Vector3> pPositionList = new List<Vector3>();
@@ -23,15 +25,67 @@ public class Pipe : MonoBehaviour
 
     private float timer;
 
+    public List<Vector3Int> windArea;
+
+    public Vector3 directionPoint;
+    public Vector3 directionPoint2;
+
+    public GameObject middle;
+
+    public Grid ground;
+    public float length;
+
+    public GameManager gM;
+
+    private GameObject hitStore;
+
+    public float type;
+
+    public GameObject ssio;
+    public GameObject ssio2;
 
     // Start is called before the first frame update
     void Start()
     {
+        Vector3 midPoint = new Vector3();
+        switch (type)
+        {
+            case 0:
+                midPoint = ground.GetCellCenterWorld(ground.WorldToCell(middle.transform.position));
+                midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                directionPoint2 = new Vector3(midPoint.x - (ground.cellSize.x * 0.25f), midPoint.y + (ground.cellSize.y * 0.25f));
+                directionPoint = midPoint;
+                break;
+            case 1:
+                midPoint = ground.GetCellCenterWorld(ground.WorldToCell(middle.transform.position));
+                midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                directionPoint2 = new Vector3(midPoint.x - (ground.cellSize.x * 0.25f), midPoint.y - (ground.cellSize.y * 0.25f));
+                directionPoint = midPoint;
+                break;
+            case 2:
+                midPoint = ground.GetCellCenterWorld(ground.WorldToCell(middle.transform.position));
+                midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                directionPoint2 = new Vector3(midPoint.x + (ground.cellSize.x * 0.25f), midPoint.y - (ground.cellSize.y * 0.25f));
+                directionPoint = midPoint;
+                break;
+            case 3:
+                midPoint = ground.GetCellCenterWorld(ground.WorldToCell(middle.transform.position));
+                midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                directionPoint2 = new Vector3(midPoint.x + (ground.cellSize.x * 0.25f), midPoint.y + (ground.cellSize.y * 0.25f));
+                directionPoint = midPoint;
+                break;
+        }
+
+        ssio.transform.position = directionPoint;
+        ssio2.transform.position = directionPoint2;
+
         pList.Add(p1);
         pList.Add(p2);
         pList.Add(p3);
         pList.Add(p4);
         pList.Add(p5);
+        pList.Add(p6);
+        pList.Add(p7);
 
         on = true;
         timer = randomInterval;
@@ -39,67 +93,113 @@ public class Pipe : MonoBehaviour
         foreach(ParticleSystem p in pList)
         {
             pPositionList.Add(p.transform.position);
-
         }
 
-        for (int i = 0; i < pList.Count; i++)
-        {
-            counter.Add(counterTime);
-        }
-        counterTime = 9;
     }
 
-    void timeParticleSystem()
+    bool isLeft(Vector2 a, Vector2 b, Vector2 c)
     {
-        int i = 0;
-        foreach (ParticleSystem p in pList)
+        //Debug.DrawLine(a, b);
+        return ((b.x - a.x) * (c.y- a.y) - (b.y - a.y) * (c.x - a.x)) > 0;
+    }
+
+    void killParticles(ParticleSystem ps, Vector2 p1, Vector2 p2)
+    {
+        ParticleSystem.Particle[] particles;
+        var main = ps.main;
+        particles = new ParticleSystem.Particle[main.maxParticles];
+        int count = ps.GetParticles(particles);
+        for (int i = 0; i < count; i++)
         {
-            if (p.isPlaying)
-            {
-                counter[i] -= Time.deltaTime;
-            }
+            Debug.DrawLine(p1, p2);
             
-            if (counter[i] <= 0)
+            if (! isLeft(p1, p2,  ps.transform.TransformPoint(particles[i].position)))
             {
-                var main = p.main;
-                main.loop = false;
-                //p.Stop();
-                //p.Clear();
-                counter[i] = counterTime;
+                Debug.Log(("KILL", particles[i]));
+                particles[i].remainingLifetime  = -1.0f;
             }
-
-            i++;
         }
+        ps.SetParticles(particles, count);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    void determinWindArea()
     {
-        //timeParticleSystem();
-        /*if (timer <= 0)
+        Vector3 ray = new Vector3();
+        RaycastHit2D _hit = new RaycastHit2D();
+        switch (type)
         {
-            if (on)
+            case 0:
+                ray = (directionPoint - directionPoint2).normalized;
+                _hit = Physics2D.Raycast(directionPoint2, ray);
+                break;
+            case 1:
+                ray = (directionPoint2 - directionPoint).normalized;
+                _hit = Physics2D.Raycast(directionPoint2, ray);
+                break;
+            case 2:
+                ray = (directionPoint - directionPoint2).normalized;
+                _hit = Physics2D.Raycast(directionPoint2, ray);
+                break;
+            case 3:
+                ray = (directionPoint2 - directionPoint).normalized;
+                _hit = Physics2D.Raycast(directionPoint2, ray);
+                break;
+        }
+        
+
+        Debug.DrawRay(directionPoint2, ray * 10);
+        if (_hit)
+        {
+            foreach (ParticleSystem p in pList)
             {
-                for (int i = 0; i < spawnCount; i++)
+                Vector2 ray2 = new Vector2(-ray.y, ray.x);
+                Vector3 p1 = _hit.point - ray2 * 5;
+                Vector3 p2 = _hit.point + ray2 * 5;
+                killParticles(p, p1, p2);
+            }
+
+            if (!gM.windPowered.Contains(_hit.transform.gameObject))
+            {
+                gM.windPowered.Add(_hit.transform.gameObject);
+                GameManager.windHit w = new GameManager.windHit();
+                w.hitOjbect = _hit.transform.gameObject;
+                w.direction = gM.calcRecAngle(_hit.transform.gameObject, _hit.point);
+                gM.windHis.Add(w);
+            }
+
+            if (_hit.transform.gameObject)
+            {
+                if (_hit.transform.gameObject != hitStore)
                 {
-                    int rand = Random.Range(0, pList.Count - 1);
-                    //pList[rand].Play();
-                    var main = pList[rand].main;
-                    main.loop = true;
+                    gM.windPowered.Remove(hitStore);
+                    gM.removeByObject(hitStore);
                 }
             }
-            timer = randomInterval;
+
+            if (_hit.transform.gameObject)
+            {
+                hitStore = _hit.transform.gameObject;
+            }
+
+
         }
-        else
-        {
-            timer -= Time.deltaTime;
-        }
+     }
+
+
+     // Update is called once per frame
+     void Update()
+     { 
 
         if (Input.GetKeyDown(KeyCode.U))
         {
             on = !on;
-        }*/
+        }
+        if (on)
+        {
+            determinWindArea();
+        }
+        
 
-       
     }
 }

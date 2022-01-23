@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public List<Mirror> hitMirros = new List<Mirror>();
     public List<Mirror> hitMirrosStable = new List<Mirror>();
 
+    public List<GameObject> windPowered = new List<GameObject>();
+    public List<windHit> windHis = new List<windHit>();
+
     public EnergyManager EM;
     public MovementController p1;
     public MovementController p2;
@@ -28,6 +31,31 @@ public class GameManager : MonoBehaviour
         public KeyCode ability1;
         public KeyCode up;
         public KeyCode down;
+    }
+
+    public class windHit
+    {
+        public GameObject hitOjbect;
+        public float direction;
+
+        
+    }
+
+    public void removeByObject(GameObject o)
+    {
+        List<windHit> remove = new List<windHit>();
+        foreach (windHit w in windHis)
+        {
+            if (w.hitOjbect == o) 
+            {
+                remove.Add(w);
+            }
+        }
+
+        foreach (windHit w2 in remove)
+        {
+            windHis.Remove(w2);
+        }
     }
 
     public List<movementSet> controlls = new List<movementSet>();
@@ -150,6 +178,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+
+        //Debug.Log(windHis[0].direction);
+        //Debug.Log(windHis[0].hitOjbect);
     }
 
     public void UpdateStableMirList()
@@ -161,7 +192,6 @@ public class GameManager : MonoBehaviour
             if (!hitMirros.Contains(m))
             {
                 help1.Add(m);
-                
             }
         }
 
@@ -180,5 +210,40 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
     {
         UpdateStableMirList();
+    }
+
+    public float calcRecAngle(GameObject hitObject, Vector3 point)
+    {
+        float Mangle;
+        // Mir X > Point X
+        if (hitObject.transform.position.x > point.x)
+        {
+            // Mir Y > Point Y
+            if (hitObject.transform.position.y > point.y)
+            {
+                Mangle = 1;
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 2;
+            }
+        }
+        // Mir X < Point X
+        else
+        {
+            // Mir Y > Point Y
+            if (hitObject.transform.position.y > point.y)
+            {
+                Mangle = 3; // X
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 0; // X
+            }
+        }
+
+        return Mangle;
     }
 }
