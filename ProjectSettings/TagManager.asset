@@ -57,6 +57,9 @@ TagManager:
   - name: PlayerShadow1
     uniqueID: 2113530435
     locked: 0
+  - name: Water
+    uniqueID: 3141189843
+    locked: 0
   - name: Ground
     uniqueID: 2170553847
     locked: 0
