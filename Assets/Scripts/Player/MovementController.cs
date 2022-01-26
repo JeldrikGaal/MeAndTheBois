@@ -41,6 +41,8 @@ public class MovementController : MonoBehaviour
     public Sprite sprite3;
     public Sprite sprite4;
 
+    public bool controllBool = true;
+
     public List<Sprite> sprites;
     void Start()
     {
@@ -169,7 +171,7 @@ public class MovementController : MonoBehaviour
         currentCell = ground.WorldToCell(transform.position);
 
         // Move player to moving point TODO: calculate delta time to make undepeding of fps
-        if (moving)
+        if (moving && controllBool)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, movingPoint.transform.position, 1* Time.deltaTime);
         }

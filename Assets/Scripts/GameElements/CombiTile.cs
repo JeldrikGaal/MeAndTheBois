@@ -49,19 +49,23 @@ public class CombiTile : MonoBehaviour
     private Vector3 plateGoal = new Vector3(-0.018f, -0.269f, 0);
     private Vector3 energyRGoal = new Vector3(0.034f, -1.82f, 0);
     private Transform pT = null;
-    private bool openGate = false;
-    private bool movePlayersDown = false;
+    public bool openGate = false;
+    public bool movePlayersDown = false;
 
     private Vector3 playerGoal1 = new Vector3();
     private Vector3 playerGoal2 = new Vector3();
     private Vector3 plateGoal1 = new Vector3();
     private Vector3 plateGoal2 = new Vector3();
 
+    public bool combining = true;
+
     public float animSpeed = 2;
     public bool receiving = false;
 
-    private bool readyToCombine;
+    public bool readyToCombine;
     public ReceivingTile receivingTile;
+
+    public float movementTimer = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -101,6 +105,11 @@ public class CombiTile : MonoBehaviour
                 playerOn = true;
                 playerInt = 2;
             }
+            else if (checkForPlayer(gM.p3))
+            {
+                playerOn = true;
+                playerInt = 3;
+            }
             else
             {
                 playerOn = false;
@@ -127,6 +136,7 @@ public class CombiTile : MonoBehaviour
                 decendER = true;
             }
 
+
             if (decendER)
             {
                 //decendERTime -= Time.deltaTime;
@@ -137,55 +147,6 @@ public class CombiTile : MonoBehaviour
                     decendER = false;
                     energyReceiver.SetActive(false);
                     openGate = true;
-                }
-            }
-
-
-            if (!movePlayersDown)
-            {
-                if (checkForCombination())
-                {
-                    movePlayersDown = true;
-
-                    playerGoal1 = new Vector3(gM.p1.transform.position.x, gM.p1.transform.position.y - 2, gM.p1.transform.position.z);
-                    playerGoal2 = new Vector3(gM.p2.transform.position.x, gM.p2.transform.position.y - 2, gM.p2.transform.position.z);
-
-                    plateGoal1 = new Vector3(plate.localPosition.x, plate.localPosition.y - 2, plate.localPosition.z);
-                    plateGoal2 = new Vector3(partnerTile.plate.localPosition.x, partnerTile.plate.localPosition.y - 2, partnerTile.plate.localPosition.z);
-
-                    if (playerInt == 1)
-                    {
-                        gM.p1.transform.parent = this.partenForEnergyReceiver.transform;
-                        gM.p2.transform.parent = partnerTile.partenForEnergyReceiver.transform;
-                    }
-                    if (playerInt == 2)
-                    {
-                        gM.p2.transform.parent = this.partenForEnergyReceiver.transform;
-                        gM.p1.transform.parent = partnerTile.partenForEnergyReceiver.transform;
-                    }
-
-
-                    gM.p1.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-                    gM.p2.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-                }
-            }
-
-
-            if (movePlayersDown && main)
-            {
-                gM.p2.transform.position = Vector3.MoveTowards(gM.p2.transform.position, playerGoal2, Time.deltaTime * animSpeed);
-                gM.p1.transform.position = Vector3.MoveTowards(gM.p1.transform.position, playerGoal1, Time.deltaTime * animSpeed);
-                plate.localPosition = Vector3.MoveTowards(plate.localPosition, plateGoal1, Time.deltaTime * animSpeed);
-                partnerTile.plate.localPosition = Vector3.MoveTowards(partnerTile.plate.localPosition, plateGoal2, Time.deltaTime * animSpeed);
-
-                if (Vector3.Distance(gM.p1.transform.position, playerGoal1) <= 0.01f && (Vector3.Distance(gM.p2.transform.position, playerGoal2) <= 0.01f))
-                {
-                    movePlayersDown = false;
-                    gM.p1.gameObject.SetActive(false);
-                    gM.p2.gameObject.SetActive(false);
-                    readyToCombine = true;
-                    receiving = true;
-
                 }
             }
 
@@ -201,15 +162,113 @@ public class CombiTile : MonoBehaviour
                     left.gameObject.SetActive(false);
                     right.gameObject.SetActive(false);
                     plate.gameObject.SetActive(false);
-                    
+                    readyToCombine = true;
+
                 }
             }
+
+            if (!movePlayersDown)
+            {
+                if (checkForCombination() && readyToCombine)
+                {
+                    if (combining)
+                    {
+                        movePlayersDown = true;
+
+                        playerGoal1 = new Vector3(gM.p1.transform.position.x, gM.p1.transform.position.y - 2, gM.p1.transform.position.z);
+                        playerGoal2 = new Vector3(gM.p2.transform.position.x, gM.p2.transform.position.y - 2, gM.p2.transform.position.z);
+
+                        plateGoal1 = new Vector3(plate.localPosition.x, plate.localPosition.y - 2, plate.localPosition.z);
+                        plateGoal2 = new Vector3(partnerTile.plate.localPosition.x, partnerTile.plate.localPosition.y - 2, partnerTile.plate.localPosition.z);
+
+                        if (playerInt == 1)
+                        {
+                            gM.p1.transform.parent = this.partenForEnergyReceiver.transform;
+                            gM.p2.transform.parent = partnerTile.partenForEnergyReceiver.transform;
+                        }
+                        if (playerInt == 2)
+                        {
+                            gM.p2.transform.parent = this.partenForEnergyReceiver.transform;
+                            gM.p1.transform.parent = partnerTile.partenForEnergyReceiver.transform;
+                        }
+
+
+                        gM.p1.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        gM.p2.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                    }
+                    else
+                    {
+                        movePlayersDown = true;
+
+                        playerGoal1 = new Vector3(gM.p3.transform.position.x, gM.p3.transform.position.y - 2, gM.p3.transform.position.z);
+
+                        plateGoal1 = new Vector3(plate.localPosition.x, plate.localPosition.y - 2, plate.localPosition.z);
+
+                        gM.p3.transform.parent = this.partenForEnergyReceiver.transform;
+                        gM.p3.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                    }
+
+                }
+            }
+
+
+            if (movePlayersDown && main)
+            {
+                if (movementTimer <= 0)
+                {
+                    if (combining)
+                    {
+                        gM.p2.transform.position = Vector3.MoveTowards(gM.p2.transform.position, playerGoal2, Time.deltaTime * animSpeed);
+                        gM.p1.transform.position = Vector3.MoveTowards(gM.p1.transform.position, playerGoal1, Time.deltaTime * animSpeed);
+                        plate.localPosition = Vector3.MoveTowards(plate.localPosition, plateGoal1, Time.deltaTime * animSpeed);
+                        partnerTile.plate.localPosition = Vector3.MoveTowards(partnerTile.plate.localPosition, plateGoal2, Time.deltaTime * animSpeed);
+
+                        if (Vector3.Distance(gM.p1.transform.position, playerGoal1) <= 0.01f && (Vector3.Distance(gM.p2.transform.position, playerGoal2) <= 0.01f))
+                        {
+                            movePlayersDown = false;
+                            gM.p1.gameObject.SetActive(false);
+                            gM.p2.gameObject.SetActive(false);
+                            receiving = true;
+                            movementTimer = 0.5f;
+
+                        }
+                    }
+                    else
+                    {
+                        gM.p3.transform.position = Vector3.MoveTowards(gM.p3.transform.position, playerGoal1, Time.deltaTime * animSpeed);
+                        plate.localPosition = Vector3.MoveTowards(plate.localPosition, plateGoal1, Time.deltaTime * animSpeed);
+                        if (Vector3.Distance(gM.p3.transform.position, playerGoal1) <= 0.01f)
+                        {
+                            movePlayersDown = false;
+                            gM.p3.gameObject.SetActive(false);
+                            receiving = true;
+                            movementTimer = 0.5f;
+
+                        }
+                    }
+                }
+                else
+                {
+                    movementTimer -= Time.deltaTime;
+                }
+                    
+            }
+
+           
         }
 
         if (receiving)
         {
-            receivingTile.openGateF();
-            receiving = false;
+            if (combining)
+            {
+                receivingTile.openGateF();
+                receiving = false;
+            }
+            else
+            {
+                Debug.Log("Seperating!!");
+            }
+            
         }
 
         
@@ -246,11 +305,22 @@ public class CombiTile : MonoBehaviour
 
     public bool checkForCombination()
     {
-        if (!main) return false;
-        if (checkEnergy() && partnerTile.checkEnergy() && playerOn && partnerTile.playerOn && (playerInt != partnerTile.playerInt))
+        if (!main && combining) return false;
+        if (combining)
         {
-            return true;
+            if (checkEnergy() && partnerTile.checkEnergy() && playerOn && partnerTile.playerOn && (playerInt != partnerTile.playerInt))
+            {
+                return true;
+            }
         }
+        else
+        {
+            if (checkEnergy() && playerOn && playerInt == 3)
+            {
+                return true;
+            }
+        }
+        
 
         return false;
 

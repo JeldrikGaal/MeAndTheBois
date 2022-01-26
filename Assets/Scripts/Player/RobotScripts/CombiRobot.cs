@@ -115,7 +115,7 @@ public class CombiRobot : MonoBehaviour
         SpriteRenderer g_sR = g.GetComponent<SpriteRenderer>();
         var someValueFrom0To1 = currentTime / totalTime;
         currentTime += Time.deltaTime;
-        g_sR.material.SetFloat("_Fade", 1 - someValueFrom0To1);
+        g_sR.material.SetFloat("_Fade", 0.7f - someValueFrom0To1);
         Debug.Log(someValueFrom0To1);
         if (someValueFrom0To1 >= 1)
         {
