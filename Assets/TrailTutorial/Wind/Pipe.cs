@@ -152,7 +152,6 @@ public class Pipe : MonoBehaviour
         Debug.DrawRay(directionPoint2, ray * 10, Color.green) ;
         if (_hit)
         {
-            Debug.Log(_hit.transform.name);
             foreach (ParticleSystem p in pList)
             {
                 Vector2 ray2 = new Vector2(-ray.y, ray.x);

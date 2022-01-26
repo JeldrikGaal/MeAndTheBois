@@ -30,6 +30,7 @@ public class MovementController : MonoBehaviour
     public List<Vector3Int> elevationsInGrid;
     public bool moving = true;
 
+    private bool s = false;
     private Wind w;
     public SpriteRenderer sR;
 
@@ -43,6 +44,8 @@ public class MovementController : MonoBehaviour
     public List<Sprite> sprites;
     void Start()
     {
+        gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         moving = true;
         sprites.Add(sprite4);
         sprites.Add(sprite3);
@@ -105,7 +108,12 @@ public class MovementController : MonoBehaviour
         this.movingPoint.transform.position = this.transform.position;
 
         playerControlls = gM.controlls[playerIndex - 1];
-        
+
+        if (playerIndex == 3 && !s)
+        {
+            this.gameObject.SetActive(false);
+            s = true;
+        }
     }
 
     // Get the position of the center of the cell one cell away from the player in the direction given to the function
@@ -204,7 +212,7 @@ public class MovementController : MonoBehaviour
         //bool changeAllowed = collisionsInGrid.Contains(currentCell);
         bool changeAllowed = false;
 
-        if ((playerIndex == 2 || playerIndex == 3) && !moveallowed)
+        if ((playerIndex == 2) && !moveallowed)
         {
             if (w.elevation >= 1)
             {
@@ -217,7 +225,21 @@ public class MovementController : MonoBehaviour
                     moveallowed = false;
                 }
             }
-            
+        }
+
+        if ((playerIndex == 3) && !moveallowed)
+        {
+            if (cR.elevation >= 1)
+            {
+                moveallowed = true;
+            }
+            if (elevationsInGrid.Contains(ground.WorldToCell(newPosMP)))
+            {
+                if (!(cR.elevation >= 2))
+                {
+                    moveallowed = false;
+                }
+            }
         }
 
         if (moveallowed)
@@ -255,6 +277,7 @@ public class MovementController : MonoBehaviour
         {
             movingPoint.transform.position = newPosMP;
         }
+
 
     }
 }

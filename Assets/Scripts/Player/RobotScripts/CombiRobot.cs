@@ -27,10 +27,12 @@ public class CombiRobot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         tagsToErode.Add("Obstacle");
         mC = this.GetComponent<MovementController>();
         bomb = transform.GetChild(0).gameObject;
         robotSprite = transform.GetChild(1).gameObject;
+        
     }
 
     // Update is called once per frame

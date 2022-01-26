@@ -428,7 +428,6 @@ public class Laser : MonoBehaviour
 
                     if (_hit.transform.gameObject)
                     {
-                        Debug.Log(_hit.transform.gameObject);
                         if (_hit.transform.CompareTag("CombiTile"))
                         {
                             _hit.transform.gameObject.GetComponent<CombiTile>().HitBySolar(_hit.point, ray1);
