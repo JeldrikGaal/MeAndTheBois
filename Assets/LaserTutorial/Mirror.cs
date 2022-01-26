@@ -47,7 +47,9 @@ public class Mirror : MonoBehaviour
 
     private void Awake()
     {
-        
+        ground = GameObject.Find("Grid").GetComponent<Grid>();
+        gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         // Save variables needed for ray placment
         midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
         midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));

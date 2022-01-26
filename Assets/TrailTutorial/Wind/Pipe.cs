@@ -47,6 +47,8 @@ public class Pipe : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ground = GameObject.Find("Grid").GetComponent<Grid>();
+        gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         Vector3 midPoint = new Vector3();
         switch (type)
         {
@@ -76,8 +78,7 @@ public class Pipe : MonoBehaviour
                 break;
         }
 
-        ssio.transform.position = directionPoint;
-        ssio2.transform.position = directionPoint2;
+
 
         pList.Add(p1);
         pList.Add(p2);
@@ -115,7 +116,7 @@ public class Pipe : MonoBehaviour
             
             if (! isLeft(p1, p2,  ps.transform.TransformPoint(particles[i].position)))
             {
-                Debug.Log(("KILL", particles[i]));
+                //Debug.Log(("KILL", particles[i]));
                 particles[i].remainingLifetime  = -1.0f;
             }
         }
@@ -146,11 +147,12 @@ public class Pipe : MonoBehaviour
                 _hit = Physics2D.Raycast(directionPoint2, ray);
                 break;
         }
-        
 
-        Debug.DrawRay(directionPoint2, ray * 10);
+
+        Debug.DrawRay(directionPoint2, ray * 10, Color.green) ;
         if (_hit)
         {
+            Debug.Log(_hit.transform.name);
             foreach (ParticleSystem p in pList)
             {
                 Vector2 ray2 = new Vector2(-ray.y, ray.x);
@@ -180,9 +182,17 @@ public class Pipe : MonoBehaviour
             if (_hit.transform.gameObject)
             {
                 hitStore = _hit.transform.gameObject;
+
+                if (_hit.transform.CompareTag("CombiTile"))
+                {
+                    _hit.transform.gameObject.GetComponent<CombiTile>().HitByWind(_hit.point, ray);
+                }
+                
             }
-
-
+        }
+        else
+        {
+            Debug.Log("ALARM");
         }
      }
 

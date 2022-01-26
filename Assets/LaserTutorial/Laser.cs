@@ -389,6 +389,15 @@ public class Laser : MonoBehaviour
             return;
         }
 
+        // Send Message that object has been hit
+        if (_hit.transform.gameObject)
+        {
+            if (_hit.transform.CompareTag("CombiTile"))
+            {
+                _hit.transform.gameObject.GetComponent<CombiTile>().HitBySolar(_hit.point, transform.right);
+            }
+        }
+
         if (_hit.transform.CompareTag("Mirror"))
         {
             while (distance > 0.1f)
@@ -417,6 +426,15 @@ public class Laser : MonoBehaviour
 
                     _hit = Physics2D.Raycast(p1V2, ray1);
 
+                    if (_hit.transform.gameObject)
+                    {
+                        Debug.Log(_hit.transform.gameObject);
+                        if (_hit.transform.CompareTag("CombiTile"))
+                        {
+                            _hit.transform.gameObject.GetComponent<CombiTile>().HitBySolar(_hit.point, ray1);
+                        }
+                    }
+
                     // If other objects has been hit draw line to that object
                     if (!_hit.transform.CompareTag("Mirror"))
                     {
@@ -424,7 +442,6 @@ public class Laser : MonoBehaviour
                         ray1 = (p1V2 - _hitSave.point).normalized;
                         points2.Add(_hit.point);
                         return;
-                        
                     }
 
                     m1 = _hit.transform.GetComponent<Mirror>();
@@ -446,6 +463,19 @@ public class Laser : MonoBehaviour
                 }
                 else
                 {
+                    if (_hit.transform.CompareTag("CombiTile"))
+                    {
+                        CombiTile c = _hit.transform.GetComponent<CombiTile>();
+                        gM.hitCombi.Add(c);
+                        if (!gM.hitCombiStable.Contains(c)) gM.hitCombiStable.Add(c);
+                    }
+                    else if (_hit.transform.CompareTag("Pipe"))
+                    {
+                        Pipe p = _hit.transform.GetComponent<Pipe>();
+                        gM.hitPipes.Add(p);
+                        if (!gM.hitPipesStable.Contains(p)) gM.hitPipesStable.Add(p);
+                    }
+
                     points2.Add(p1V2 + ray1 * distance);
                     return;
                 }
@@ -453,7 +483,8 @@ public class Laser : MonoBehaviour
         }
         else
         {
-            points2.Add(firingPoint.position + transform.right * distance);
+            //points2.Add(firingPoint.position + transform.right * distance); ALLLLLLLLLLLAH
+            points2.Add(_hit.point);
         }
 
     }
@@ -491,11 +522,6 @@ public class Laser : MonoBehaviour
         }
 
         return Mangle;
-    }
-
-    float calcRecAngle1(Mirror mir, Vector3 point)
-    {
-        return 0;
     }
 
     void repositionRefPoint(Mirror mir, RaycastHit2D _hit, Transform refP)
@@ -644,6 +670,11 @@ public class Laser : MonoBehaviour
         lineRenderer.positionCount = points.Count;
         Vector3[] temp = points.ToArray(); 
         lineRenderer.SetPositions(temp);
+    }
+
+    private void Start()
+    {
+        gM = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame

@@ -31,7 +31,9 @@ public class MovementController : MonoBehaviour
     public bool moving = true;
 
     private Wind w;
-    private SpriteRenderer sR;
+    public SpriteRenderer sR;
+
+    private CombiRobot cR;
 
     public Sprite sprite1;
     public Sprite sprite2;
@@ -47,14 +49,34 @@ public class MovementController : MonoBehaviour
         sprites.Add(sprite2);
         sprites.Add(sprite1);
 
-        sR = this.transform.GetComponent<SpriteRenderer>();
+        if (playerIndex == 1)
+        {
+            sR = this.transform.GetComponent<SpriteRenderer>();
+        }
+        if (playerIndex == 2)
+        {
+            sR = this.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        }
+        if (playerIndex == 3)
+        {
+            sR = this.transform.GetChild(1).GetComponent<SpriteRenderer>();
+        }
+
+
+
         sR.sprite = sprites[directionFacing];
         if (playerIndex == 2)
         {
             w = this.GetComponent<Wind>();
         }
+        if (playerIndex == 3)
+        {
+            cR = this.GetComponent<CombiRobot>();
+        }
+
         // Get all cell positions that have a collision
         tileWorldLocations = new List<Vector3>();
+
         foreach (var pos in collisionTileMap.cellBounds.allPositionsWithin)
         {
             Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
@@ -87,7 +109,7 @@ public class MovementController : MonoBehaviour
     }
 
     // Get the position of the center of the cell one cell away from the player in the direction given to the function
-    Vector3 Move(int dir)
+    public Vector3 Move(int dir)
     {
         switch (dir)
         {
@@ -129,6 +151,11 @@ public class MovementController : MonoBehaviour
         return t;
     }
 
+
+    //Seedbomb ability for combined robot
+
+
+
     void Update()
     {
         currentCell = ground.WorldToCell(transform.position);
@@ -164,12 +191,20 @@ public class MovementController : MonoBehaviour
             sR.sprite = sprites[directionFacing];
         }
 
+        if (playerIndex == 3)
+        {
+            if (Input.GetKeyDown(playerControlls.ability1))
+            {
+                cR.shootSeedBomb();
+            }
+        }
+
         // Check if new position is valid and if so move moving point there
         bool moveallowed = !collisionsInGrid.Contains(ground.WorldToCell(newPosMP));
         //bool changeAllowed = collisionsInGrid.Contains(currentCell);
         bool changeAllowed = false;
 
-        if (playerIndex == 2 && !moveallowed)
+        if ((playerIndex == 2 || playerIndex == 3) && !moveallowed)
         {
             if (w.elevation >= 1)
             {

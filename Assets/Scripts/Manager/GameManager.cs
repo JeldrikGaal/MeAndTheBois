@@ -12,12 +12,19 @@ public class GameManager : MonoBehaviour
     public List<Mirror> hitMirros = new List<Mirror>();
     public List<Mirror> hitMirrosStable = new List<Mirror>();
 
+    public List<Pipe> hitPipes = new List<Pipe>();
+    public List<Pipe> hitPipesStable = new List<Pipe>();
+
+    public List<CombiTile> hitCombi = new List<CombiTile>();
+    public List<CombiTile> hitCombiStable = new List<CombiTile>();
+
     public List<GameObject> windPowered = new List<GameObject>();
     public List<windHit> windHis = new List<windHit>();
 
     public EnergyManager EM;
     public MovementController p1;
     public MovementController p2;
+    public MovementController p3;
 
     private bool modifying;
 
@@ -36,9 +43,7 @@ public class GameManager : MonoBehaviour
     public class windHit
     {
         public GameObject hitOjbect;
-        public float direction;
-
-        
+        public float direction; 
     }
 
     public void removeByObject(GameObject o)
@@ -85,6 +90,17 @@ public class GameManager : MonoBehaviour
         p2.up = KeyCode.O;
         p2.down = KeyCode.L;
         controlls.Add(p2);
+
+        movementSet p3 = new movementSet();
+        p3.playerId = 3;
+        p3.forward = KeyCode.W;
+        p3.backward = KeyCode.S;
+        p3.left = KeyCode.LeftArrow;
+        p3.right = KeyCode.RightArrow;
+        p3.up = KeyCode.R;
+        p3.down = KeyCode.F;
+        p3.ability1 = KeyCode.Return;
+        controlls.Add(p3);
 
     }
 
@@ -185,7 +201,6 @@ public class GameManager : MonoBehaviour
 
     public void UpdateStableMirList()
     {
-        modifying = true;
         List<Mirror> help1 = new List<Mirror>();
         foreach (Mirror m in hitMirrosStable)
         {
@@ -199,17 +214,61 @@ public class GameManager : MonoBehaviour
         {
             hitMirrosStable.Remove(m2);
         }
-        modifying = false;
+    }
+
+    public void UpdateStablePipeList()
+    {
+        List<Pipe> help1 = new List<Pipe>();
+        foreach (Pipe p in hitPipesStable)
+        {
+            if (!hitPipes.Contains(p))
+            {
+                help1.Add(p);
+            }
+        }
+
+        foreach (Pipe p2 in help1)
+        {
+            hitPipesStable.Remove(p2);
+        }
+    }
+
+    public void UpdateStableCombiList()
+    {
+        List<CombiTile> help1 = new List<CombiTile>();
+        foreach (CombiTile c in hitCombiStable)
+        {
+            if (!hitCombi.Contains(c))
+            {
+                help1.Add(c);
+            }
+        }
+
+        foreach (CombiTile c2 in help1)
+        {
+            hitCombiStable.Remove(c2);
+        }
+
     }
 
     public void clearHitMirrors()
     {
-        if (!modifying) hitMirros = new List<Mirror>();
+        hitMirros = new List<Mirror>();
+    }
+    public void clearHitPipes()
+    {
+        hitPipes = new List<Pipe>();
+    }
+    public void clearHitCombi()
+    {
+        hitCombi = new List<CombiTile>();
     }
 
     private void LateUpdate()
     {
         UpdateStableMirList();
+        UpdateStableCombiList();
+        UpdateStablePipeList();
     }
 
     public float calcRecAngle(GameObject hitObject, Vector3 point)
@@ -246,4 +305,78 @@ public class GameManager : MonoBehaviour
 
         return Mangle;
     }
+
+    public float calcRecAngle2(Vector3 midPoint, Vector3 point)
+    {
+        float Mangle;
+        // Mir X > Point X
+        if (midPoint.x > point.x)
+        {
+            // Mir Y > Point Y
+            if (midPoint.y > point.y)
+            {
+                Mangle = 1;
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 2;
+            }
+        }
+        // Mir X < Point X
+        else
+        {
+            // Mir Y > Point Y
+            if (midPoint.y > point.y)
+            {
+                Mangle = 3; // X
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 0; // X
+            }
+        }
+
+        return Mangle;
+    }
+
+    public float calcRecAngleByRay(Vector3 hit, Vector3 ray)
+    {
+        Vector3 helpPoint = hit + ((ray * -1) * 2);
+        float Mangle;
+        // Mir X > Point X
+        if (helpPoint.x > hit.x)
+        {
+            // Mir Y > Point Y
+            if (helpPoint.y > hit.y)
+            {
+                Mangle = 2;
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 1;
+            }
+        }
+        // Mir X < Point X
+        else
+        {
+            // Mir Y > Point Y
+            if (helpPoint.y > hit.y)
+            {
+                Mangle = 3; // X
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 0; // X
+            }
+        }
+
+        return Mangle;
+    }
+    
+
+    
 }

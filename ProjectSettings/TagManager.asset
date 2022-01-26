@@ -8,6 +8,9 @@ TagManager:
   - VineMovingPoint
   - WP
   - Mirror
+  - CombiTile
+  - Pipe
+  - Obstacle
   layers:
   - Default
   - TransparentFX
