@@ -64,6 +64,7 @@ public class CombiTile : MonoBehaviour
 
     public bool readyToCombine;
     public ReceivingTile receivingTile;
+    public ReceivingTile receivingTile2;
 
     public float movementTimer = 0.5f;
 
@@ -156,12 +157,13 @@ public class CombiTile : MonoBehaviour
                 right.localPosition = Vector3.Lerp(right.localPosition, rightGoal, Time.deltaTime * animSpeed);
                 plate.localPosition = Vector3.Lerp(plate.localPosition, plateGoal, Time.deltaTime * animSpeed);
 
-                if (Vector3.Distance(left.position, leftGoal) <= 0.01f && Vector3.Distance(right.position, rightGoal) <= 0.01f && Vector3.Distance(plate.position, plateGoal) <= 0.01f)
+                Debug.Log((Vector3.Distance(left.localPosition, leftGoal) <= 0.01f, Vector3.Distance(right.localPosition, rightGoal) <= 0.01f , Vector3.Distance(plate.localPosition, plateGoal) <= 0.01f));
+                if (Vector3.Distance(left.localPosition, leftGoal) <= 0.01f && Vector3.Distance(right.localPosition, rightGoal) <= 0.01f && Vector3.Distance(plate.localPosition, plateGoal) <= 0.01f)
                 {
                     openGate = false;
                     left.gameObject.SetActive(false);
                     right.gameObject.SetActive(false);
-                    plate.gameObject.SetActive(false);
+                    //plate.gameObject.SetActive(false);
                     readyToCombine = true;
 
                 }
@@ -206,13 +208,14 @@ public class CombiTile : MonoBehaviour
 
                         gM.p3.transform.parent = this.partenForEnergyReceiver.transform;
                         gM.p3.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        gM.p3.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                     }
 
                 }
             }
 
 
-            if (movePlayersDown && main)
+            if (movePlayersDown && main || movePlayersDown && !combining && !main)
             {
                 if (movementTimer <= 0)
                 {
@@ -261,12 +264,14 @@ public class CombiTile : MonoBehaviour
         {
             if (combining)
             {
-                receivingTile.openGateF();
+                receivingTile.openGateF(gM.p3);
                 receiving = false;
             }
             else
             {
-                Debug.Log("Seperating!!");
+                receivingTile.openGateF(gM.p1);
+                receivingTile2.openGateF(gM.p2);
+                receiving = false;
             }
             
         }
