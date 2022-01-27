@@ -161,7 +161,7 @@ public class CombiTile : MonoBehaviour
                 right.localPosition = Vector3.Lerp(right.localPosition, rightGoal, Time.deltaTime * animSpeed);
                 plate.localPosition = Vector3.Lerp(plate.localPosition, plateGoal, Time.deltaTime * animSpeed);
 
-                Debug.Log((Vector3.Distance(left.localPosition, leftGoal) <= 0.01f, Vector3.Distance(right.localPosition, rightGoal) <= 0.01f , Vector3.Distance(plate.localPosition, plateGoal) <= 0.01f));
+                //Debug.Log((Vector3.Distance(left.localPosition, leftGoal) <= 0.01f, Vector3.Distance(right.localPosition, rightGoal) <= 0.01f , Vector3.Distance(plate.localPosition, plateGoal) <= 0.01f));
                 if (Vector3.Distance(left.localPosition, leftGoal) <= 0.01f && Vector3.Distance(right.localPosition, rightGoal) <= 0.01f && Vector3.Distance(plate.localPosition, plateGoal) <= 0.01f)
                 {
                     openGate = false;
