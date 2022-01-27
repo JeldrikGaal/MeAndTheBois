@@ -81,6 +81,9 @@ TagManager:
   - name: Elevation 5
     uniqueID: 2922922007
     locked: 0
+  - name: Foreground
+    uniqueID: 2518291153
+    locked: 0
   - name: Flying
     uniqueID: 4091634711
     locked: 0
