@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: concrete_M
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 45ec662296d3bd64ea9e3a6fdacf1a4c, type: 3}
-  m_Color: {r: 1, g: 0.95686275, b: 0.84313726, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0

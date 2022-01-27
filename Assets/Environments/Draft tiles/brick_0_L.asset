@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: brick_0_L
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 4c0a851ac9c66fb408afbb40aaa34651, type: 3}
-  m_Color: {r: 1, g: 0.95686275, b: 0.84313726, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0
