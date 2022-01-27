@@ -47,6 +47,7 @@ public class MovementController : MonoBehaviour
     void Start()
     {
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+        ground = GameObject.Find("Grid").GetComponent<Grid>();
 
         moving = true;
         sprites.Add(sprite4);

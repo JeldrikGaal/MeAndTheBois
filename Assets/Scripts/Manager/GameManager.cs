@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> windPowered = new List<GameObject>();
     public List<windHit> windHis = new List<windHit>();
 
+    public List<collectedBones> bones = new List<collectedBones>();
+
     public EnergyManager EM;
     public MovementController p1;
     public MovementController p2;
@@ -44,6 +46,13 @@ public class GameManager : MonoBehaviour
     {
         public GameObject hitOjbect;
         public float direction; 
+    }
+
+    public class collectedBones
+    {
+        public GameObject bone;
+        public MovementController playerCollected;
+        public int number;
     }
 
     public void removeByObject(GameObject o)
@@ -194,7 +203,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
+        if (bones.Count > 0)
+        {
+            Debug.Log(bones[0].bone.name);
+        }
+        
         //Debug.Log(windHis[0].direction);
         //Debug.Log(windHis[0].hitOjbect);
     }

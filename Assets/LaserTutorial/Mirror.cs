@@ -53,6 +53,7 @@ public class Mirror : MonoBehaviour
         // Save variables needed for ray placment
         midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
         midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+        this.transform.position = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.49f), midPoint.z);
 
         // Initial placment of reflection point
         reflectionPoint = this.transform.GetChild(0);
@@ -203,6 +204,7 @@ public class Mirror : MonoBehaviour
                 reflectionPoint.position = new Vector3(midPoint.x - ground.cellSize.x * 0.5f, midPoint.y - ground.cellSize.y * 0.5f);
                 break;
         }
+        Debug.DrawLine(midPoint, reflectionPoint.position, Color.black);
         startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
         refStartCell = ground.WorldToCell(startingPos);
     }
