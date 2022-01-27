@@ -201,6 +201,7 @@ public class CombiTile : MonoBehaviour
 
                         gM.p1.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                         gM.p2.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        gM.p2.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                     }
                     else
                     {

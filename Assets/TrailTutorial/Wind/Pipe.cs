@@ -5,6 +5,10 @@ using UnityEngine;
 public class Pipe : MonoBehaviour
 {
 
+    public float randomInterval;
+    public float spawnCount;
+    public float type;
+
     public ParticleSystem p1;
     public ParticleSystem p2;
     public ParticleSystem p3;
@@ -12,37 +16,23 @@ public class Pipe : MonoBehaviour
     public ParticleSystem p5;
     public ParticleSystem p6;
     public ParticleSystem p7;
-
     public List<ParticleSystem> pList = new List<ParticleSystem>();
     public List<Vector3> pPositionList = new List<Vector3>();
 
     private float counterTime;
+    public float length;
     public List<float> counter;
-
     public bool on;
-    public float randomInterval;
-    public float spawnCount;
-
-    private float timer;
-
+    public float timer;
     public List<Vector3Int> windArea;
-
     public Vector3 directionPoint;
     public Vector3 directionPoint2;
-
-    public GameObject middle;
-
     public Grid ground;
-    public float length;
-
     public GameManager gM;
-
     private GameObject hitStore;
-
-    public float type;
-
     public GameObject ssio;
     public GameObject ssio2;
+    public GameObject middle;
 
     // Start is called before the first frame update
     void Start()

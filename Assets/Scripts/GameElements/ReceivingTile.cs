@@ -4,24 +4,25 @@ using UnityEngine;
 
 public class ReceivingTile : MonoBehaviour
 {
+    [Header("Variables to set")]
+    [Tooltip("Speed of the Door and Plate Animation")]
+    public float animSpeed = 2;
+    [Tooltip("Needs to be checked if used as receiving tile for combi Robot and not checked if used for splitting up")]
+    public bool single;
 
+    [Header("Variables not to be touched. Only for Script")]
     public Transform left;
-    public Vector3 leftGoal = new Vector3(-0.24f, -0.385f, 0);
-    public Transform right;
-    public Vector3 rightGoal = new Vector3(0.216f, -0.125f, 0);
     public Transform plate;
+    public Transform right;
+    public GameManager gM;
+    public Grid ground;
+    public MovementController player;
+    public Vector3 leftGoal = new Vector3(-0.24f, -0.385f, 0);
+    public Vector3 rightGoal = new Vector3(0.216f, -0.125f, 0);
     public Vector3 plateGoal = new Vector3(-0.018f, -0.269f, 0);
     public Vector3 player3Goal = new Vector3();
-    public GameManager gM;
-
-    public float animSpeed = 2;
-    public bool openGate = false;
     public Vector3Int currentCell;
-
-    public bool single;
-    public Grid ground;
-
-    public MovementController player;
+    public bool openGate = false;
 
     // Start is called before the first frame update
     void Start()
@@ -34,11 +35,6 @@ public class ReceivingTile : MonoBehaviour
         left = transform.Find("Sprite Mask/Shift/left");
         right = transform.Find("Sprite Mask/Shift/right");
         plate = transform.Find("Sprite Mask/Shift/plate");
-       
-        
-
-
-
     }
 
     // Update is called once per frame
@@ -60,7 +56,10 @@ public class ReceivingTile : MonoBehaviour
                 right.gameObject.SetActive(false);
 
                 player.sR.maskInteraction = SpriteMaskInteraction.None;
-                player.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
+                if (player.GetComponent<SpriteRenderer>())
+                {
+                    player.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
+                }
                 player.transform.parent = null;
                 player.movingPoint.transform.position = player.transform.position;
                 player.controllBool = true;
