@@ -4,43 +4,56 @@ using UnityEngine;
 
 public class CombiTile : MonoBehaviour
 {
+    [Header("Variables to adjust")]  
+    public int windNeeded = -1;
+    public int sunNeeded = -1;
+    [Tooltip("One of two combination tiles needs to be flagged as 'main' It also needs the partnerTile to be assigned to it. The partnerTile needs to be not main and doesnt need a reference to this tile ")]
+    public bool main;
+    public CombiTile partnerTile;
+
+    [Tooltip("The Time the tile needs until its charged")]
+    public float chargeTimer = 4f;
+
+    [Tooltip("Combining needs to be checked for a tile to act as combination tile. Otherwise its a seperation tile")]
+    public bool combining = true;
+
+    [Tooltip("How fast the Door open and closes")]
+    public float animSpeed = 2;
+
+    [Tooltip("How long the tile waits until it moves the players down")]
+    public float movementTimer = 0.5f;
+
+    
+    public ReceivingTile receivingTile;
+    public ReceivingTile receivingTile2;
+
+    public float decendERTime = 2f;
+
+    public string _ = "=============================================";
+    
+    GameManager gM;
+    Grid ground;
+    SpriteRenderer sR;
     bool beingHitWind = false;
     bool beingHitLight = false;
     float directionHitW = -1;
     float directionHitL = -1;
-
+    [Header("Variables not to be touched. Only for Script")]
     public bool _beingHitWind;
     public bool _beingHitLight;
     public float _directionHitW;
     public float _directionHitL;
-    GameManager gM;
-    Grid ground;
-    SpriteRenderer sR;
-
-    public int windNeeded = -1;
-    public int sunNeeded = -1;
-
     public bool playerOn;
     public int playerInt;
-
     public Vector3Int currentCell;
-
-    public CombiTile partnerTile;
-    public bool main;
-
+    
     public Animator anim;
-
-    public float chargeTimer = 4f;
     public bool charging;
-
     public GameObject energyReceiver;
     public GameObject partenForEnergyReceiver;
-
     public Animation openAnim;
     public bool decendER = false;
-    public float decendERTime = 2f;
     public float decendERDist = 2f;
-
     private Transform left;
     private Vector3 leftGoal = new Vector3(-0.24f, -0.385f, 0);
     private Transform right;
@@ -51,22 +64,13 @@ public class CombiTile : MonoBehaviour
     private Transform pT = null;
     public bool openGate = false;
     public bool movePlayersDown = false;
-
     private Vector3 playerGoal1 = new Vector3();
     private Vector3 playerGoal2 = new Vector3();
     private Vector3 plateGoal1 = new Vector3();
     private Vector3 plateGoal2 = new Vector3();
-
-    public bool combining = true;
-
-    public float animSpeed = 2;
     public bool receiving = false;
-
     public bool readyToCombine;
-    public ReceivingTile receivingTile;
-    public ReceivingTile receivingTile2;
 
-    public float movementTimer = 0.5f;
 
     // Start is called before the first frame update
     void Start()

@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 1311550542}
   - component: {fileID: 1311550543}
   m_Layer: 0
-  m_Name: Open Combi
+  m_Name: CombinationTile
   m_TagString: CombiTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
   partnerTile: {fileID: 0}
   main: 1
   anim: {fileID: 0}
-  chargeTimer: 8
+  chargeTimer: 4
   charging: 0
   energyReceiver: {fileID: 0}
   partenForEnergyReceiver: {fileID: 709295841}
@@ -236,7 +236,15 @@ MonoBehaviour:
   decendER: 0
   decendERTime: 2
   decendERDist: 2
+  openGate: 0
+  movePlayersDown: 0
+  combining: 1
   animSpeed: 2
+  receiving: 0
+  readyToCombine: 0
+  receivingTile: {fileID: 0}
+  receivingTile2: {fileID: 0}
+  movementTimer: 0.5
 --- !u!1 &4036384783740954564
 GameObject:
   m_ObjectHideFlags: 0
