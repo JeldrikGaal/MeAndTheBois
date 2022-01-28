@@ -2697,6 +2697,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 523762129148382369, guid: eaeb7a30f6028af46bb48156a950b686, type: 3}
   m_PrefabInstance: {fileID: 2118185104}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1212294324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1212294326}
+  - component: {fileID: 1212294325}
+  m_Layer: 0
+  m_Name: Debugger (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1212294325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212294324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb518b1fcb318204e8f27483b92df1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gM: {fileID: 0}
+  ground: {fileID: 0}
+  currentCell: {x: 0, y: 0, z: 0}
+  p: {x: 0, y: 0, z: 0}
+--- !u!4 &1212294326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212294324}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.9267138, y: -0.60639775, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1492539893
 GameObject:
   m_ObjectHideFlags: 0
@@ -2818,6 +2866,7 @@ MonoBehaviour:
   sprite3: {fileID: 21300000, guid: 587bbdd853dc600419a120eaa8bdb449, type: 3}
   sprite4: {fileID: 21300000, guid: 9157d273210a7a94aa973eb9e85cc0a5, type: 3}
   controllBool: 1
+  elevation: 0
   sprites: []
 --- !u!4 &1492539897
 Transform:
@@ -2959,6 +3008,7 @@ MonoBehaviour:
   sprite3: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
   sprite4: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
   controllBool: 1
+  elevation: 0
   sprites: []
 --- !u!4 &1720959471
 Transform:
@@ -3300,6 +3350,7 @@ MonoBehaviour:
   sprite3: {fileID: 21300000, guid: 587bbdd853dc600419a120eaa8bdb449, type: 3}
   sprite4: {fileID: 21300000, guid: 9157d273210a7a94aa973eb9e85cc0a5, type: 3}
   controllBool: 1
+  elevation: 0
   sprites: []
 --- !u!4 &2059044366
 Transform:

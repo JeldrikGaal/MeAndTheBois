@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,17 +35,45 @@ public class Pipe : MonoBehaviour
     public GameObject ssio2;
     public GameObject middle;
 
+    public int elevation;
+    public LayerMask ignore;
+    public RaycastHit2D hitH;
+
     // Start is called before the first frame update
     void Start()
     {
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         Vector3 midPoint = new Vector3();
+
+        string elevationHelp = this.GetComponent<SpriteRenderer>().sortingLayerName;
+        Debug.Log(elevationHelp);
+        Debug.Log(elevationHelp[elevationHelp.Length - 1]);
+        var h = elevationHelp[elevationHelp.Length - 1];
+        elevation = (int)Char.GetNumericValue(h) - 1;
+
+        pList.Add(p1);
+        pList.Add(p2);
+        pList.Add(p3);
+        pList.Add(p4);
+        pList.Add(p5);
+        pList.Add(p6);
+        pList.Add(p7);
+
+        on = true;
+        timer = randomInterval;
+
+        foreach (ParticleSystem p in pList)
+        {
+            pPositionList.Add(p.transform.position);
+        }
+
         switch (type)
         {
             case 0:
                 midPoint = ground.GetCellCenterWorld(ground.WorldToCell(middle.transform.position));
                 midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                //midPoint = pList[0].transform.position;
                 directionPoint2 = new Vector3(midPoint.x - (ground.cellSize.x * 0.25f), midPoint.y + (ground.cellSize.y * 0.25f));
                 directionPoint = midPoint;
                 break;
@@ -70,22 +99,7 @@ public class Pipe : MonoBehaviour
 
 
 
-        pList.Add(p1);
-        pList.Add(p2);
-        pList.Add(p3);
-        pList.Add(p4);
-        pList.Add(p5);
-        pList.Add(p6);
-        pList.Add(p7);
-
-        on = true;
-        timer = randomInterval;
-
-        foreach(ParticleSystem p in pList)
-        {
-            pPositionList.Add(p.transform.position);
-        }
-
+        ignore = getMaskToIgnore2();
     }
 
     bool isLeft(Vector2 a, Vector2 b, Vector2 c)
@@ -114,34 +128,89 @@ public class Pipe : MonoBehaviour
     }
 
 
+    LayerMask getMaskToIgnore2()
+    {
+        LayerMask ret = new LayerMask();
+        LayerMask l1 = new LayerMask();
+        LayerMask l2 = new LayerMask();
+        LayerMask l3 = new LayerMask();
+        LayerMask l4 = new LayerMask();
+        List<LayerMask> layerMaskList = new List<LayerMask>();
+        layerMaskList.Add(l1);
+        layerMaskList.Add(l2);
+        layerMaskList.Add(l3);
+        layerMaskList.Add(l4);
+        List<int> layerIDsToIgnore = new List<int>();
+        for (int i = 0; i < 5; i ++)
+        {
+            string layerName = "Col" + (i + 1).ToString();
+            layerIDsToIgnore.Add(LayerMask.NameToLayer(layerName));
+        }
+
+        int j = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            if (!(i + 1 == elevation))
+            {
+                Debug.Log((i,layerIDsToIgnore[i]));
+                layerMaskList[j] = 1 << layerIDsToIgnore[i];
+                j += 1;
+            }
+        }
+
+        ret = layerMaskList[0] | layerMaskList[1] | layerMaskList[2] | layerMaskList[3];
+
+        return ret;
+        
+    }
+
+    LayerMask getMaskToIgnore()
+    {
+        string layerName = "Col" + (elevation).ToString();
+        Debug.Log(layerName);
+        return ~(1 << LayerMask.NameToLayer(layerName));
+    }
+
     void determinWindArea()
     {
         Vector3 ray = new Vector3();
         RaycastHit2D _hit = new RaycastHit2D();
+        Vector2 startPoint = new Vector2();
         switch (type)
         {
             case 0:
                 ray = (directionPoint - directionPoint2).normalized;
-                _hit = Physics2D.Raycast(directionPoint2, ray);
+                startPoint = directionPoint2 + ray * 0.2f;
+                _hit = Physics2D.Raycast(startPoint, ray, ignore);
                 break;
             case 1:
                 ray = (directionPoint2 - directionPoint).normalized;
-                _hit = Physics2D.Raycast(directionPoint2, ray);
+                _hit = Physics2D.Raycast(directionPoint2, ray, ignore);
                 break;
             case 2:
                 ray = (directionPoint - directionPoint2).normalized;
-                _hit = Physics2D.Raycast(directionPoint2, ray);
+                _hit = Physics2D.Raycast(directionPoint2, ray, ignore);
                 break;
             case 3:
                 ray = (directionPoint2 - directionPoint).normalized;
-                _hit = Physics2D.Raycast(directionPoint2, ray);
+                _hit = Physics2D.Raycast(directionPoint2, ray, ignore);
                 break;
         }
 
 
-        Debug.DrawRay(directionPoint2, ray * 10, Color.green) ;
+        if (type == 0 || type == 2) 
+        {
+            Debug.DrawRay(startPoint, ray * 10, Color.green);
+        }
+        else
+        {
+            Debug.DrawRay(directionPoint, ray * 10, Color.green);
+        }
+            
         if (_hit)
         {
+            Debug.Log(_hit.transform.name);
+            hitH = _hit;
             foreach (ParticleSystem p in pList)
             {
                 Vector2 ray2 = new Vector2(-ray.y, ray.x);
@@ -181,7 +250,7 @@ public class Pipe : MonoBehaviour
         }
         else
         {
-            Debug.Log("ALARM");
+            //Debug.Log("ALARM");
         }
      }
 

@@ -11,6 +11,7 @@ TagManager:
   - CombiTile
   - Pipe
   - Obstacle
+  - CollMap
   layers:
   - Default
   - TransparentFX
@@ -18,11 +19,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Col1
+  - Col2
+  - Col3
+  - Col4
+  - Col5
   - 
   - 
   - 

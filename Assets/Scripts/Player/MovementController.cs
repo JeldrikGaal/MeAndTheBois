@@ -26,6 +26,12 @@ public class MovementController : MonoBehaviour
     // Only Public for Debbung
     public Vector3Int currentCell;
     public List<Vector3>  tileWorldLocations;
+    public List<List<Vector3Int>> collisionList;
+
+    public List<Vector3Int> help1;
+    public List<Vector3Int> help2;
+    public List<Vector3Int> help3;
+
     public List<Vector3Int> collisionsInGrid;
     public List<Vector3Int> elevationsInGrid;
     public bool moving = true;
@@ -42,6 +48,8 @@ public class MovementController : MonoBehaviour
     public Sprite sprite4;
 
     public bool controllBool = true;
+
+    public int elevation;
 
     public List<Sprite> sprites;
     void Start()
@@ -81,18 +89,30 @@ public class MovementController : MonoBehaviour
         }
 
         // Get all cell positions that have a collision
-        tileWorldLocations = new List<Vector3>();
+       
+        collisionList = new List<List<Vector3Int>>();
 
-        foreach (var pos in collisionTileMap.cellBounds.allPositionsWithin)
+        foreach (Transform child in collisionsG.transform)
         {
-            Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
-            Vector3 place = collisionTileMap.CellToWorld(localPlace);
-            if (collisionTileMap.HasTile(localPlace))
+            tileWorldLocations = new List<Vector3>();
+            collisionsInGrid = new List<Vector3Int>();
+            collisionTileMap = child.GetComponent<Tilemap>();
+            foreach (var pos in collisionTileMap.cellBounds.allPositionsWithin)
             {
-                tileWorldLocations.Add(place);
-                collisionsInGrid.Add(ground.WorldToCell(place));
+                Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+                Vector3 place = collisionTileMap.CellToWorld(localPlace);
+                if (collisionTileMap.HasTile(localPlace))
+                {
+                    tileWorldLocations.Add(place);
+                    collisionsInGrid.Add(ground.WorldToCell(place));
+                }
             }
+            collisionList.Add(collisionsInGrid);
         }
+
+        help1 = collisionList[0];
+        help2 = collisionList[1];
+        help3 = collisionList[2];
 
         if (collisionTileMap && elevationTileMap)
         {
@@ -174,6 +194,19 @@ public class MovementController : MonoBehaviour
 
     void Update()
     {
+        switch (playerIndex)
+        {
+            case 1:
+                elevation = 0;
+                break;
+            case 2:
+                elevation = w.elevation;
+                break;
+            case 3:
+                elevation = cR.elevation;
+                break;
+        }
+
         currentCell = ground.WorldToCell(transform.position);
 
         // Move player to moving point TODO: calculate delta time to make undepeding of fps
@@ -216,7 +249,18 @@ public class MovementController : MonoBehaviour
         }
 
         // Check if new position is valid and if so move moving point there
-        bool moveallowed = !collisionsInGrid.Contains(ground.WorldToCell(newPosMP));
+        //bool moveallowed = !collisionsInGrid.Contains(ground.WorldToCell(newPosMP));
+        bool moveallowed;
+        //Debug.Log((elevation + 1, collisionList.Count));
+        if (elevation + 1 < collisionList.Count)
+        {
+            moveallowed = !collisionList[elevation + 1].Contains(ground.WorldToCell(newPosMP));
+            //Debug.Log(ground.WorldToCell(newPosMP));
+        }
+        else
+        {
+            moveallowed = true;
+        }
         //bool changeAllowed = collisionsInGrid.Contains(currentCell);
         bool changeAllowed = false;
 
@@ -224,13 +268,13 @@ public class MovementController : MonoBehaviour
         {
             if (w.elevation >= 1)
             {
-                moveallowed = true;
+                //moveallowed = true;
             }
             if (elevationsInGrid.Contains(ground.WorldToCell(newPosMP)))
             {
                 if (!(w.elevation >= 2))
                 {
-                    moveallowed = false;
+                    //moveallowed = false;
                 }
             }
         }
@@ -239,13 +283,13 @@ public class MovementController : MonoBehaviour
         {
             if (cR.elevation >= 1)
             {
-                moveallowed = true;
+                //moveallowed = true;
             }
             if (elevationsInGrid.Contains(ground.WorldToCell(newPosMP)))
             {
                 if (!(cR.elevation >= 2))
                 {
-                    moveallowed = false;
+                    //moveallowed = false;
                 }
             }
         }
@@ -289,3 +333,4 @@ public class MovementController : MonoBehaviour
 
     }
 }
+
