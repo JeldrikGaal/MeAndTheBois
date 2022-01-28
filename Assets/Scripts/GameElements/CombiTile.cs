@@ -91,8 +91,12 @@ public class CombiTile : MonoBehaviour
 
         anim = this.GetComponentInChildren<Animator>();
 
-        anim.SetInteger("Direction", (windNeeded));
-        anim.SetInteger("Type", (sunNeeded));
+        if (windNeeded != -1)
+        {
+            anim.SetInteger("Direction", (windNeeded));
+            anim.SetInteger("Type", (sunNeeded));
+        }
+
 
         partenForEnergyReceiver.GetComponent<SortingGroup>().sortingLayerName = spriteMask.GetComponent<SortingGroup>().sortingLayerName;
         partenForEnergyReceiver.GetComponent<SortingGroup>().sortingOrder = spriteMask.GetComponent<SortingGroup>().sortingOrder + 1;
@@ -132,7 +136,8 @@ public class CombiTile : MonoBehaviour
             if (checkEnergy())
             {
                 if (chargeTimer > 0) charging = true;
-                anim.SetTrigger("Go");
+                if (windNeeded != -1) anim.SetTrigger("Go");
+
             }
             if (charging)
             {

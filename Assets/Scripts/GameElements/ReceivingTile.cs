@@ -28,7 +28,7 @@ public class ReceivingTile : MonoBehaviour
     void Start()
     {
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
-        ground = this.gM.p3.ground;
+        ground = GameObject.Find("Grid").GetComponent<Grid>(); ;
         currentCell = ground.WorldToCell(this.transform.position);
         this.transform.position = ground.GetCellCenterWorld(currentCell);
 

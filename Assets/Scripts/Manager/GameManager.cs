@@ -23,10 +23,15 @@ public class GameManager : MonoBehaviour
 
     public List<collectedBones> bones = new List<collectedBones>();
 
+    public GameObject collG;
+    public List<List<Vector3Int>> collisionList = new List<List<Vector3Int>>();
+
     public EnergyManager EM;
     public MovementController p1;
     public MovementController p2;
     public MovementController p3;
+
+    public Grid ground;
 
     private bool modifying;
 
@@ -76,6 +81,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        
         DontDestroyOnLoad(this);
 
         movementSet p1 = new movementSet();
@@ -115,6 +121,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        ground = GameObject.Find("Grid").GetComponent<Grid>();
         foreach (GameObject b in GameObject.FindGameObjectsWithTag("Box"))
         {
             boxxes.Add(b.GetComponent<Box>());
@@ -122,6 +129,24 @@ public class GameManager : MonoBehaviour
         foreach (GameObject b in GameObject.FindGameObjectsWithTag("Mirror"))
         {
             mirrors.Add(b.GetComponent<Mirror>());
+        }
+
+        foreach (Transform child in collG.transform)
+        {
+            List <Vector3> tileWorldLocations = new List<Vector3>();
+            List<Vector3Int>  collisionsInGrid = new List<Vector3Int>();
+            Tilemap collisionTileMap = child.GetComponent<Tilemap>();
+            foreach (var pos in collisionTileMap.cellBounds.allPositionsWithin)
+            {
+                Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+                Vector3 place = collisionTileMap.CellToWorld(localPlace);
+                if (collisionTileMap.HasTile(localPlace))
+                {
+                    tileWorldLocations.Add(place);
+                    collisionsInGrid.Add(ground.WorldToCell(place));
+                }
+            }
+            collisionList.Add(collisionsInGrid);
         }
     }
 
