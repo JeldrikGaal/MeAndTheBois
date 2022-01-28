@@ -47,6 +47,7 @@ public class Mirror : MonoBehaviour
 
     public EdgeCollider2D coll;
     public Vector2 collOffset;
+    public int elevation;
 
     private void Awake()
     {

@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public List<Box> boxxes = new List<Box>();
     public List<Mirror> mirrors = new List<Mirror>();
+    public List<Obstacle> obstacles = new List<Obstacle>();
 
     public List<Mirror> hitMirros = new List<Mirror>();
     public List<Mirror> hitMirrosStable = new List<Mirror>();
@@ -25,6 +26,16 @@ public class GameManager : MonoBehaviour
 
     public GameObject collG;
     public List<List<Vector3Int>> collisionList = new List<List<Vector3Int>>();
+
+
+
+    public List<List<Vector3Int>> tilesList = new List<List<Vector3Int>>();
+
+    public List<Vector3Int> h1;
+    public List<Vector3Int> h2;
+    public List<Vector3Int> h3;
+    public List<Vector3Int> h4;
+    public List<Vector3Int> h5;
 
     public EnergyManager EM;
     public MovementController p1;
@@ -130,10 +141,13 @@ public class GameManager : MonoBehaviour
         {
             mirrors.Add(b.GetComponent<Mirror>());
         }
+        foreach (GameObject b in GameObject.FindGameObjectsWithTag("Obstacle"))
+        {
+            obstacles.Add(b.GetComponent<Obstacle>());
+        }
 
         foreach (Transform child in collG.transform)
         {
-            List <Vector3> tileWorldLocations = new List<Vector3>();
             List<Vector3Int>  collisionsInGrid = new List<Vector3Int>();
             Tilemap collisionTileMap = child.GetComponent<Tilemap>();
             foreach (var pos in collisionTileMap.cellBounds.allPositionsWithin)
@@ -142,12 +156,33 @@ public class GameManager : MonoBehaviour
                 Vector3 place = collisionTileMap.CellToWorld(localPlace);
                 if (collisionTileMap.HasTile(localPlace))
                 {
-                    tileWorldLocations.Add(place);
                     collisionsInGrid.Add(ground.WorldToCell(place));
                 }
             }
             collisionList.Add(collisionsInGrid);
         }
+
+        for (int i = 2; i < 7; i++)
+        {
+            List<Vector3Int> tilesInGrid = new List<Vector3Int>();
+            Tilemap tileTileMap = ground.transform.GetChild(i).GetComponent<Tilemap>();
+            foreach (var pos in tileTileMap.cellBounds.allPositionsWithin)
+            {
+                Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+                Vector3 place = tileTileMap.CellToWorld(localPlace);
+                if (tileTileMap.HasTile(localPlace))
+                {
+                    tilesInGrid.Add(ground.WorldToCell(place));
+                }
+            }
+             tilesList.Add(tilesInGrid);
+        }
+
+        h1 = tilesList[0];
+        h1 = tilesList[1];
+        h1 = tilesList[2];
+        h1 = tilesList[3];
+        h1 = tilesList[4];
     }
 
     public bool isBoxOnCell(Vector3Int cell, Grid ground)
@@ -169,6 +204,19 @@ public class GameManager : MonoBehaviour
         foreach (Mirror m in mirrors)
         {
             if (ground.WorldToCell(m.transform.position) == cell)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool isObstacleOnCell(Vector3Int cell, Grid ground)
+    {
+        //Debug.Log(cell);
+        foreach (Obstacle o in obstacles)
+        {
+            if (ground.WorldToCell(o.transform.position) == cell)
             {
                 return true;
             }
@@ -201,6 +249,19 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+    
+    public GameObject getObstacleOnCell(Vector3Int cell, Grid ground)
+    {
+
+        foreach (Obstacle o in obstacles)
+        {
+            if (ground.WorldToCell(o.transform.position) == cell)
+            {
+                return o.gameObject;
+            }
+        }
+        return null;
+    }
 
     public Box getBoxSOnCell(Vector3Int cell, Grid ground)
     {
@@ -224,6 +285,17 @@ public class GameManager : MonoBehaviour
             }
         }
         return null;
+    } 
+    public Obstacle getObstacleSOnCell(Vector3Int cell, Grid ground)
+    {
+        foreach (Obstacle o in obstacles)
+        {
+            if (ground.WorldToCell(o.transform.position) == cell)
+            {
+                return o;
+            }
+        }
+        return null;
     }
 
     void Update()
@@ -233,8 +305,6 @@ public class GameManager : MonoBehaviour
             Debug.Log(bones[0].bone.name);
         }
         
-        //Debug.Log(windHis[0].direction);
-        //Debug.Log(windHis[0].hitOjbect);
     }
 
     public void UpdateStableMirList()
@@ -415,6 +485,60 @@ public class GameManager : MonoBehaviour
         return Mangle;
     }
     
+    public int getHighestElevation(Vector3Int cell)
+    {
+        int elv = -1;
 
+        int j = 0;
+        foreach (List<Vector3Int> l in tilesList)
+        {
+            if (l.Contains(cell))
+            {
+                if (j > elv)
+                {
+                    elv = j;
+                }
+            }
+            j += 1;
+        }
+
+        j = 0;
+        foreach ( List<Vector3Int> l in collisionList)
+        {
+            if (l.Contains(cell))
+            {
+                if (j > elv)
+                {
+                    elv = j;
+                }
+            }
+            j += 1;
+        }
+
+        if (getBoxOnCell(cell, ground))
+        {
+            if (getBoxSOnCell(cell, ground).elevation > elv)
+            {
+                elv = getBoxSOnCell(cell, ground).elevation;
+            }
+        }
+        if (getMirOnCell(cell, ground))
+        {
+            if (getMirSOnCell(cell, ground).elevation > elv)
+            {
+                elv = getMirSOnCell(cell, ground).elevation;
+            }
+        }
+
+        if (getObstacleOnCell(cell, ground))
+        {
+            if (getObstacleSOnCell(cell, ground).elevation > elv)
+            {
+                elv = getObstacleSOnCell(cell, ground).elevation;
+            }
+        }
+
+        return elv;
+    }
     
 }

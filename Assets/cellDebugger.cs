@@ -8,8 +8,10 @@ public class cellDebugger : MonoBehaviour
     public GameManager gM;
     public Grid ground;
 
-    public Vector3 currentCell;
+    public Vector3Int currentCell;
     public Vector3 p;
+
+    public int highest;
 
     // Start is called before the first frame update
     void Start()
@@ -23,5 +25,6 @@ public class cellDebugger : MonoBehaviour
     {
         currentCell = ground.WorldToCell(this.transform.position);
         p = this.transform.position;
+        highest = gM.getHighestElevation(currentCell);
     }
 }

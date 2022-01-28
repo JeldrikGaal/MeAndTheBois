@@ -59,24 +59,28 @@ public class Wind : MonoBehaviour
         }
 
         // Regulate shadow size according to elevation
-        shadow.size = new Vector2(shadowStartSize - elevation * 0.02f, shadowStartSize - elevation * 0.02f);
+        shadow.size = new Vector2(shadowStartSize - elevation * 0.02f, shadowStartSize - elevation * 0.02f); // REDO
 
         // Check if box is being carried or can be picked up
         if (Input.GetKeyDown(movC.playerControlls.ability1))
         {
+            // Putting Box back on the ground
             if (carryingBox )
             {
                 // create effect of the box being actually lifted
-                boxS.boxSprite.transform.localPosition = new Vector3(0, -0.375f, 0);
-                boxS.boxSprite.sortingLayerName = "Interactable";
-                
-                box.transform.position = this.transform.position - offset;
+                //boxS.boxSprite.transform.localPosition = new Vector3(0, -0.375f, 0); // REDO
+                //boxS.boxSprite.sortingLayerName = "Interactable"; // REDO
+                Vector3 temp = gM.ground.GetCellCenterWorld(gM.ground.WorldToCell(this.transform.position)); // REDO
+                box.transform.position = new Vector3(temp.x, temp.y - gM.ground.cellSize.y * 0.75f, 0);
+                boxS.boxSprite.transform.localPosition = new Vector3(0, 0, 0);
+
                 box = null;
                 boxS = null;
                 carryingBox = false;
                 offset = new Vector3();
             }
 
+            // Picking Box Up
             else if (gM.isBoxOnCell(movC.currentCell, movC.ground) && !carryingBox)
             {
                 box = gM.getBoxOnCell(movC.currentCell, movC.ground);
@@ -84,11 +88,11 @@ public class Wind : MonoBehaviour
                 if (this.elevation > boxS.elevation)
                 {
                     carryingBox = true;
-                    offset = transform.position - box.transform.position;
                 }
                
             }
 
+            // Setting Mirror down
             else if (carryingMirror)
             {
                 mir.transform.position = this.transform.position - offset;
@@ -100,6 +104,7 @@ public class Wind : MonoBehaviour
 
             }
 
+            // Picking Mirror up
             else if (gM.isMirrorOnCell(movC.currentCell, movC.ground) && !carryingMirror && !carryingBox)
             {
                 mir = gM.getMirOnCell(movC.currentCell, movC.ground);
@@ -107,21 +112,16 @@ public class Wind : MonoBehaviour
                 mirS.beingCarried = true;
                 carryingMirror = true;
                 offset = transform.position - mir.transform.position;
+                offset = new Vector3(offset.x, offset.y);
             }
 
         }
 
         if (carryingBox && box)
         {
-            /*boxS.moving = true;
-            //Vector3 temp = movC.ground.GetCellCenterWorld(movC.currentCell);
-            Vector3 temp = this.transform.position;
-            boxS.destination = new Vector3(temp.x , temp.y + (movC.ground.cellSize.y * 0.25f), temp.z);
-            boxS.destination = temp;
-            boxS.boxSprite.sortingLayerName = "Flying"; */
+            //boxS.boxSprite.transform.localPosition = new Vector3(0, spriteOffSet + ( (movC.ground.cellSize.y * 0.5f) * (elevation - boxS.elevation - 1)) , 0);
 
-            boxS.boxSprite.transform.localPosition = new Vector3(0, spriteOffSet + ( (movC.ground.cellSize.y * 0.5f) * (elevation - boxS.elevation - 1)) , 0);
-
+            boxS.boxSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
             box.transform.position = this.transform.position + offset;
             boxS.elevation = this.elevation - 1;
            

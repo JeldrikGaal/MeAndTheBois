@@ -23,20 +23,16 @@ public class Box : MonoBehaviour
     {
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(this.transform.position));
-        //transform.position = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z);
-        transform.position = new Vector3(temp.x, temp.y - ground.cellSize.y * 0.25f, temp.z);
-        // Properly calculate elevation !!
+        transform.position = new Vector3(temp.x, temp.y - ground.cellSize.y * 0.75f, 0);
         elevation = 0;
-
         speed = 3f;
-
         boxSprite = this.GetComponentInChildren<SpriteRenderer>();
-
     }
 
     void Start()
     {
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+
     }
 
     // Update is called once per frame
@@ -53,31 +49,26 @@ public class Box : MonoBehaviour
             }
         }
 
-        isBelowSolid();
+        //isBelowSolid();
     }
 
     bool isBelowSolid()
     {
-        /*if (elevation == 0)
-        {
-            Debug.Log(("0", true));
-            return true;
-        }*/
         if (gM.collisionList.Count > elevation)
         {
             if (gM.collisionList[elevation].Contains(currentCell))
             {
-                Debug.Log(("1", true));
+                // Debug.Log(("1", true));
                 return true;
             }
         }
         if (gM.getBoxSOnCell(currentCell, ground) != this.GetComponent<Box>())
         {
-            Debug.Log(("2", true));
+            //Debug.Log(("2", true));
             return true;
         }
 
-        Debug.Log(("3", false));
+        //Debug.Log(("3", false));
         return false;
     }
 
