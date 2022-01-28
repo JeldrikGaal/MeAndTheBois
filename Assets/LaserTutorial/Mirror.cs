@@ -45,10 +45,14 @@ public class Mirror : MonoBehaviour
     public float chargeTimer;
     private bool hitCalced;
 
+    public EdgeCollider2D coll;
+    public Vector2 collOffset;
+
     private void Awake()
     {
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+        coll = this.GetComponent<EdgeCollider2D>();
 
         // Save variables needed for ray placment
         midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
@@ -82,6 +86,7 @@ public class Mirror : MonoBehaviour
         timerSave = timer;
         sR.sprite = sprites[angle];
         Flip();
+        collOffset = coll.bounds.center - midPoint;
     }
 
     // Update is called once per frame

@@ -94,16 +94,21 @@ public class MovementController : MonoBehaviour
             }
         }
 
-        // Get all cell positions that have elevation
-        foreach (var pos in elevationTileMap.cellBounds.allPositionsWithin)
+        if (collisionTileMap && elevationTileMap)
         {
-            Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
-            Vector3 place = elevationTileMap.CellToWorld(localPlace);
-            if (elevationTileMap.HasTile(localPlace))
+            
+            // Get all cell positions that have elevation
+            foreach (var pos in elevationTileMap.cellBounds.allPositionsWithin)
             {
-                elevationsInGrid.Add(ground.WorldToCell(place));
+                Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+                Vector3 place = elevationTileMap.CellToWorld(localPlace);
+                if (elevationTileMap.HasTile(localPlace))
+                {
+                    elevationsInGrid.Add(ground.WorldToCell(place));
+                }
             }
         }
+           
 
         // Move Player to SpawnPoint and Movingpoint to Player
         this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));

@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windNeeded: 3
   sunNeeded: 1
-  main: 0
+  main: 1
   partnerTile: {fileID: 0}
   chargeTimer: 1
   combining: 1

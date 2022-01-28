@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CombiTile : MonoBehaviour
 {
@@ -61,6 +62,7 @@ public class CombiTile : MonoBehaviour
     private Transform plate;
     private Vector3 plateGoal = new Vector3(-0.018f, -0.269f, 0);
     private Vector3 energyRGoal = new Vector3(0.034f, -1.82f, 0);
+    private Transform spriteMask;
     private Transform pT = null;
     public bool openGate = false;
     public bool movePlayersDown = false;
@@ -75,6 +77,7 @@ public class CombiTile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spriteMask = transform.Find("Sprite Mask");
         left = transform.Find("Sprite Mask/Shift/left");
         right = transform.Find("Sprite Mask/Shift/right");
         plate = transform.Find("Sprite Mask/Shift/plate");
@@ -90,6 +93,9 @@ public class CombiTile : MonoBehaviour
 
         anim.SetInteger("Direction", (windNeeded));
         anim.SetInteger("Type", (sunNeeded));
+
+        partenForEnergyReceiver.GetComponent<SortingGroup>().sortingLayerName = spriteMask.GetComponent<SortingGroup>().sortingLayerName;
+        partenForEnergyReceiver.GetComponent<SortingGroup>().sortingOrder = spriteMask.GetComponent<SortingGroup>().sortingOrder + 1;
     }
 
     // Update is called once per frame

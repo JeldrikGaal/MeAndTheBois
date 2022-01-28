@@ -276,8 +276,18 @@ public class Laser : MonoBehaviour
 
         if (mir.startingMir)
         {
-            // Use the distance to position the refPoint somewhere on the movingline
-            refP.position = e - movingLine * distance2;
+            if (mir.angle == 0 || mir.angle == 2)
+            {
+                // Use the distance to position the refPoint somewhere on the movingline
+                refP.position = (e - movingLine * distance2);
+            }
+            if (mir.angle == 1 || mir.angle == 3)
+            {
+                refP.position = (e + movingLine * distance2);
+            }
+            
+
+
         }
         else
         {

@@ -15,15 +15,19 @@ public class Box : MonoBehaviour
 
     public Vector3Int currentCell;
 
+    public float speed;
+
     // Start is called before the first frame update
     void Awake()
     {
-
+        ground = GameObject.Find("Grid").GetComponent<Grid>();
         Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(this.transform.position));
         //transform.position = new Vector3(temp.x, temp.y + (ground.cellSize.y * 0.25f), temp.z);
-        transform.position = temp;
+        transform.position = new Vector3(temp.x, temp.y - ground.cellSize.y * 0.25f, temp.z);
         // Properly calculate elevation !!
         elevation = 0;
+
+        speed = 3f;
 
         boxSprite = this.GetComponentInChildren<SpriteRenderer>();
 
@@ -36,7 +40,7 @@ public class Box : MonoBehaviour
 
         if (moving)
         {
-            this.transform.position = Vector3.MoveTowards(this.transform.position, destination, 0.01f);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, destination, speed * Time.deltaTime);
             if (Vector3.Distance(this.transform.position,destination) <= 0.01f)
             {
                 moving = false;
