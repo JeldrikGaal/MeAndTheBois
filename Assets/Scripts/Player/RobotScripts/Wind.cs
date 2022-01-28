@@ -37,6 +37,8 @@ public class Wind : MonoBehaviour
         shadowStartSize = shadow.size.x - 0.05f;
         spriteOffSet = 0f;
         box = null;
+
+        gM = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -75,12 +77,16 @@ public class Wind : MonoBehaviour
                 offset = new Vector3();
             }
 
-            else if (gM.isBoxOnCell(movC.currentCell, movC.ground) && !carryingBox )
+            else if (gM.isBoxOnCell(movC.currentCell, movC.ground) && !carryingBox)
             {
                 box = gM.getBoxOnCell(movC.currentCell, movC.ground);
                 boxS = box.GetComponent<Box>();
-                carryingBox = true;
-                offset = transform.position - box.transform.position;
+                if (this.elevation > boxS.elevation)
+                {
+                    carryingBox = true;
+                    offset = transform.position - box.transform.position;
+                }
+               
             }
 
             else if (carryingMirror)
@@ -117,6 +123,7 @@ public class Wind : MonoBehaviour
             boxS.boxSprite.transform.localPosition = new Vector3(0, spriteOffSet + ( (movC.ground.cellSize.y * 0.5f) * (elevation - boxS.elevation - 1)) , 0);
 
             box.transform.position = this.transform.position + offset;
+            boxS.elevation = this.elevation - 1;
            
         }
 

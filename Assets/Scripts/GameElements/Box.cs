@@ -10,6 +10,7 @@ public class Box : MonoBehaviour
     public int elevation;
 
     public Grid ground;
+    public GameManager gM;
 
     public SpriteRenderer boxSprite;
 
@@ -33,6 +34,11 @@ public class Box : MonoBehaviour
 
     }
 
+    void Start()
+    {
+        gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -46,7 +52,33 @@ public class Box : MonoBehaviour
                 moving = false;
             }
         }
-        
+
+        isBelowSolid();
+    }
+
+    bool isBelowSolid()
+    {
+        /*if (elevation == 0)
+        {
+            Debug.Log(("0", true));
+            return true;
+        }*/
+        if (gM.collisionList.Count > elevation)
+        {
+            if (gM.collisionList[elevation].Contains(currentCell))
+            {
+                Debug.Log(("1", true));
+                return true;
+            }
+        }
+        if (gM.getBoxSOnCell(currentCell, ground) != this.GetComponent<Box>())
+        {
+            Debug.Log(("2", true));
+            return true;
+        }
+
+        Debug.Log(("3", false));
+        return false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -47,8 +47,6 @@ public class Pipe : MonoBehaviour
         Vector3 midPoint = new Vector3();
 
         string elevationHelp = this.GetComponent<SpriteRenderer>().sortingLayerName;
-        Debug.Log(elevationHelp);
-        Debug.Log(elevationHelp[elevationHelp.Length - 1]);
         var h = elevationHelp[elevationHelp.Length - 1];
         elevation = (int)Char.GetNumericValue(h) - 1;
 
@@ -152,7 +150,6 @@ public class Pipe : MonoBehaviour
         {
             if (!(i + 1 == elevation))
             {
-                Debug.Log((i,layerIDsToIgnore[i]));
                 layerMaskList[j] = 1 << layerIDsToIgnore[i];
                 j += 1;
             }
@@ -212,7 +209,7 @@ public class Pipe : MonoBehaviour
             
         if (_hit)
         {
-            Debug.Log(_hit.transform.name);
+            //Debug.Log(_hit.transform.name);
             hitH = _hit;
             foreach (ParticleSystem p in pList)
             {
