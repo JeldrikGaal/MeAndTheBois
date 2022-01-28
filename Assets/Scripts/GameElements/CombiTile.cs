@@ -294,15 +294,34 @@ public class CombiTile : MonoBehaviour
 
     void spawnFittingEnergy()
     {
-        string path = "_PREFABS/COMBI/SW " + (sunNeeded) +  " -" + (windNeeded) + "_0";
-        Object o = Resources.Load(path);
+        if (sunNeeded != -1 && windNeeded != -1)
+        {
+            string path = "_PREFABS/COMBI/SW " + (sunNeeded) + " -" + (windNeeded) + "_0";
+            Object o = Resources.Load(path);
 
-        GameObject g = (GameObject)Instantiate(o);
-        g.transform.parent = partenForEnergyReceiver.transform;
-        g.transform.localPosition = new Vector3(0.034f, -0.336f, 0);
-        g.GetComponent<SpriteRenderer>().sortingOrder = 3;
+            GameObject g = (GameObject)Instantiate(o);
+            g.transform.parent = partenForEnergyReceiver.transform;
+            g.transform.localPosition = new Vector3(0.034f, -0.336f, 0);
+            g.GetComponent<SpriteRenderer>().sortingOrder = 3;
 
-        energyReceiver = g;
+            energyReceiver = g;
+            return;
+        }
+
+        if (windNeeded == -1)
+        {
+            string path = "_PREFABS/COMBI/SW " + (sunNeeded);
+            Object o = Resources.Load(path);
+
+            GameObject g = (GameObject)Instantiate(o);
+            g.transform.parent = partenForEnergyReceiver.transform;
+            g.transform.localPosition = new Vector3(0.034f, -0.336f, 0);
+            g.GetComponent<SpriteRenderer>().sortingOrder = 3;
+
+            energyReceiver = g;
+            return;
+        }
+            
         
     }
 

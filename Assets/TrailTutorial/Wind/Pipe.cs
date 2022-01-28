@@ -185,15 +185,18 @@ public class Pipe : MonoBehaviour
                 break;
             case 1:
                 ray = (directionPoint2 - directionPoint).normalized;
-                _hit = Physics2D.Raycast(directionPoint2, ray, ignore);
+                startPoint = directionPoint2 + ray * 0.2f;
+                _hit = Physics2D.Raycast(startPoint, ray, ignore);
                 break;
             case 2:
                 ray = (directionPoint - directionPoint2).normalized;
-                _hit = Physics2D.Raycast(directionPoint2, ray, ignore);
+                startPoint = directionPoint2 + ray * 0.2f;
+                _hit = Physics2D.Raycast(startPoint, ray, ignore);
                 break;
             case 3:
                 ray = (directionPoint2 - directionPoint).normalized;
-                _hit = Physics2D.Raycast(directionPoint2, ray, ignore);
+                startPoint = directionPoint2 + ray * 0.2f;
+                _hit = Physics2D.Raycast(startPoint, ray, ignore);
                 break;
         }
 
@@ -204,7 +207,7 @@ public class Pipe : MonoBehaviour
         }
         else
         {
-            Debug.DrawRay(directionPoint, ray * 10, Color.green);
+            Debug.DrawRay(startPoint, ray * 10, Color.green);
         }
             
         if (_hit)
