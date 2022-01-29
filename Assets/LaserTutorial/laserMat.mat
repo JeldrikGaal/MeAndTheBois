@@ -22,14 +22,16 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: laserMat
   m_Shader: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
-  m_ShaderKeywords: _EMISSION
+  m_ShaderKeywords: _ALPHAMODULATE_ON _EMISSION _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Opaque
-  disabledShaderPasses: []
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -76,7 +78,7 @@ Material:
     - _DistortionEnabled: 0
     - _DistortionStrength: 1
     - _DistortionStrengthScaled: 0.1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnableExternalAlpha: 0
     - _FlipbookBlending: 0
     - _FlipbookMode: 0
@@ -85,15 +87,15 @@ Material:
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
-    - _SrcBlend: 1
-    - _Surface: 0
-    - _ZWrite: 1
+    - _SrcBlend: 5
+    - _Surface: 1
+    - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
-    - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 1.7207954, g: 1.3333912, b: 0.0360376, a: 1}
+    - _BaseColor: {r: 1, g: 0.99215686, b: 0.36862746, a: 0.019607844}
+    - _BaseColorAddSubDiff: {r: -1, g: 1, b: 0, a: 0}
+    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
+    - _Color: {r: 1, g: 0.99215686, b: 0.36862746, a: 0.019607844}
+    - _EmissionColor: {r: 18.8026, g: 18.741257, b: 11.441205, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
