@@ -17,6 +17,8 @@ public class Box : MonoBehaviour
     public Vector3Int currentCell;
 
     public float speed;
+    public bool beingcarried;
+    public int newElv;
 
     // Start is called before the first frame update
     void Awake()
@@ -50,6 +52,11 @@ public class Box : MonoBehaviour
         }
 
         //isBelowSolid();
+        //Debug.Log(gM.getHighestElevation(currentCell, this.gameObject));
+
+        if (beingcarried) boxSprite.sortingLayerID = gM.elevSL[elevation];
+        newElv = gM.getHighestElevation(currentCell, this.gameObject);
+        updateGravity();
     }
 
     bool isBelowSolid()
@@ -85,6 +92,19 @@ public class Box : MonoBehaviour
         if (collision.CompareTag("VineMovingPoint"))
         {
             collision.GetComponent<VineMovingPoint>().currentBox = null;
+        }
+    }
+
+    public void updateGravity()
+    {
+        if (!beingcarried)
+        {
+            
+            if (elevation > newElv)
+            {
+                this.boxSprite.sortingLayerID = gM.elevSL[newElv + 1 ];
+                elevation = newElv;
+            }
         }
     }
 }

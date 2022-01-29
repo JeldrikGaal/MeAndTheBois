@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     private bool modifying;
 
+    public List<int> elevSL = new List<int>();
+
     public class movementSet
     {
         public int playerId;
@@ -166,6 +168,7 @@ public class GameManager : MonoBehaviour
         {
             List<Vector3Int> tilesInGrid = new List<Vector3Int>();
             Tilemap tileTileMap = ground.transform.GetChild(i).GetComponent<Tilemap>();
+
             foreach (var pos in tileTileMap.cellBounds.allPositionsWithin)
             {
                 Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
@@ -175,14 +178,41 @@ public class GameManager : MonoBehaviour
                     tilesInGrid.Add(ground.WorldToCell(place));
                 }
             }
-             tilesList.Add(tilesInGrid);
+            tilesList.Add(tilesInGrid);
         }
 
+
+
+        int k = 0;
+        List<List<Vector3Int>> hh = new List<List<Vector3Int>>();
+        foreach (List<Vector3Int> l in tilesList)
+        {
+            int o = 0;
+            List<Vector3Int> l2 = new List<Vector3Int>();
+            foreach (Vector3Int v in l)
+            {
+                l2.Add(new Vector3Int(v.x - k, v.y - k, v.z));
+                o += 1;
+            }
+            hh.Add(l2);
+            k += 1;
+        }
+
+        //tilesList = hh;
+
         h1 = tilesList[0];
-        h1 = tilesList[1];
-        h1 = tilesList[2];
-        h1 = tilesList[3];
-        h1 = tilesList[4];
+        h2 = tilesList[1];
+        h3 = tilesList[2];
+        h4 = tilesList[3];
+        h5 = tilesList[4];
+
+        elevSL.Add(SortingLayer.NameToID("Elevation1"));
+        elevSL.Add(SortingLayer.NameToID("Elevation 2"));
+        elevSL.Add(SortingLayer.NameToID("Elevation 3"));
+        elevSL.Add(SortingLayer.NameToID("Elevation 4"));
+        elevSL.Add(SortingLayer.NameToID("Elevation 5"));
+
+
     }
 
     public bool isBoxOnCell(Vector3Int cell, Grid ground)
@@ -485,7 +515,7 @@ public class GameManager : MonoBehaviour
         return Mangle;
     }
     
-    public int getHighestElevation(Vector3Int cell)
+    public int getHighestElevation(Vector3Int cell, GameObject ignore = null)
     {
         int elv = -1;
 
@@ -515,18 +545,20 @@ public class GameManager : MonoBehaviour
             j += 1;
         }
 
-        if (getBoxOnCell(cell, ground))
+        if (isBoxOnCell(cell, ground))
         {
             if (getBoxSOnCell(cell, ground).elevation > elv)
             {
-                elv = getBoxSOnCell(cell, ground).elevation;
+                if (!getBoxOnCell(cell, ground) == ignore) elv = getBoxSOnCell(cell, ground).elevation;
+
             }
         }
         if (getMirOnCell(cell, ground))
         {
             if (getMirSOnCell(cell, ground).elevation > elv)
             {
-                elv = getMirSOnCell(cell, ground).elevation;
+                if (!getMirOnCell(cell, ground) == ignore) elv = getMirSOnCell(cell, ground).elevation;
+
             }
         }
 
@@ -534,11 +566,69 @@ public class GameManager : MonoBehaviour
         {
             if (getObstacleSOnCell(cell, ground).elevation > elv)
             {
-                elv = getObstacleSOnCell(cell, ground).elevation;
+                if (!getObstacleOnCell(cell, ground) == ignore)  elv = getObstacleSOnCell(cell, ground).elevation;
             }
         }
 
         return elv;
     }
+ 
     
+    public int getHighestElevationUnder(Vector3Int cell, int under, GameObject ignore = null)
+    {
+        int elv = -1;
+
+        int j = 0;
+        foreach (List<Vector3Int> l in tilesList)
+        {
+            if (l.Contains(cell))
+            {
+                if (j > elv && j < under)
+                {
+                    elv = j;
+                }
+            }
+            j += 1;
+        }
+
+        j = 0;
+        foreach (List<Vector3Int> l in collisionList)
+        {
+            if (l.Contains(cell))
+            {
+                if (j > elv && j < under)
+                {
+                    elv = j;
+                }
+            }
+            j += 1;
+        }
+
+        if (isBoxOnCell(cell, ground))
+        {
+            if (getBoxSOnCell(cell, ground).elevation > elv && getBoxSOnCell(cell, ground).elevation < under)
+            {
+                if (!getBoxOnCell(cell, ground) == ignore) elv = getBoxSOnCell(cell, ground).elevation;
+
+            }
+        }
+        if (getMirOnCell(cell, ground))
+        {
+            if (getMirSOnCell(cell, ground).elevation > elv && getMirSOnCell(cell, ground).elevation < under)
+            {
+                if (!getMirOnCell(cell, ground) == ignore) elv = getMirSOnCell(cell, ground).elevation;
+
+            }
+        }
+
+        if (getObstacleOnCell(cell, ground))
+        {
+            if (getObstacleSOnCell(cell, ground).elevation > elv && getObstacleSOnCell(cell, ground).elevation < under)
+            {
+                if (!getObstacleOnCell(cell, ground) == ignore) elv = getObstacleSOnCell(cell, ground).elevation;
+            }
+        }
+
+        return elv;
+    }
 }

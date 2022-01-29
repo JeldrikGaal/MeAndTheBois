@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Rendering;
 using static GameManager.movementSet;
 
 public class MovementController : MonoBehaviour
@@ -38,7 +39,18 @@ public class MovementController : MonoBehaviour
 
     private bool s = false;
     private Wind w;
-    public SpriteRenderer sR;
+    //public SpriteRenderer sR;
+    public SortingGroup sR;
+    public GameObject forward;
+    public Animator forwardA;
+    public GameObject backward;
+    public Animator backwardA;
+
+    public Animator currentAnimator;
+    public GameObject currentFB;
+    public bool idling;
+
+    public Vector3 startScale;
 
     private CombiRobot cR;
 
@@ -51,9 +63,12 @@ public class MovementController : MonoBehaviour
 
     public int elevation;
 
+    public bool isMoving;
+
     public List<Sprite> sprites;
     void Start()
     {
+        idling = true;
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         ground = GameObject.Find("Grid").GetComponent<Grid>();
 
@@ -63,22 +78,20 @@ public class MovementController : MonoBehaviour
         sprites.Add(sprite2);
         sprites.Add(sprite1);
 
-        if (playerIndex == 1)
-        {
-            sR = this.transform.GetComponent<SpriteRenderer>();
-        }
-        if (playerIndex == 2)
-        {
-            sR = this.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        }
-        if (playerIndex == 3)
-        {
-            sR = this.transform.GetChild(1).GetComponent<SpriteRenderer>();
-        }
 
 
+        forward = this.transform.GetChild(1).gameObject;
+        forwardA = forward.transform.GetComponent<Animator>();
+        backward = this.transform.GetChild(2).gameObject;
+        backwardA = backward.transform.GetComponent<Animator>();
+        sR = forward.transform.GetComponent<SortingGroup>();
 
-        sR.sprite = sprites[directionFacing];
+        startScale = forward.transform.localScale;
+        currentAnimator = forwardA;
+        currentFB = forward;
+        backward.SetActive(false);
+
+        //sR.sprite = sprites[directionFacing];
         if (playerIndex == 2)
         {
             w = this.GetComponent<Wind>();
@@ -131,7 +144,9 @@ public class MovementController : MonoBehaviour
            
 
         // Move Player to SpawnPoint and Movingpoint to Player
-        this.transform.position =  ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
+        Vector3 tempPos = ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
+        this.transform.position = new Vector3(tempPos.x, tempPos.y - ground.cellSize.y - 0.25f, tempPos.z);
+        this.transform.position = tempPos;
         //this.transform.position = spawnPoint.transform.position;
         this.movingPoint.transform.position = this.transform.position;
 
@@ -207,17 +222,49 @@ public class MovementController : MonoBehaviour
                 break;
         }
 
-        currentCell = ground.WorldToCell(transform.position);
+        if (playerIndex == 2)
+        {
+            Vector3Int t = ground.WorldToCell(transform.position);
+            currentCell = new Vector3Int(t.x - w.highestElv, t.y - w.highestElv, t.z);
+            currentCell = t;
+        }
+        else
+        {
+            currentCell = ground.WorldToCell(transform.position);
+        }
+        
 
         // Move player to moving point TODO: calculate delta time to make undepeding of fps
         if (moving && controllBool)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, movingPoint.transform.position, 1* Time.deltaTime);
         }
+
+        if (isMoving && Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f)
+        {
+            idling = false;
+        }
+
+        if (Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f)
+        {
+            isMoving = false;
+        }
         else
         {
+            isMoving = true;
 
         }
+
+        if (!isMoving)
+        {
+            if (!idling)
+            {
+                this.currentAnimator.SetTrigger("Idle");
+                idling = true;
+            }
+            
+        }
+
 
         // Calculate new position for player to move to depeding on input
         Vector3 newPosMP = this.transform.position;
@@ -232,12 +279,12 @@ public class MovementController : MonoBehaviour
         if (Input.GetKeyDown(playerControlls.left))
         {
             directionFacing = incDir(directionFacing);
-            sR.sprite = sprites[directionFacing];
+            //sR.sprite = sprites[directionFacing]; ALLAH
         }
         if (Input.GetKeyDown(playerControlls.right))
         {
             directionFacing = decDir(directionFacing);
-            sR.sprite = sprites[directionFacing];
+            //sR.sprite = sprites[directionFacing]; ALLAH
         }
 
         if (playerIndex == 3)
@@ -252,6 +299,7 @@ public class MovementController : MonoBehaviour
         //bool moveallowed = !collisionsInGrid.Contains(ground.WorldToCell(newPosMP));
         bool moveallowed;
         //Debug.Log((elevation + 1, collisionList.Count));
+        /*
         if (elevation + 1 < collisionList.Count)
         {
             moveallowed = !collisionList[elevation + 1].Contains(ground.WorldToCell(newPosMP));
@@ -260,6 +308,26 @@ public class MovementController : MonoBehaviour
         else
         {
             moveallowed = true;
+        }*/
+
+        Vector3Int checkAgainst = new Vector3Int();
+        if (playerIndex == 2)
+        {
+            Vector3Int t = ground.WorldToCell(newPosMP);
+            checkAgainst = new Vector3Int(t.x + w.highestElv, t.y + w.highestElv, t.z);
+        }
+        else
+        {
+            checkAgainst = ground.WorldToCell(newPosMP);
+        }
+
+        if (gM.getHighestElevation(checkAgainst) < elevation || (gM.getHighestElevation(ground.WorldToCell(newPosMP)) == 0 && elevation == 0))
+        {
+            moveallowed = true;
+        }
+        else
+        {
+            moveallowed = false;
         }
         //bool changeAllowed = collisionsInGrid.Contains(currentCell);
         bool changeAllowed = false;
@@ -328,9 +396,67 @@ public class MovementController : MonoBehaviour
         if ((Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f || changeAllowed) && moveallowed)
         {
             movingPoint.transform.position = newPosMP;
+            if (Input.GetKeyDown(playerControlls.forward))
+            {
+                if (directionFacing == 0 ||directionFacing == 1)
+                {
+                    backwardA.SetTrigger("Forward");
+                }
+                if (directionFacing == 2 ||directionFacing == 3)
+                {
+                    forwardA.SetTrigger("Forward");
+                }
+                
+            }
+            if (Input.GetKeyDown(playerControlls.backward))
+            {
+                if (directionFacing == 0 || directionFacing == 1)
+                {
+                    backwardA.SetTrigger("Backward");
+                }
+                if (directionFacing == 2 || directionFacing == 3)
+                {
+                    forwardA.SetTrigger("Backward");
+                }
+            }
         }
 
+        setDirectionSprite(directionFacing);
+    }
 
+    public void setDirectionSprite(int dir)
+    {
+        switch (dir)
+        {
+            case 0:
+                backward.SetActive(true);
+                currentAnimator = backwardA;
+                currentFB = backward;
+                forward.SetActive(false);
+                backward.transform.localScale = new Vector3(-startScale.x, startScale.y, startScale.z);
+                break;
+            case 1:
+                backward.SetActive(true);
+                currentAnimator = backwardA;
+                currentFB = backward;
+                forward.SetActive(false);
+                backward.transform.localScale = new Vector3(startScale.x, startScale.y, startScale.z);
+                break;
+            case 2:
+                forward.SetActive(true);
+                currentAnimator = forwardA;
+                currentFB = forward;
+                backward.SetActive(false);
+                forward.transform.localScale = new Vector3(-startScale.x, startScale.y, startScale.z);
+                break;
+            case 3:
+                forward.SetActive(true);
+                currentAnimator = forwardA;
+                currentFB = forward;
+                backward.SetActive(false);
+                forward.transform.localScale = new Vector3(startScale.x, startScale.y, startScale.z);
+                break;
+        }
     }
 }
 
