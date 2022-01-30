@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
     public Tilemap waterMap;
     public Tilemap boxPlacingMap;
 
+    public CameraPositions camPos;
+
     public class movementSet
     {
         public int playerId;

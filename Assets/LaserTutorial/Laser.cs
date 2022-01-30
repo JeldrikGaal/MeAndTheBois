@@ -114,7 +114,8 @@ public class Laser : MonoBehaviour
                     p1 = m1.reflectionPoint.transform;
                     repositionRefPoint(m1, _hit, p1);
                     m1.beingHit = true;
-                    m1.angleReceived = calcRecAngle(m1, points2[points2.Count - 1]);
+                    //m1.angleReceived = calcRecAngle(m1, points2[points2.Count - 1]);
+                    m1.angleReceived = calcRecAngle(m1, ray1);
                     gM.hitMirros.Add(m1);
                     if (!gM.hitMirrosStable.Contains(m1)) gM.hitMirrosStable.Add(m1);
 
@@ -155,8 +156,45 @@ public class Laser : MonoBehaviour
 
     }
 
-    float calcRecAngle(Mirror mir, Vector3 point)
+    float calcRecAngle(Mirror mir, Vector3 ray)
     {
+        Vector3 point = mir.transform.position + ((ray * -1) * 2);
+        //Debug.Log((ray, mir.transform.position, point));
+        float Mangle;
+        // Mir X > Point X
+        if (mir.transform.position.x > point.x)
+        {
+            // Mir Y > Point Y
+            if (mir.transform.position.y > point.y)
+            {
+                Mangle = 1;
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 2;
+            }
+        }
+        // Mir X < Point X
+        else
+        {
+            // Mir Y > Point Y
+            if (mir.transform.position.y >= point.y)
+            {
+                Mangle = 3; // X
+            }
+            // Mir Y < Point Y
+            else
+            {
+                Mangle = 0; // X
+            }
+        }
+
+        return Mangle;
+    }
+    float calcRecAngle2(Mirror mir, Vector3 point)
+    {
+        Debug.Log((mir.transform.position, point));
         float Mangle;
         // Mir X > Point X
         if (mir.transform.position.x > point.x)

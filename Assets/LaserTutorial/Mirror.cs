@@ -37,6 +37,8 @@ public class Mirror : MonoBehaviour
 
     // Store the angle if a ray is hitting this mirror
     public float angleReceived;
+    public float angleReceivedStable;
+    public float angleReceivedStableHelp;
     public bool  beingHit;
     private int counter;
 
@@ -55,6 +57,7 @@ public class Mirror : MonoBehaviour
     public SpriteRenderer mirrorSr;
     public GameObject laserG;
     public bool gravityAffected;
+    public bool DebugTurning;
 
     private void Awake()
     {
@@ -148,11 +151,28 @@ public class Mirror : MonoBehaviour
 
         // Reset every 5 frames --> no other way found to reset those variables
         counter -= 1;
+        if (counter == 5)
+        {
+            if (angleReceived != angleReceivedStableHelp)
+            {
+                angleReceivedStableHelp = angleReceived;
+            }
+        }
         if (counter == 0)
         {
+            angleReceivedStableHelp = angleReceived;
             counter = 5;
-            beingHit = false;
+            
             angleReceived = -1;
+        }
+        if (angleReceivedStable != -1)
+        {
+            angleReceivedStable = correctAngleRec(angleReceivedStableHelp);
+            beingHit = true;
+        }
+        else
+        {
+            beingHit = false;
         }
 
 
@@ -192,6 +212,14 @@ public class Mirror : MonoBehaviour
             TurnLeft();
         }
         if (Input.GetKeyDown(KeyCode.Alpha9) && playerNear)
+        {
+            TurnRight();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8) && DebugTurning)
+        {
+            TurnLeft();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9) && DebugTurning)
         {
             TurnRight();
         }
@@ -255,6 +283,11 @@ public class Mirror : MonoBehaviour
                 startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
             }
         }
+
+        if (!startingMir && beingHit) 
+        {
+            placeDirectionPoint();
+        }
         
     }
 
@@ -269,24 +302,169 @@ public class Mirror : MonoBehaviour
 
     void placeDirectionPoint()
     {
-        switch (angle)
+        if (startingMir)
+        {
+            switch (angle)
+            {
+                case 0:
+                    reflectionPoint.position = new Vector3(midPoint.x + ground.cellSize.x * 0.5f, midPoint.y - ground.cellSize.y * 0.5f);
+                    break;
+                case 1:
+                    reflectionPoint.position = new Vector3(midPoint.x + ground.cellSize.x * 0.5f, midPoint.y + ground.cellSize.y * 0.5f);
+                    break;
+                case 2:
+                    reflectionPoint.position = new Vector3(midPoint.x - ground.cellSize.x * 0.5f, midPoint.y + ground.cellSize.y * 0.5f);
+                    break;
+                case 3:
+                    reflectionPoint.position = new Vector3(midPoint.x - ground.cellSize.x * 0.5f, midPoint.y - ground.cellSize.y * 0.5f);
+                    break;
+            }
+            Debug.DrawLine(midPoint, reflectionPoint.position, Color.black);
+            startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
+            refStartCell = ground.WorldToCell(startingPos);
+        }
+        else
+        {
+           // Debug.Log("SSIO");
+
+            float usedAngle = -1;
+            switch (angle)
+            {
+                case 0:
+                    switch(angleReceivedStable)
+                    {
+                        case 1:
+                            usedAngle = 1;
+                            break;
+                        case 2:
+                            usedAngle = 4;
+                            break;
+                        case 3:
+                            usedAngle = -1;
+                            break;
+                        case 4:
+                            usedAngle = -1;
+                            break;
+                    }       
+                    break;
+                case 1:
+                    switch (angleReceivedStable)
+                    {
+                        case 1:
+                            usedAngle = -1;
+                            break;
+                        case 2:
+                            usedAngle = -1;
+                            break;
+                        case 3:
+                            usedAngle = 3;
+                            break;
+                        case 4:
+                            usedAngle = 2;
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (angleReceivedStable)
+                    {
+                        case 1:
+                            usedAngle = -1;
+                            break;
+                        case 2:
+                            usedAngle = 2;
+                            break;
+                        case 3:
+                            usedAngle = 1;
+                            break;
+                        case 4:
+                            usedAngle = -1;
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (angleReceivedStable)
+                    {
+                        case 1:
+                            usedAngle = 3;
+                            break;
+                        case 2:
+                            usedAngle = -1;
+                            break;
+                        case 3:
+                            usedAngle = -1;
+                            break;
+                        case 4:
+                            usedAngle = 4;
+                            break;
+                    }
+                    break;
+
+            }
+
+            switch (usedAngle)
+            {
+                case 1:
+                    reflectionPoint.position = new Vector3(midPoint.x + ground.cellSize.x * 0.5f, midPoint.y - ground.cellSize.y * 0.5f);
+                    break;
+                case 2:
+                    reflectionPoint.position = new Vector3(midPoint.x + ground.cellSize.x * 0.5f, midPoint.y + ground.cellSize.y * 0.5f);
+                    break;
+                case 3:
+                    reflectionPoint.position = new Vector3(midPoint.x - ground.cellSize.x * 0.5f, midPoint.y + ground.cellSize.y * 0.5f);
+                    break;
+                case 4:
+                    reflectionPoint.position = new Vector3(midPoint.x - ground.cellSize.x * 0.5f, midPoint.y - ground.cellSize.y * 0.5f);
+                    break;
+                case -1:
+                    reflectionPoint.position = this.transform.position;
+                    break;
+            }
+            Debug.DrawLine(midPoint, reflectionPoint.position, Color.black);
+            startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
+            refStartCell = ground.WorldToCell(startingPos);
+        }
+        
+    }
+
+    float correctAngleRec(float a)
+    {
+        switch (a)
         {
             case 0:
-                reflectionPoint.position = new Vector3(midPoint.x + ground.cellSize.x * 0.5f, midPoint.y - ground.cellSize.y * 0.5f);
-                break;
+                return 3;
             case 1:
-                reflectionPoint.position = new Vector3(midPoint.x + ground.cellSize.x * 0.5f, midPoint.y + ground.cellSize.y * 0.5f);
-                break;
+                return 1;
             case 2:
-                reflectionPoint.position = new Vector3(midPoint.x - ground.cellSize.x * 0.5f, midPoint.y + ground.cellSize.y * 0.5f);
-                break;
+                return 4;
             case 3:
-                reflectionPoint.position = new Vector3(midPoint.x - ground.cellSize.x * 0.5f, midPoint.y - ground.cellSize.y * 0.5f);
-                break;
+                return 2;
         }
-        Debug.DrawLine(midPoint, reflectionPoint.position, Color.black);
-        startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
-        refStartCell = ground.WorldToCell(startingPos);
+        return 0;
+    }
+
+    float ShiftAngleLeft(float a)
+    {
+        if (a == 1)
+        {
+            a = 4;
+        }
+        else
+        {
+            a -= 1;
+        }
+        return a;
+    }
+    float ShiftAngleRight(float a)
+    {
+        if (a == 4)
+        {
+            a = 1;
+        }
+        else
+        {
+            a += 1;
+        }
+        return a;
     }
 
     // Flip the Mirrorsprite for the starting mirror type 
