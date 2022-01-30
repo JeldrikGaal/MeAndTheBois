@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
     private bool modifying;
 
     public List<int> elevSL = new List<int>();
+    public Tilemap waterMap;
+    public Tilemap boxPlacingMap;
 
     public class movementSet
     {
@@ -130,11 +132,16 @@ public class GameManager : MonoBehaviour
         p3.ability1 = KeyCode.Return;
         controlls.Add(p3);
 
+        ground = GameObject.Find("Grid").GetComponent<Grid>();
+
+        waterMap = ground.transform.GetChild(1).GetComponent<Tilemap>();
+        boxPlacingMap = ground.transform.GetChild(2).GetComponent<Tilemap>();
+
     }
 
     public void Start()
     {
-        ground = GameObject.Find("Grid").GetComponent<Grid>();
+        
         foreach (GameObject b in GameObject.FindGameObjectsWithTag("Box"))
         {
             boxxes.Add(b.GetComponent<Box>());
@@ -547,26 +554,50 @@ public class GameManager : MonoBehaviour
 
         if (isBoxOnCell(cell, ground))
         {
-            if (getBoxSOnCell(cell, ground).elevation > elv)
+            int e = getBoxSOnCell(cell, ground).elevation;
+            if (e == 0) e = 1;
+            if ( e > elv)
             {
-                if (!getBoxOnCell(cell, ground) == ignore) elv = getBoxSOnCell(cell, ground).elevation;
+                GameObject b = getBoxOnCell(cell, ground);
+                if (!(b == ignore) && b.activeInHierarchy && !getBoxSOnCell(cell, ground).beingcarried)
+                {
+                    elv = e;
+                    if (elv == 0) elv = 1;
+                    if (getBoxSOnCell(cell, ground).saveTile != null) elv = 0; 
+                }
+                    
 
             }
         }
         if (getMirOnCell(cell, ground))
         {
-            if (getMirSOnCell(cell, ground).elevation > elv)
+            int e = getMirSOnCell(cell, ground).elevation;
+            if (e == 0) e = 1;
+            if (e > elv)
             {
-                if (!getMirOnCell(cell, ground) == ignore) elv = getMirSOnCell(cell, ground).elevation;
+                GameObject m = getMirOnCell(cell, ground);
+                if (!(m == ignore) && m.activeInHierarchy)
+                {
+                    elv = e;
+                    if (elv == 0) elv = 1;
+                }
+                    
 
             }
         }
 
-        if (getObstacleOnCell(cell, ground))
+        if (isObstacleOnCell(cell, ground))
         {
-            if (getObstacleSOnCell(cell, ground).elevation > elv)
+            int e = getObstacleSOnCell(cell, ground).elevation;
+            if (e == 0) e = 1;
+            if ( e > elv)
             {
-                if (!getObstacleOnCell(cell, ground) == ignore)  elv = getObstacleSOnCell(cell, ground).elevation;
+                GameObject o = getObstacleOnCell(cell, ground);
+                if (!(o == ignore) && o.activeInHierarchy)
+                {
+                    elv = e;
+                    if (elv == 0) elv = 1;
+                }
             }
         }
 

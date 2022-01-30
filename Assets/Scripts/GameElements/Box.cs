@@ -20,6 +20,9 @@ public class Box : MonoBehaviour
     public bool beingcarried;
     public int newElv;
 
+    public Tile boxTile;
+    public Tile saveTile = null;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -54,8 +57,13 @@ public class Box : MonoBehaviour
         //isBelowSolid();
         //Debug.Log(gM.getHighestElevation(currentCell, this.gameObject));
 
-        if (beingcarried) boxSprite.sortingLayerID = gM.elevSL[elevation];
+
+        //if (beingcarried) boxSprite.sortingLayerID = gM.elevSL[elevation + 1];
+        if (beingcarried) boxSprite.sortingLayerID = SortingLayer.NameToID("Flying");
+        if (beingcarried) boxSprite.sortingOrder = 1;
         newElv = gM.getHighestElevation(currentCell, this.gameObject);
+        //newElv = gM.getHighestElevation(currentCell);
+
         updateGravity();
     }
 
@@ -99,12 +107,32 @@ public class Box : MonoBehaviour
     {
         if (!beingcarried)
         {
-            
-            if (elevation > newElv)
+            elevation = newElv;
+            if (elevation != -1)
             {
-                this.boxSprite.sortingLayerID = gM.elevSL[newElv + 1 ];
-                elevation = newElv;
+                this.boxSprite.sortingLayerID = gM.elevSL[elevation + 1];
+                this.boxSprite.transform.localPosition = new Vector3(this.boxSprite.transform.localPosition.x, 0.5f * elevation, this.boxSprite.transform.localPosition.z);
             }
+            else
+            {
+                this.boxSprite.sortingLayerID = SortingLayer.NameToID("Layer1");
+                this.boxSprite.enabled = false;
+                if (saveTile == null)
+                {
+                    saveTile = (Tile)gM.waterMap.GetTile(currentCell);
+                    gM.tilesList[0].Add(currentCell);
+                    Debug.Log((currentCell, "HIER IST NE BOX"));
+                }
+                //gM.waterMap.SetTile(currentCell, boxTile);
+                gM.boxPlacingMap.SetTile(currentCell, boxTile);
+                
+
+                //this.boxSprite.transform.localPosition = new Vector3(this.boxSprite.transform.localPosition.x, 0f, this.boxSprite.transform.localPosition.z);
+            }
+
+
+
+           
         }
     }
 }

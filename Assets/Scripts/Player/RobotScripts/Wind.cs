@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Wind : MonoBehaviour
 {
@@ -32,6 +33,12 @@ public class Wind : MonoBehaviour
 
     public int maxElevation;
 
+    public float boneStartYFor;
+    public float boneStartYBac;
+    public float currentBoneStartY;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,13 +54,14 @@ public class Wind : MonoBehaviour
 
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         maxElevation = 7;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         robotSprite = movC.currentFB;
-        highestElv = gM.getHighestElevation(movC.currentCell);
+        highestElv = gM.getHighestElevation(movC.currentCell, box);
         Vector3Int t = movC.currentCell;
         switch (movC.directionFacing)
         {
@@ -74,7 +82,7 @@ public class Wind : MonoBehaviour
         t = movC.currentCell;
         t = new Vector3Int(t.x + highestElv, t.y + highestElv, t.z);
         // Debug.Log((movC.currentCell, t));
-        highestElv2 = gM.getHighestElevation(t);
+        highestElv2 = gM.getHighestElevation(t, box);
         
         // Controll up and down movement / elevation of player
         robotSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
@@ -120,11 +128,8 @@ public class Wind : MonoBehaviour
             // Putting Box back on the ground
             if (carryingBox )
             {
-                // create effect of the box being actually lifted
-                //boxS.boxSprite.transform.localPosition = new Vector3(0, -0.375f, 0); // REDO
-                //boxS.boxSprite.sortingLayerName = "Interactable"; // REDO
-                Vector3 temp = gM.ground.GetCellCenterWorld(gM.ground.WorldToCell(this.transform.position)); // REDO
-                box.transform.position = new Vector3(temp.x, temp.y - gM.ground.cellSize.y * 0.75f, 0);
+                Vector3 temp = movC.ground.GetCellCenterWorld(movC.ground.WorldToCell(this.transform.position));
+                box.transform.position = new Vector3(temp.x, temp.y - movC.ground.cellSize.y * 0.75f, 0);
                 boxS.boxSprite.transform.localPosition = new Vector3(0, 0, 0);
                 boxS.beingcarried = false;
                 box = null;
@@ -138,8 +143,17 @@ public class Wind : MonoBehaviour
             {
                 box = gM.getBoxOnCell(movC.currentCell, movC.ground);
                 boxS = box.GetComponent<Box>();
+                
                 if (this.elevation > boxS.elevation)
                 {
+                    if (boxS.saveTile != null)
+                    {
+                        gM.waterMap.SetTile(movC.currentCell, boxS.saveTile);
+                        gM.boxPlacingMap.SetTile(movC.currentCell, null);
+                        gM.tilesList[0].Remove(movC.currentCell);
+                        boxS.saveTile = null;
+                        boxS.boxSprite.enabled = true;
+                    }
                     carryingBox = true;
                     boxS.beingcarried = true;
                 }
@@ -175,8 +189,11 @@ public class Wind : MonoBehaviour
         {
             //boxS.boxSprite.transform.localPosition = new Vector3(0, spriteOffSet + ( (movC.ground.cellSize.y * 0.5f) * (elevation - boxS.elevation - 1)) , 0);
 
-            boxS.boxSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
-            box.transform.position = this.transform.position + offset;
+            //boxS.boxSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
+            box.transform.position = new Vector3(this.movC.currentFB.transform.position.x, this.movC.currentFB.transform.position.y -boxS.boxSprite.bounds.size.y * 0.75f, this.movC.currentFB.transform.position.z);
+            //box.transform.position = new Vector3(box.transform.position.x, box.transform.position.y + ((movC.currentFB.transform.GetChild(11).TransformVector(movC.currentMovingBone.transform.localPosition).y - currentBoneStartY)), box.transform.position.z);
+            boxS.boxSprite.transform.localPosition = new Vector3(0, 0, 0);
+            boxS.boxSprite.transform.position = new Vector3(boxS.boxSprite.transform.position.x , boxS.boxSprite.transform.position.y + ((movC.currentFB.transform.GetChild(11).TransformVector(movC.currentMovingBone.transform.localPosition).y - currentBoneStartY)), boxS.boxSprite.transform.position.z);
             boxS.elevation = this.elevation - 1;
            
         }

@@ -164,3 +164,6 @@ MonoBehaviour:
   boxSprite: {fileID: 0}
   currentCell: {x: 0, y: 0, z: 0}
   speed: 0
+  beingcarried: 0
+  newElv: 0
+  boxTile: {fileID: 11400000, guid: 87b6597ddb231a541baade1a1eb1f7e8, type: 2}

@@ -46,8 +46,10 @@ public class MovementController : MonoBehaviour
     public GameObject backward;
     public Animator backwardA;
 
+
     public Animator currentAnimator;
     public GameObject currentFB;
+    public GameObject currentMovingBone;
     public bool idling;
 
     public Vector3 startScale;
@@ -95,6 +97,8 @@ public class MovementController : MonoBehaviour
         if (playerIndex == 2)
         {
             w = this.GetComponent<Wind>();
+            w.boneStartYFor = forward.transform.GetChild(11).TransformVector(forward.transform.GetChild(11).GetChild(1).transform.localPosition).y;
+            w.boneStartYBac = backward.transform.GetChild(11).TransformVector(backward.transform.GetChild(11).GetChild(1).transform.localPosition).y;
         }
         if (playerIndex == 3)
         {
@@ -321,9 +325,15 @@ public class MovementController : MonoBehaviour
             checkAgainst = ground.WorldToCell(newPosMP);
         }
 
+        //Debug.Log((this.name, gM.getHighestElevation(ground.WorldToCell(newPosMP))));
         if (gM.getHighestElevation(checkAgainst) < elevation || (gM.getHighestElevation(ground.WorldToCell(newPosMP)) == 0 && elevation == 0))
         {
+            
             moveallowed = true;
+            if (playerIndex == 1 && gM.getHighestElevation(checkAgainst) == -1)
+            {
+                moveallowed = false;
+            }
         }
         else
         {
@@ -364,7 +374,7 @@ public class MovementController : MonoBehaviour
 
         if (moveallowed)
         {
-            if (gM.isBoxOnCell(ground.WorldToCell(newPosMP), ground))
+            if (gM.isBoxOnCell(ground.WorldToCell(newPosMP), ground) && gM.getBoxSOnCell(ground.WorldToCell(newPosMP), ground).saveTile == null)
             {
                 if (playerIndex == 2)
                 {
@@ -374,6 +384,7 @@ public class MovementController : MonoBehaviour
                         {
                             if (! (gM.getBoxSOnCell(ground.WorldToCell(newPosMP), ground).elevation < w.elevation - 1))
                             {
+                                Debug.Log("BOX BLOCKT DU KAHBA");
                                 moveallowed = false;
                             }
                         }
@@ -434,11 +445,13 @@ public class MovementController : MonoBehaviour
                 currentFB = backward;
                 forward.SetActive(false);
                 backward.transform.localScale = new Vector3(-startScale.x, startScale.y, startScale.z);
+                if (playerIndex == 2) w.currentBoneStartY = w.boneStartYBac;
                 break;
             case 1:
                 backward.SetActive(true);
                 currentAnimator = backwardA;
                 currentFB = backward;
+                if (playerIndex == 2) w.currentBoneStartY = w.boneStartYBac;
                 forward.SetActive(false);
                 backward.transform.localScale = new Vector3(startScale.x, startScale.y, startScale.z);
                 break;
@@ -446,6 +459,7 @@ public class MovementController : MonoBehaviour
                 forward.SetActive(true);
                 currentAnimator = forwardA;
                 currentFB = forward;
+                if (playerIndex == 2) w.currentBoneStartY = w.boneStartYFor;
                 backward.SetActive(false);
                 forward.transform.localScale = new Vector3(-startScale.x, startScale.y, startScale.z);
                 break;
@@ -453,10 +467,12 @@ public class MovementController : MonoBehaviour
                 forward.SetActive(true);
                 currentAnimator = forwardA;
                 currentFB = forward;
+                if (playerIndex == 2) w.currentBoneStartY = w.boneStartYFor;
                 backward.SetActive(false);
                 forward.transform.localScale = new Vector3(startScale.x, startScale.y, startScale.z);
                 break;
         }
+        if (playerIndex == 2) currentMovingBone = currentFB.transform.GetChild(11).GetChild(1).gameObject;
     }
 }
 
