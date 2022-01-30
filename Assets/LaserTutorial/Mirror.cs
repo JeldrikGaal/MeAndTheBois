@@ -48,9 +48,17 @@ public class Mirror : MonoBehaviour
     public EdgeCollider2D coll;
     public Vector2 collOffset;
     public int elevation;
+    public int newElv;
+
+    public GameObject parentG;
+    public GameObject mirrorG;
+    public SpriteRenderer mirrorSr;
+    public GameObject laserG;
+    public bool gravityAffected;
 
     private void Awake()
     {
+
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         coll = this.GetComponent<EdgeCollider2D>();
@@ -79,6 +87,25 @@ public class Mirror : MonoBehaviour
        
         // Where does the ray come from variables
         counter = 5;
+
+        if (startingMir)
+        {
+            parentG = this.transform.parent.gameObject;
+            mirrorG = parentG.transform.GetChild(0).gameObject;
+            laserG = parentG.transform.GetChild(1).gameObject;
+            mirrorSr = mirrorG.GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            parentG = this.transform.parent.gameObject; ;
+            laserG = null;
+            mirrorG = this.gameObject;
+            mirrorSr = this.transform.GetChild(1).GetComponent<SpriteRenderer>();
+            
+        }
+        
+        
+        
     } 
 
 
@@ -131,7 +158,15 @@ public class Mirror : MonoBehaviour
 
 
         // Keep current cell updated
-        currentCell = ground.WorldToCell(this.transform.position);
+        if (startingMir)
+        {
+            currentCell = ground.WorldToCell(parentG.transform.position);
+        }
+        else
+        {
+            currentCell = ground.WorldToCell(parentG.transform.position);
+        }
+
 
         // check if one of the players is adjacent
         if (checkAdjacentCells(gM.p1))
@@ -174,13 +209,52 @@ public class Mirror : MonoBehaviour
         }
 
         // Handle logic of player carrying mirror
-        if (beingCarried) 
+        if (beingCarried)
         {
             midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
             midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
             placeDirectionPoint();
         }
+        else
+        {
+            if (gravityAffected)
+            {
+                newElv = gM.getHighestElevation(currentCell, this.gameObject);
+                if (newElv > elevation)
+                {
+                    int diff = newElv - elevation;
+                    elevation = newElv;
+                    mirrorG.transform.position = new Vector3(mirrorG.transform.position.x, mirrorG.transform.position.y + diff * ground.cellSize.y, mirrorG.transform.position.z);
+                    if (startingMir)
+                    {
+                        laserG.transform.position = new Vector3(laserG.transform.position.x, laserG.transform.position.y + diff * ground.cellSize.y, laserG.transform.position.z);
+                    }
+                        
 
+                }
+                if (newElv < elevation)
+                {
+                    int diff = elevation - newElv;
+                    elevation = newElv;
+                    mirrorG.transform.position = new Vector3(mirrorG.transform.position.x, mirrorG.transform.position.y - diff * ground.cellSize.y, mirrorG.transform.position.z);
+                    if (startingMir)
+                    {
+                        laserG.transform.position = new Vector3(laserG.transform.position.x, laserG.transform.position.y - diff * ground.cellSize.y, laserG.transform.position.z);
+                    }
+
+                }
+
+                mirrorSr.sortingLayerID = gM.elevSL[elevation+1];
+                mirrorSr.sortingOrder = 2;
+                midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
+                midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(reflectionPoint.position));
+                reflectionPoint.transform.position = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.25f) + yOffset, temp.z);
+                placeDirectionPoint();
+                refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
+                startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
+            }
+        }
         
     }
 
