@@ -153,15 +153,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraPositions: []
-  pos1: {x: 0, y: 0, z: 0}
-  pos2: {x: 0, y: 0, z: 0}
-  pos3: {x: 0, y: 0, z: 0}
-  pos4: {x: 0, y: 0, z: 0}
-  pos5: {x: 0, y: 0, z: 0}
-  pos6: {x: 0, y: 0, z: 0}
-  pos7: {x: 0, y: 0, z: 0}
-  pos8: {x: 0, y: 0, z: 0}
-  pos9: {x: 0, y: 0, z: 0}
+  pos1: {x: 38.37, y: -4.36, z: -10}
+  pos2: {x: 43.43, y: -1.19, z: -10}
+  pos3: {x: 52.84, y: 0.47, z: -10}
+  pos4: {x: 63.23, y: 2.66, z: -10}
+  pos5: {x: 72.45, y: 6.33, z: -10}
+  pos6: {x: 82.4, y: 9.68, z: -10}
+  pos7: {x: 88.17, y: 11.84, z: -10}
+  pos8: {x: 93.99, y: 16.28, z: -10}
+  pos9: {x: 102.32, y: 19.42, z: -10}
 --- !u!4 &3545451
 Transform:
   m_ObjectHideFlags: 0
