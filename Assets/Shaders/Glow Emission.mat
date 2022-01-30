@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Glow Emission
-  m_Shader: {fileID: -6465566751694194690, guid: 932d5d792816b0f4781d3c655f8bc9b1, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: cfa2b3c385eb2314797d5e68787f9a28, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -42,5 +42,6 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _Color: {r: 0, g: 1.6167644, b: 2.270603, a: 1}
+    - _Color: {r: 0.019404527, g: 0.2134498, b: 0.3169406, a: 1}
+    - _Speed: {r: -0.1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
