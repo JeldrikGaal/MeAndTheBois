@@ -85,6 +85,9 @@ TagManager:
   - name: Foreground
     uniqueID: 2518291153
     locked: 0
+  - name: Tutorials
+    uniqueID: 3664565597
+    locked: 0
   - name: Flying
     uniqueID: 4091634711
     locked: 0
