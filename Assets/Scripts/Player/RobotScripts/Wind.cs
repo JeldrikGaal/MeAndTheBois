@@ -63,6 +63,7 @@ public class Wind : MonoBehaviour
         robotSprite = movC.currentFB;
         highestElv = gM.getHighestElevation(movC.currentCell, box);
         Vector3Int t = movC.currentCell;
+
         switch (movC.directionFacing)
         {
             case 0:
@@ -81,7 +82,6 @@ public class Wind : MonoBehaviour
 
         t = movC.currentCell;
         t = new Vector3Int(t.x + highestElv, t.y + highestElv, t.z);
-        // Debug.Log((movC.currentCell, t));
         highestElv2 = gM.getHighestElevation(t, box);
         
         // Controll up and down movement / elevation of player
@@ -98,7 +98,6 @@ public class Wind : MonoBehaviour
             }
         }
 
-        //robotSpriteR.sortingLayerID = gM.elevSL[elevation];
 
         // Regulate shadow size according to elevation
         shadow.size = new Vector2(shadowStartSize - elevation * 0.02f, shadowStartSize - elevation * 0.02f); // REDO
@@ -187,11 +186,8 @@ public class Wind : MonoBehaviour
 
         if (carryingBox && box)
         {
-            //boxS.boxSprite.transform.localPosition = new Vector3(0, spriteOffSet + ( (movC.ground.cellSize.y * 0.5f) * (elevation - boxS.elevation - 1)) , 0);
-
-            //boxS.boxSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
+          
             box.transform.position = new Vector3(this.movC.currentFB.transform.position.x, this.movC.currentFB.transform.position.y -boxS.boxSprite.bounds.size.y * 0.75f, this.movC.currentFB.transform.position.z);
-            //box.transform.position = new Vector3(box.transform.position.x, box.transform.position.y + ((movC.currentFB.transform.GetChild(11).TransformVector(movC.currentMovingBone.transform.localPosition).y - currentBoneStartY)), box.transform.position.z);
             boxS.boxSprite.transform.localPosition = new Vector3(0, 0, 0);
             boxS.boxSprite.transform.position = new Vector3(boxS.boxSprite.transform.position.x , boxS.boxSprite.transform.position.y + ((movC.currentFB.transform.GetChild(11).TransformVector(movC.currentMovingBone.transform.localPosition).y - currentBoneStartY)), boxS.boxSprite.transform.position.z);
             boxS.elevation = this.elevation - 1;
@@ -205,6 +201,7 @@ public class Wind : MonoBehaviour
             mirS.sR.transform.localPosition = new Vector3(0, elevation * 0.2f, 0);
         }
 
+        // Shadow sorting layer
         shadow.sortingOrder = 5;
         if (! (elevation - 1 < 0))
         {

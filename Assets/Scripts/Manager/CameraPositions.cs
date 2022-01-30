@@ -13,6 +13,8 @@ public class CameraPositions : MonoBehaviour
     public Vector3 pos5;
     public Vector3 pos6;
     public Vector3 pos7;
+    public Vector3 pos8;
+    public Vector3 pos9;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,8 @@ public class CameraPositions : MonoBehaviour
         cameraPositions.Add(pos5);
         cameraPositions.Add(pos6);
         cameraPositions.Add(pos7);
+        cameraPositions.Add(pos8);
+        cameraPositions.Add(pos9);
     }
 
     // Update is called once per frame

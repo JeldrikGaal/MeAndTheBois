@@ -68,6 +68,13 @@ public class MovementController : MonoBehaviour
     public bool isMoving;
 
     public List<Sprite> sprites;
+
+    public int blockage;
+    public float blockDist;
+    public bool moAll;
+    public Vector3 newP;
+    public Vector3 tra;
+
     void Start()
     {
         idling = true;
@@ -158,7 +165,7 @@ public class MovementController : MonoBehaviour
 
         if (playerIndex == 3 && !s)
         {
-            this.gameObject.SetActive(false);
+            //this.gameObject.SetActive(false);
             s = true;
         }
     }
@@ -216,7 +223,7 @@ public class MovementController : MonoBehaviour
         switch (playerIndex)
         {
             case 1:
-                elevation = 0;
+                //elevation = elevation;
                 break;
             case 2:
                 elevation = w.elevation;
@@ -333,11 +340,13 @@ public class MovementController : MonoBehaviour
             if (playerIndex == 1 && gM.getHighestElevation(checkAgainst) == -1)
             {
                 moveallowed = false;
+                blockage = 0;
             }
         }
         else
         {
             moveallowed = false;
+            blockage = 1;
         }
         //bool changeAllowed = collisionsInGrid.Contains(currentCell);
         bool changeAllowed = false;
@@ -386,26 +395,37 @@ public class MovementController : MonoBehaviour
                             {
                                 Debug.Log("BOX BLOCKT DU KAHBA");
                                 moveallowed = false;
+                                blockage = 2;
                             }
                         }
                     }
                     else
                     {
                         moveallowed = false;
+                        blockage = 3;
                     }
 
                 }
                 else
                 {
                     moveallowed = false;
+                    blockage = 4;
                 }
                 
             }
 
         }
         // Only Allow change of position if player is already at moving point or moving point is in an invalid position
+        blockDist = Vector3.Distance(this.transform.position, movingPoint.transform.position);
+        moAll = moveallowed;
+        tra = this.transform.position;
+        newP = newPosMP;
+
+        Debug.Log((tra != newP));
+
         if ((Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f || changeAllowed) && moveallowed)
         {
+            blockage = -1;
             movingPoint.transform.position = newPosMP;
             if (Input.GetKeyDown(playerControlls.forward))
             {

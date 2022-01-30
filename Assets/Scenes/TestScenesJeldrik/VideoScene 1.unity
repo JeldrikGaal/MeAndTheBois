@@ -1673,7 +1673,7 @@ VFXRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 2
 --- !u!2083052967 &213682406
 VisualEffect:
@@ -1746,6 +1746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animSpeed: 2
   single: 0
+  elevation: 0
   left: {fileID: 0}
   plate: {fileID: 0}
   right: {fileID: 0}
@@ -1758,6 +1759,7 @@ MonoBehaviour:
   player3Goal: {x: 0, y: 0, z: 0}
   currentCell: {x: 0, y: 0, z: 0}
   openGate: 0
+  sG: {fileID: 0}
 --- !u!4 &279637490
 Transform:
   m_ObjectHideFlags: 0
@@ -4101,12 +4103,22 @@ MonoBehaviour:
   reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
   angleReceived: 0
+  angleReceivedStable: 0
+  angleReceivedStableHelp: 0
   beingHit: 0
   needsChargeToRotate: 0
   angleToCharge: 0
   chargeTimer: 0
   coll: {fileID: 0}
   collOffset: {x: 0, y: 0}
+  elevation: 0
+  newElv: 0
+  parentG: {fileID: 0}
+  mirrorG: {fileID: 0}
+  mirrorSr: {fileID: 0}
+  laserG: {fileID: 0}
+  gravityAffected: 0
+  DebugTurning: 0
 --- !u!212 &499280825
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4146,7 +4158,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c763a31fd20a0da44981b273ac2ad12d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4281,12 +4293,22 @@ MonoBehaviour:
   reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
   angleReceived: 0
+  angleReceivedStable: 0
+  angleReceivedStableHelp: 0
   beingHit: 0
   needsChargeToRotate: 0
   angleToCharge: 0
   chargeTimer: 0
   coll: {fileID: 0}
   collOffset: {x: 0, y: 0}
+  elevation: 0
+  newElv: 0
+  parentG: {fileID: 0}
+  mirrorG: {fileID: 0}
+  mirrorSr: {fileID: 0}
+  laserG: {fileID: 0}
+  gravityAffected: 0
+  DebugTurning: 0
 --- !u!212 &730470571
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4326,7 +4348,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: c763a31fd20a0da44981b273ac2ad12d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4426,13 +4448,28 @@ MonoBehaviour:
   elevationsInGrid: []
   moving: 0
   sR: {fileID: 0}
+  forward: {fileID: 0}
+  forwardA: {fileID: 0}
+  backward: {fileID: 0}
+  backwardA: {fileID: 0}
+  currentAnimator: {fileID: 0}
+  currentFB: {fileID: 0}
+  currentMovingBone: {fileID: 0}
+  idling: 0
+  startScale: {x: 0, y: 0, z: 0}
   sprite1: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
   sprite2: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
   sprite3: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
   sprite4: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
   controllBool: 1
   elevation: 0
+  isMoving: 0
   sprites: []
+  blockage: 0
+  blockDist: 0
+  moAll: 0
+  newP: {x: 0, y: 0, z: 0}
+  tra: {x: 0, y: 0, z: 0}
 --- !u!4 &735004804
 Transform:
   m_ObjectHideFlags: 0
@@ -4488,7 +4525,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -4515,6 +4552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shadow: {fileID: 735004805}
   robotSprite: {fileID: 1742951779}
+  robotSpriteR: {fileID: 0}
   gM: {fileID: 2044340015}
   movC: {fileID: 735004803}
   elevation: 0
@@ -4522,6 +4560,12 @@ MonoBehaviour:
   spriteOffSet: 0
   carryingBox: 0
   carryingMirror: 0
+  highestElv: 0
+  highestElv2: 0
+  maxElevation: 0
+  boneStartYFor: 0
+  boneStartYBac: 0
+  currentBoneStartY: 0
 --- !u!4 &811109638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 523762129148382369, guid: eaeb7a30f6028af46bb48156a950b686, type: 3}
@@ -4786,7 +4830,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 11375a30d30e071469898c5f7900cab2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4829,13 +4873,28 @@ MonoBehaviour:
   elevationsInGrid: []
   moving: 0
   sR: {fileID: 0}
+  forward: {fileID: 0}
+  forwardA: {fileID: 0}
+  backward: {fileID: 0}
+  backwardA: {fileID: 0}
+  currentAnimator: {fileID: 0}
+  currentFB: {fileID: 0}
+  currentMovingBone: {fileID: 0}
+  idling: 0
+  startScale: {x: 0, y: 0, z: 0}
   sprite1: {fileID: 21300000, guid: 37248162c88836e4782aa9676a9cfec9, type: 3}
   sprite2: {fileID: 21300000, guid: 59a07339b7e792e49a769bebdb741bd8, type: 3}
   sprite3: {fileID: 21300000, guid: 587bbdd853dc600419a120eaa8bdb449, type: 3}
   sprite4: {fileID: 21300000, guid: 9157d273210a7a94aa973eb9e85cc0a5, type: 3}
   controllBool: 1
   elevation: 0
+  isMoving: 0
   sprites: []
+  blockage: 0
+  blockDist: 0
+  moAll: 0
+  newP: {x: 0, y: 0, z: 0}
+  tra: {x: 0, y: 0, z: 0}
 --- !u!4 &1002716255
 Transform:
   m_ObjectHideFlags: 0
@@ -5442,12 +5501,22 @@ MonoBehaviour:
   reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
   angleReceived: 0
+  angleReceivedStable: 0
+  angleReceivedStableHelp: 0
   beingHit: 0
   needsChargeToRotate: 0
   angleToCharge: 0
   chargeTimer: 0
   coll: {fileID: 0}
   collOffset: {x: 0, y: 0}
+  elevation: 0
+  newElv: 0
+  parentG: {fileID: 0}
+  mirrorG: {fileID: 0}
+  mirrorSr: {fileID: 0}
+  laserG: {fileID: 0}
+  gravityAffected: 0
+  DebugTurning: 0
 --- !u!68 &1251749117
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -5668,7 +5737,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 11375a30d30e071469898c5f7900cab2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5734,12 +5803,22 @@ MonoBehaviour:
   reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
   angleReceived: 0
+  angleReceivedStable: 0
+  angleReceivedStableHelp: 0
   beingHit: 0
   needsChargeToRotate: 0
   angleToCharge: 0
   chargeTimer: 0
   coll: {fileID: 0}
   collOffset: {x: 0, y: 0}
+  elevation: 0
+  newElv: 0
+  parentG: {fileID: 0}
+  mirrorG: {fileID: 0}
+  mirrorSr: {fileID: 0}
+  laserG: {fileID: 0}
+  gravityAffected: 0
+  DebugTurning: 0
 --- !u!212 &1416673104
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5779,7 +5858,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c763a31fd20a0da44981b273ac2ad12d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6052,9 +6131,17 @@ MonoBehaviour:
   shooting: 0
   tagsToErode: []
   mC: {fileID: 0}
+  gM: {fileID: 0}
   bomb: {fileID: 0}
   elevation: 0
   maxShootDist: 0
+  shadow: {fileID: 0}
+  shadowStartSize: 0
+  maxElevation: 0
+  movC: {fileID: 0}
+  highestElv: 0
+  highestElv2: 0
+  carryingBox: 0
 --- !u!114 &1494872506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6085,13 +6172,28 @@ MonoBehaviour:
   elevationsInGrid: []
   moving: 0
   sR: {fileID: 1406923331}
+  forward: {fileID: 0}
+  forwardA: {fileID: 0}
+  backward: {fileID: 0}
+  backwardA: {fileID: 0}
+  currentAnimator: {fileID: 0}
+  currentFB: {fileID: 0}
+  currentMovingBone: {fileID: 0}
+  idling: 0
+  startScale: {x: 0, y: 0, z: 0}
   sprite1: {fileID: 21300000, guid: 37248162c88836e4782aa9676a9cfec9, type: 3}
   sprite2: {fileID: 21300000, guid: 59a07339b7e792e49a769bebdb741bd8, type: 3}
   sprite3: {fileID: 21300000, guid: 587bbdd853dc600419a120eaa8bdb449, type: 3}
   sprite4: {fileID: 21300000, guid: 9157d273210a7a94aa973eb9e85cc0a5, type: 3}
   controllBool: 1
   elevation: 0
+  isMoving: 0
   sprites: []
+  blockage: 0
+  blockDist: 0
+  moAll: 0
+  newP: {x: 0, y: 0, z: 0}
+  tra: {x: 0, y: 0, z: 0}
 --- !u!4 &1494872507
 Transform:
   m_ObjectHideFlags: 0
@@ -6488,7 +6590,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -203332585
-  m_SortingLayer: 13
+  m_SortingLayer: 14
   m_SortingOrder: 7
   m_Sprite: {fileID: 21300000, guid: 5eeb5d6d7a06436428418fa3aa486e7d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6695,6 +6797,10 @@ MonoBehaviour:
   boxSprite: {fileID: 0}
   currentCell: {x: 0, y: 0, z: 0}
   speed: 0
+  beingcarried: 0
+  newElv: 0
+  boxTile: {fileID: 0}
+  saveTile: {fileID: 0}
 --- !u!61 &1806904997
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6872,12 +6978,22 @@ MonoBehaviour:
   reflectionPoint: {fileID: 0}
   sR: {fileID: 0}
   angleReceived: 0
+  angleReceivedStable: 0
+  angleReceivedStableHelp: 0
   beingHit: 0
   needsChargeToRotate: 0
   angleToCharge: 0
   chargeTimer: 0
   coll: {fileID: 0}
   collOffset: {x: 0, y: 0}
+  elevation: 0
+  newElv: 0
+  parentG: {fileID: 0}
+  mirrorG: {fileID: 0}
+  mirrorSr: {fileID: 0}
+  laserG: {fileID: 0}
+  gravityAffected: 0
+  DebugTurning: 0
 --- !u!212 &1831472315
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6917,7 +7033,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 553f4217fe94ad949bf913d4f88b619d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7420,6 +7536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxxes: []
   mirrors: []
+  obstacles: []
   hitMirros: []
   hitMirrosStable: []
   hitPipes: []
@@ -7428,11 +7545,20 @@ MonoBehaviour:
   hitCombiStable: []
   windPowered: []
   collG: {fileID: 0}
+  h1: []
+  h2: []
+  h3: []
+  h4: []
+  h5: []
   EM: {fileID: 172472802}
   p1: {fileID: 1002716254}
   p2: {fileID: 735004803}
   p3: {fileID: 1494872506}
   ground: {fileID: 0}
+  elevSL: 
+  waterMap: {fileID: 0}
+  boxPlacingMap: {fileID: 0}
+  camPos: {fileID: 0}
 --- !u!4 &2044340016
 Transform:
   m_ObjectHideFlags: 0

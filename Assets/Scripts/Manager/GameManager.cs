@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         public KeyCode left;
         public KeyCode right;
         public KeyCode ability1;
+        public KeyCode ability2;
         public KeyCode up;
         public KeyCode down;
     }
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
         p1.left = KeyCode.A;
         p1.right = KeyCode.D;
         p1.ability1 = KeyCode.F;
+        p1.ability2 = new KeyCode();
         p1.up = new KeyCode();
         p1.down = new KeyCode();
         controlls.Add(p1);
@@ -119,6 +121,7 @@ public class GameManager : MonoBehaviour
         p2.left = KeyCode.LeftArrow;
         p2.right = KeyCode.RightArrow;
         p2.ability1 = KeyCode.Return;
+        p2.ability2 = new KeyCode();
         p2.up = KeyCode.O;
         p2.down = KeyCode.L;
         controlls.Add(p2);
@@ -132,6 +135,7 @@ public class GameManager : MonoBehaviour
         p3.up = KeyCode.R;
         p3.down = KeyCode.F;
         p3.ability1 = KeyCode.Return;
+        p3.ability2 = KeyCode.Backspace;
         controlls.Add(p3);
 
         ground = GameObject.Find("Grid").GetComponent<Grid>();

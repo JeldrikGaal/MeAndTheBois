@@ -15,8 +15,6 @@ public class Pipe : MonoBehaviour
     public ParticleSystem p3;
     public ParticleSystem p4;
     public ParticleSystem p5;
-    public ParticleSystem p6;
-    public ParticleSystem p7;
     public List<ParticleSystem> pList = new List<ParticleSystem>();
     public List<Vector3> pPositionList = new List<Vector3>();
 
@@ -39,6 +37,8 @@ public class Pipe : MonoBehaviour
     public LayerMask ignore;
     public RaycastHit2D hitH;
 
+    public GameObject windCont;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,8 +55,8 @@ public class Pipe : MonoBehaviour
         pList.Add(p3);
         pList.Add(p4);
         pList.Add(p5);
-        pList.Add(p6);
-        pList.Add(p7);
+
+        windCont = this.transform.GetChild(7).gameObject;
 
         on = true;
         timer = randomInterval;
@@ -254,6 +254,14 @@ public class Pipe : MonoBehaviour
         }
      }
 
+     void toggleParticles(bool o)
+     {
+        foreach (ParticleSystem p in pList)
+        {
+            p.gameObject.SetActive(o);
+        }
+        windCont.SetActive(o);
+     }
 
      // Update is called once per frame
      void Update()
@@ -267,6 +275,7 @@ public class Pipe : MonoBehaviour
         {
             determinWindArea();
         }
+        toggleParticles(on);
         
 
     }

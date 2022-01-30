@@ -326,8 +326,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1818157739
-  m_SortingLayer: 7
+  m_SortingLayerID: 846601297
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 86387458d50a6fe49b3d2ae8891ef538, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -355,13 +355,11 @@ MonoBehaviour:
   randomInterval: 0.5
   spawnCount: 2
   type: 0
-  p1: {fileID: 0}
-  p2: {fileID: 4278229472683393451}
-  p3: {fileID: 4278229472925901872}
-  p4: {fileID: 0}
-  p5: {fileID: 4278229471724316010}
-  p6: {fileID: 4278229472085900722}
-  p7: {fileID: 4278229473397904375}
+  p1: {fileID: 4278229471724316010}
+  p2: {fileID: 4278229472925901872}
+  p3: {fileID: 4278229472683393451}
+  p4: {fileID: 4278229473397904375}
+  p5: {fileID: 4278229472085900722}
   pList: []
   pPositionList: []
   length: 0

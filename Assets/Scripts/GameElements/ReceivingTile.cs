@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ReceivingTile : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class ReceivingTile : MonoBehaviour
     public float animSpeed = 2;
     [Tooltip("Needs to be checked if used as receiving tile for combi Robot and not checked if used for splitting up")]
     public bool single;
+
+    public int elevation;
 
     [Header("Variables not to be touched. Only for Script")]
     public Transform left;
@@ -22,7 +25,9 @@ public class ReceivingTile : MonoBehaviour
     public Vector3 plateGoal = new Vector3(-0.018f, -0.269f, 0);
     public Vector3 player3Goal = new Vector3();
     public Vector3Int currentCell;
+    
     public bool openGate = false;
+    public SortingGroup sG;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +40,9 @@ public class ReceivingTile : MonoBehaviour
         left = transform.Find("Sprite Mask/Shift/left");
         right = transform.Find("Sprite Mask/Shift/right");
         plate = transform.Find("Sprite Mask/Shift/plate");
+
+        sG = transform.GetChild(0).GetComponent<SortingGroup>();
+        elevation = gM.elevSL.IndexOf(sG.sortingLayerID);
     }
 
     // Update is called once per frame
@@ -78,6 +86,7 @@ public class ReceivingTile : MonoBehaviour
         player.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         player.transform.parent = this.transform.GetChild(1);
         player.controllBool = false;
+        player.elevation = elevation;
 
         player3Goal = this.transform.position;
     }
