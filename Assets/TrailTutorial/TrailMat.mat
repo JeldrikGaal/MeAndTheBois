@@ -36,6 +36,34 @@ Material:
         m_Texture: {fileID: 2800000, guid: 086e5f61a04d6d840a8f3ec520a4ee5d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_0db625d2144b4bf8ab0e15bca59a7ccc_Texture_1:
+        m_Texture: {fileID: 2800000, guid: ff3890b3811735344b3a103abc8dcc82, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_1a2922d8772c4a2ea809c343739e0aac_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 47122b4f1c2c5954b8a3229a64c53d18, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_2593ee2ccd41448185f920e16e870eda_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 3c8a88c05ed807a4e9d736313c69013b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_6398515d744248cfb374884035558c39_Texture_1:
+        m_Texture: {fileID: 2800000, guid: ff3890b3811735344b3a103abc8dcc82, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_7aff23192a8f440789e794c4f34868ff_Texture_1:
+        m_Texture: {fileID: 2800000, guid: ff3890b3811735344b3a103abc8dcc82, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_d1bfa7b1dedc41dda0d962cfb25902b1_Texture_1:
+        m_Texture: {fileID: 2800000, guid: ff3890b3811735344b3a103abc8dcc82, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_fff5f9dd28c04088932a3017cf51272a_Texture_1:
+        m_Texture: {fileID: 2800000, guid: ff3890b3811735344b3a103abc8dcc82, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -50,12 +78,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DissolveScale: 35
+    - _DissolveScale: -17.8
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Color01: {r: 1, g: 0.60188293, b: 0, a: 1}
-    - _Color02: {r: 1, g: 0.24949262, b: 0, a: 1}
+    - _Color01: {r: 1.1486983, g: 1.1486983, b: 1.1486983, a: 1}
+    - _Color02: {r: 0.45882353, g: 0.61960787, b: 0.7490196, a: 1}
     - _DissolveSpeed: {r: -0.5, g: 0, b: 0, a: 0}
     - _MainTexSpeed: {r: -0.1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
