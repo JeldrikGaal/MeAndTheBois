@@ -162,6 +162,7 @@ MonoBehaviour:
   pos7: {x: 88.17, y: 11.84, z: -10}
   pos8: {x: 93.99, y: 16.28, z: -10}
   pos9: {x: 102.32, y: 19.42, z: -10}
+  pos10: {x: 110.24, y: 19.88, z: -10}
 --- !u!4 &3545451
 Transform:
   m_ObjectHideFlags: 0
