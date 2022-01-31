@@ -62,6 +62,9 @@ public class Mirror : MonoBehaviour
     public bool moving;
     public Vector3 destination;
 
+    public bool specialCaseOneB;
+    public Obstacle specialCaseOne;
+
     private void Awake()
     {
 
@@ -150,6 +153,18 @@ public class Mirror : MonoBehaviour
                     timed = false;
                 }
 
+            }
+        }
+
+        if (specialCaseOneB)
+        {
+            if (specialCaseOne.isActiveAndEnabled)
+            {
+                laserG.SetActive(false);
+            }
+            else
+            {
+                laserG.SetActive(true);
             }
         }
 

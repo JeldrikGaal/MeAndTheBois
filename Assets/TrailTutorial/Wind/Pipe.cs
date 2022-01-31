@@ -39,6 +39,9 @@ public class Pipe : MonoBehaviour
 
     public GameObject windCont;
 
+    public Obstacle specialCaseOne;
+    public bool specialCaseOneB;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -278,6 +281,17 @@ public class Pipe : MonoBehaviour
         }
         toggleParticles(on);
         
+        if (specialCaseOneB)
+        {
+            if (specialCaseOne.isActiveAndEnabled)
+            {
+                on = false;
+            }
+            else
+            {
+                on = true;
+            }
+        }
 
     }
 }

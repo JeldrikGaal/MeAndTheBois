@@ -75,6 +75,8 @@ public class CombiTile : MonoBehaviour
 
     public int elevation;
 
+    public bool specialCaseOne;
+
 
     // Start is called before the first frame update
     void Start()
@@ -97,6 +99,7 @@ public class CombiTile : MonoBehaviour
         {
             anim.SetInteger("Direction", (windNeeded));
             anim.SetInteger("Type", (sunNeeded));
+            if (specialCaseOne) anim.SetInteger("Type", (sunNeeded + 1));
         }
 
 
@@ -390,7 +393,7 @@ public class CombiTile : MonoBehaviour
 
         if (sunNeeded != -1)
         {
-            if (sunNeeded == _directionHitL && _beingHitLight)
+            if (sunNeeded == _directionHitL && _beingHitLight || (specialCaseOne && (sunNeeded + 1) == _directionHitL && _beingHitLight))
             {
 
             }
