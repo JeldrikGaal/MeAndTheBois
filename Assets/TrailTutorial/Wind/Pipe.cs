@@ -42,11 +42,20 @@ public class Pipe : MonoBehaviour
     public Obstacle specialCaseOne;
     public bool specialCaseOneB;
 
+    public bool specialCaseTwoB;
+    public bool specialCaseTwoBHelp;
+    public bool specialCaseTwoBHelp2;
+    public Box specialCaseTwo;
+    public Vector3Int specialCaseTwoVec;
+
     // Start is called before the first frame update
     void Start()
     {
+        
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        specialCaseTwoVec = new Vector3Int(0, 0, 0);
         Vector3 midPoint = new Vector3();
 
         string elevationHelp = this.GetComponent<SpriteRenderer>().sortingLayerName;
@@ -62,6 +71,7 @@ public class Pipe : MonoBehaviour
         windCont = this.transform.GetChild(7).gameObject;
 
         on = true;
+        if (specialCaseTwoB) on = false;
         timer = randomInterval;
 
         foreach (ParticleSystem p in pList)
@@ -292,6 +302,33 @@ public class Pipe : MonoBehaviour
                 on = true;
             }
         }
+
+        if (specialCaseTwoB)
+        {
+            if (specialCaseTwo.currentCell == specialCaseTwoVec)
+            {
+                on = false;
+            }
+            else
+            {
+                on = true;
+            }
+            if (specialCaseTwoBHelp == false)
+            {
+                specialCaseTwoBHelp = true;
+            }
+            if (specialCaseTwoBHelp && !specialCaseTwoBHelp2)
+            {
+                specialCaseTwoBHelp2 = true;
+            }
+            if (specialCaseTwoBHelp2 && specialCaseTwoVec == new Vector3Int(0, 0, 0))
+            {
+                specialCaseTwoVec = specialCaseTwo.currentCell;
+
+            }
+        }
+
+        
 
     }
 }

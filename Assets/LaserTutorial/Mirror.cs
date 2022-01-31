@@ -65,6 +65,15 @@ public class Mirror : MonoBehaviour
     public bool specialCaseOneB;
     public Obstacle specialCaseOne;
 
+    public bool specialCaseTwoB;
+    public Pipe specialCaseTwoP;
+
+    public bool specialCaseThreeB;
+    public Vector3Int specialCaseThreeVec;
+
+    public bool specialCaseFourB;
+    public Pipe specialCaseFourP;
+
     private void Awake()
     {
 
@@ -165,6 +174,43 @@ public class Mirror : MonoBehaviour
             else
             {
                 laserG.SetActive(true);
+            }
+        }
+
+        if (specialCaseTwoB)
+        {
+            if (specialCaseTwoP.on)
+            {
+                this.timed = true;
+            }
+            else
+            {
+                this.timed = false;
+            }
+        }
+
+        if (specialCaseThreeB)
+        {
+            if (currentCell != specialCaseThreeVec)
+            {
+                laserG.SetActive(false);
+            }
+            else
+            {
+                laserG.SetActive(true);
+                this.placeDirectionPoint();
+            }
+        }
+
+        if (specialCaseFourB)
+        {
+            if (specialCaseFourP.on)
+            {
+                this.timed = true;
+            }
+            else
+            {
+                this.timed = false;
             }
         }
 
@@ -315,7 +361,9 @@ public class Mirror : MonoBehaviour
 
         if (moving && portable)
         {
-            this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, destination, 3 * Time.deltaTime);
+            if (specialCaseThreeB) this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, new Vector3(destination.x, destination.y + 0.1f, destination.z), 3 * Time.deltaTime);
+            else this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, destination, 3 * Time.deltaTime);
+
             midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
             midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
             placeDirectionPoint();
