@@ -83,8 +83,9 @@ public class ReceivingTile : MonoBehaviour
         openGate = true;
         player = p;
 
-        player.transform.position = new Vector3(plate.transform.position.x, plate.transform.position.y, plate.transform.position.z) ;
         player.gameObject.SetActive(true);
+        player.transform.position = new Vector3(plate.transform.position.x, plate.transform.position.y, plate.transform.position.z) ;
+        
         foreach (SpriteRenderer sr in player.getAllSR())
         {
             sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;

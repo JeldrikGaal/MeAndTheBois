@@ -73,6 +73,8 @@ public class CombiTile : MonoBehaviour
     public bool receiving = false;
     public bool readyToCombine;
 
+    public int elevation;
+
 
     // Start is called before the first frame update
     void Start()
@@ -421,7 +423,8 @@ public class CombiTile : MonoBehaviour
             return false;
         }
 
-        if (p.currentCell == currentCell)
+        Vector3Int checkCell = new Vector3Int(currentCell.x - elevation, currentCell.y - elevation, currentCell.z);
+        if (p.currentCell == checkCell)
         {
             return true;
         }
