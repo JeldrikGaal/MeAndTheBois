@@ -432,7 +432,7 @@ public class MovementController : MonoBehaviour
                         {
                             if (! (gM.getBoxSOnCell(ground.WorldToCell(newPosMP), ground).elevation < w.elevation - 1))
                             {
-                                Debug.Log("BOX BLOCKT DU KAHBA");
+                                Debug.Log("BOX BLOCKT");
                                 moveallowed = false;
                                 blockage = 2;
                             }

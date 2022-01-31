@@ -212,11 +212,11 @@ public class Mirror : MonoBehaviour
 
 
         // Let the mirror turn if a player is nearby
-        if (Input.GetKeyDown(KeyCode.Alpha8) && playerNear)
+        if (Input.GetKeyDown(KeyCode.Space) && playerNear && playerNearInt == 2)
         {
             TurnLeft();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha9) && playerNear)
+        if (Input.GetKeyDown(KeyCode.RightShift) && playerNear && (playerNearInt == 1 || playerNearInt == 3 ))
         {
             TurnRight();
         }

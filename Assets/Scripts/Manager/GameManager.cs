@@ -115,9 +115,9 @@ public class GameManager : MonoBehaviour
         p1.playerId = 1;
         p1.forward = KeyCode.W;
         p1.backward = KeyCode.S;
-        p1.left = KeyCode.A;
-        p1.right = KeyCode.D;
-        p1.ability1 = KeyCode.F;
+        p1.left = KeyCode.LeftArrow;
+        p1.right = KeyCode.RightArrow;
+        p1.ability1 = KeyCode.Return;
         p1.ability2 = new KeyCode();
         p1.up = new KeyCode();
         p1.down = new KeyCode();
@@ -125,14 +125,14 @@ public class GameManager : MonoBehaviour
 
         movementSet p2 = new movementSet();
         p2.playerId = 2;
-        p2.forward = KeyCode.UpArrow;
-        p2.backward = KeyCode.DownArrow;
-        p2.left = KeyCode.LeftArrow;
-        p2.right = KeyCode.RightArrow;
-        p2.ability1 = KeyCode.Return;
+        p2.forward = KeyCode.W;
+        p2.backward = KeyCode.S;
+        p2.left = KeyCode.A;
+        p2.right = KeyCode.S;
+        p2.ability1 = KeyCode.E;
         p2.ability2 = new KeyCode();
-        p2.up = KeyCode.O;
-        p2.down = KeyCode.L;
+        p2.up = KeyCode.R;
+        p2.down = KeyCode.F;
         controlls.Add(p2);
 
         movementSet p3 = new movementSet();
