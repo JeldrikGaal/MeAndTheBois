@@ -113,8 +113,8 @@ public class GameManager : MonoBehaviour
 
         movementSet p1 = new movementSet();
         p1.playerId = 1;
-        p1.forward = KeyCode.W;
-        p1.backward = KeyCode.S;
+        p1.forward = KeyCode.UpArrow;
+        p1.backward = KeyCode.DownArrow;
         p1.left = KeyCode.LeftArrow;
         p1.right = KeyCode.RightArrow;
         p1.ability1 = KeyCode.Return;
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
         p2.forward = KeyCode.W;
         p2.backward = KeyCode.S;
         p2.left = KeyCode.A;
-        p2.right = KeyCode.S;
+        p2.right = KeyCode.D;
         p2.ability1 = KeyCode.E;
         p2.ability2 = new KeyCode();
         p2.up = KeyCode.R;
@@ -405,11 +405,11 @@ public class GameManager : MonoBehaviour
         }
 
         updateCamChangeCond();
-        if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
+        /*if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
         {
             camChangeCondHelp[currentCamPos] = false;
             camStepUp();
-        }
+        }*/
     }
 
     public void camStepUp()

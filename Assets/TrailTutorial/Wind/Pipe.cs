@@ -250,6 +250,7 @@ public class Pipe : MonoBehaviour
         }
         else
         {
+            hitH = new RaycastHit2D();
             //Debug.Log("ALARM");
         }
      }
