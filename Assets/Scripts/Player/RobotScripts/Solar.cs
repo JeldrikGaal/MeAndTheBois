@@ -16,6 +16,11 @@ public class Solar : MonoBehaviour
     public int highestElv;
     public GameManager gM;
 
+    public bool movingPointATM;
+    public Vector3 mPGoal;
+    public LineRenderer lR;
+    public List<Vector3> points2 = new List<Vector3>();
+
     MovementController movC;
     void Start()
     {
@@ -24,6 +29,7 @@ public class Solar : MonoBehaviour
         movC = this.transform.GetComponent<MovementController>();
         vineMovS = vineMovementPoint.GetComponent<VineMovingPoint>();
         vineRange = 3;
+        lR = this.GetComponent<LineRenderer>();
     }
 
     
@@ -40,7 +46,20 @@ public class Solar : MonoBehaviour
         }
         else
         {
-            positionVinePoint(movC.ground);
+            if (!movingPointATM)
+            {
+                mPGoal = positionVinePoint(movC.ground);
+                movingPointATM = true;
+            }
+            else
+            {
+                vineMovementPoint.transform.position = Vector3.MoveTowards(vineMovementPoint.transform.position, mPGoal, Time.deltaTime * 2);
+                if (vineMovS.currentBox != null || Vector3.Distance(vineMovementPoint.transform.position, mPGoal) < 0.01f)
+                {
+                    movingPointATM = false;
+                }
+            }
+                
             showVine();
         }
 
@@ -49,7 +68,22 @@ public class Solar : MonoBehaviour
             TryVineMove();
         }
 
-        
+        points2 = new List<Vector3>();
+        points2.Add(transform.position);
+        points2.Add(vineMovementPoint.transform.position);
+        DrawLine(points2);
+
+    }
+
+    void DrawLine(List<Vector3> points)
+    {
+        if (points == null)
+        {
+            return;
+        }
+        lR.positionCount = points.Count;
+        Vector3[] temp = points.ToArray();
+        lR.SetPositions(temp);
     }
 
     Vector3 positionVinePoint(Grid ground)
@@ -73,7 +107,7 @@ public class Solar : MonoBehaviour
                 break;
         }
 
-        vineMovementPoint.transform.position = temp;
+        //vineMovementPoint.transform.position = temp;
         return temp;
     }
 
@@ -117,9 +151,19 @@ public class Solar : MonoBehaviour
                 }
 
                 Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(newPosMP));
-                vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.72f), temp.z);
+                if (vineMovS.currentBox.GetComponent<Box>())
+                {
+                    vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.72f), temp.z);
+                    vineMovS.currentBox.GetComponent<Box>().moving = true;
+                }
+                if (vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>())
+                {
+                    vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.72f), temp.z);
+                    vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().moving = true;
+                }
+
                 //vineMovS.currentBox.GetComponent<Box>().destination = temp; 
-                vineMovS.currentBox.GetComponent<Box>().moving = true;
+
             }
             else
             {

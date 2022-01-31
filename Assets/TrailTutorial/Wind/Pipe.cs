@@ -209,7 +209,7 @@ public class Pipe : MonoBehaviour
             
         if (_hit)
         {
-            Debug.Log(_hit.transform.name);
+            //Debug.Log(_hit.transform.name);
             hitH = _hit;
             foreach (ParticleSystem p in pList)
             {

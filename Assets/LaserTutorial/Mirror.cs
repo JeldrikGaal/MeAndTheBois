@@ -59,6 +59,9 @@ public class Mirror : MonoBehaviour
     public bool gravityAffected;
     public bool DebugTurning;
 
+    public bool moving;
+    public Vector3 destination;
+
     private void Awake()
     {
 
@@ -106,10 +109,11 @@ public class Mirror : MonoBehaviour
             mirrorSr = this.transform.GetChild(1).GetComponent<SpriteRenderer>();
             
         }
-        
-        
-        
-    } 
+
+
+
+    }
+
 
 
     void Start()
@@ -293,7 +297,15 @@ public class Mirror : MonoBehaviour
         {
             placeDirectionPoint();
         }
-        
+
+        if (moving && portable)
+        {
+            this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, destination, 3 * Time.deltaTime);
+            if (Vector3.Distance(this.transform.parent.position, destination) <= 0.01f)
+            {
+                moving = false;
+            }
+        }
     }
 
     bool checkAdjacentCells(MovementController p)

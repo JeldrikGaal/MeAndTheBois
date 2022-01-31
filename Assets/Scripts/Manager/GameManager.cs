@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     public Tilemap waterMap;
     public Tilemap boxPlacingMap;
 
-    public int currentCamPos;
+    public int currentCamPos = 4;
     public bool camMoving;
     public float camSpeed;
 
@@ -405,6 +405,7 @@ public class GameManager : MonoBehaviour
         }
 
         updateCamChangeCond();
+        mainCam.transform.position = camPos.cameraPositions[currentCamPos];
         /*if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
         {
             camChangeCondHelp[currentCamPos] = false;
