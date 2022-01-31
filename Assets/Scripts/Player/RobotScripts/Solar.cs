@@ -13,10 +13,13 @@ public class Solar : MonoBehaviour
     public VineMovingPoint vineMovS;
     public int vineRange;
     bool vineExtended;
+    public int highestElv;
+    public GameManager gM;
 
     MovementController movC;
     void Start()
     {
+        gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         energyLevel = startingEnergy;
         movC = this.transform.GetComponent<MovementController>();
         vineMovS = vineMovementPoint.GetComponent<VineMovingPoint>();
@@ -27,6 +30,7 @@ public class Solar : MonoBehaviour
 
     void Update()
     {
+        highestElv = gM.getHighestElevation(movC.currentCell);
         vineCell = movC.ground.WorldToCell(vineMovementPoint.transform.position);
 
 
@@ -113,7 +117,7 @@ public class Solar : MonoBehaviour
                 }
 
                 Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(newPosMP));
-                vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.25f), temp.z);
+                vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.72f), temp.z);
                 //vineMovS.currentBox.GetComponent<Box>().destination = temp; 
                 vineMovS.currentBox.GetComponent<Box>().moving = true;
             }

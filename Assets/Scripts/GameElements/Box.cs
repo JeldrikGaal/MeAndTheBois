@@ -111,7 +111,7 @@ public class Box : MonoBehaviour
             if (elevation != -1)
             {
                 this.boxSprite.sortingLayerID = gM.elevSL[elevation + 1];
-                this.boxSprite.transform.localPosition = new Vector3(this.boxSprite.transform.localPosition.x, 0.5f * elevation, this.boxSprite.transform.localPosition.z);
+                //this.boxSprite.transform.localPosition = new Vector3(this.boxSprite.transform.localPosition.x, 0.5f * elevation, this.boxSprite.transform.localPosition.z); ALLAH fix correct display while on obstacles
             }
             else
             {

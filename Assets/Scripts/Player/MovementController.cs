@@ -74,7 +74,8 @@ public class MovementController : MonoBehaviour
     public bool moAll;
     public Vector3 newP;
     public Vector3 tra;
-
+    private Solar so;
+    public List<Vector3Int> p1Exceptions = new List<Vector3Int>();
     void Start()
     {
         idling = true;
@@ -100,6 +101,10 @@ public class MovementController : MonoBehaviour
         currentFB = forward;
         backward.SetActive(false);
 
+        if (playerIndex == 1)
+        {
+            so = this.GetComponent<Solar>();
+        }
         //sR.sprite = sprites[directionFacing];
         if (playerIndex == 2)
         {
@@ -134,9 +139,9 @@ public class MovementController : MonoBehaviour
             collisionList.Add(collisionsInGrid);
         }
 
-        help1 = collisionList[0];
+        /*help1 = collisionList[0];
         help2 = collisionList[1];
-        help3 = collisionList[2];
+        help3 = collisionList[2];*/
 
         if (collisionTileMap && elevationTileMap)
         {
@@ -168,6 +173,14 @@ public class MovementController : MonoBehaviour
             //this.gameObject.SetActive(false);
             s = true;
         }
+
+
+
+        // Corner of shame
+
+        p1Exceptions.Add(new Vector3Int(24, -52, 0));
+        p1Exceptions.Add(new Vector3Int(23, -52, 0));
+
     }
 
     // Get the position of the center of the cell one cell away from the player in the direction given to the function
@@ -220,15 +233,19 @@ public class MovementController : MonoBehaviour
 
     void Update()
     {
+        int hElv = 0;
         switch (playerIndex)
         {
             case 1:
                 //elevation = elevation;
+                hElv = so.highestElv;
                 break;
             case 2:
+                hElv = w.highestElv;
                 elevation = w.elevation;
                 break;
             case 3:
+                hElv = cR.highestElv;
                 elevation = cR.elevation;
                 break;
         }
@@ -241,9 +258,13 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            currentCell = ground.WorldToCell(transform.position);
+            Vector3Int t = ground.WorldToCell(transform.position);
+            currentCell = t;
+
         }
-        
+        Vector3Int te = ground.WorldToCell(transform.position);
+        //currentCell = new Vector3Int(te.x -elevation + 1, te.y - -elevation + 1, te.z);
+
 
         // Move player to moving point TODO: calculate delta time to make undepeding of fps
         if (moving && controllBool)
@@ -290,12 +311,10 @@ public class MovementController : MonoBehaviour
         if (Input.GetKeyDown(playerControlls.left))
         {
             directionFacing = incDir(directionFacing);
-            //sR.sprite = sprites[directionFacing]; ALLAH
         }
         if (Input.GetKeyDown(playerControlls.right))
         {
             directionFacing = decDir(directionFacing);
-            //sR.sprite = sprites[directionFacing]; ALLAH
         }
 
         if (playerIndex == 3)
@@ -327,17 +346,37 @@ public class MovementController : MonoBehaviour
             Vector3Int t = ground.WorldToCell(newPosMP);
             checkAgainst = new Vector3Int(t.x + w.highestElv, t.y + w.highestElv, t.z);
         }
-        else
+        else if (playerIndex == 1)
         {
             checkAgainst = ground.WorldToCell(newPosMP);
+            Vector3Int t = ground.WorldToCell(newPosMP);
+            checkAgainst = new Vector3Int(t.x + so.highestElv, t.y + so.highestElv, t.z);
+            //checkAgainst = new Vector3Int(t.x + elevation + 1, t.y + elevation + 1, t.z);
+        }
+        else if (playerIndex == 3)
+        {
+            Vector3Int t = ground.WorldToCell(newPosMP);
+            checkAgainst = new Vector3Int(t.x + cR.highestElv, t.y + cR.highestElv, t.z);
         }
 
+        if (Input.GetKeyDown(playerControlls.forward))
+        {
+            Debug.Log(checkAgainst);
+            Debug.Log(gM.getHighestElevation(checkAgainst));
+        }
+        if (Input.GetKeyDown(playerControlls.backward))
+        {
+            Debug.Log(checkAgainst);
+            Debug.Log(gM.getHighestElevation(checkAgainst));
+        }
+
+        Vector3Int hhh = ground.WorldToCell(newPosMP);
+        hhh = new Vector3Int(hhh.x - 1, hhh.y - 1, hhh.z);
         //Debug.Log((this.name, gM.getHighestElevation(ground.WorldToCell(newPosMP))));
         if (gM.getHighestElevation(checkAgainst) < elevation || (gM.getHighestElevation(ground.WorldToCell(newPosMP)) == 0 && elevation == 0))
         {
-            
             moveallowed = true;
-            if (playerIndex == 1 && gM.getHighestElevation(checkAgainst) == -1)
+            if (playerIndex == 1 && !gM.tilesList[0].Contains(hhh))
             {
                 moveallowed = false;
                 blockage = 0;
@@ -421,7 +460,15 @@ public class MovementController : MonoBehaviour
         tra = this.transform.position;
         newP = newPosMP;
 
-        Debug.Log((tra != newP));
+        //Debug.Log((tra != newP));
+
+        if (!moveallowed && playerIndex == 1)
+        {
+            if (p1Exceptions.Contains(hhh))
+            {
+                moveallowed = true;
+            }
+        }
 
         if ((Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f || changeAllowed) && moveallowed)
         {
@@ -453,6 +500,17 @@ public class MovementController : MonoBehaviour
         }
 
         setDirectionSprite(directionFacing);
+    }
+
+    public List<SpriteRenderer> getAllSR()
+    {
+        List<SpriteRenderer> srList = new List<SpriteRenderer>();
+
+        foreach (SpriteRenderer sR in transform.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            srList.Add(sR);
+        }
+        return srList;
     }
 
     public void setDirectionSprite(int dir)

@@ -63,7 +63,10 @@ public class ReceivingTile : MonoBehaviour
                 left.gameObject.SetActive(false);
                 right.gameObject.SetActive(false);
 
-                // player.sR.maskInteraction = SpriteMaskInteraction.None; ALLAH
+                foreach (SpriteRenderer sr in player.getAllSR())
+                {
+                    sr.maskInteraction = SpriteMaskInteraction.None;
+                }
                 if (player.GetComponent<SpriteRenderer>())
                 {
                     player.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
@@ -82,8 +85,14 @@ public class ReceivingTile : MonoBehaviour
 
         player.transform.position = new Vector3(plate.transform.position.x, plate.transform.position.y, plate.transform.position.z) ;
         player.gameObject.SetActive(true);
-        // player.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask; ALLAH
-        player.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        foreach (SpriteRenderer sr in player.getAllSR())
+        {
+            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        }
+        if (player.GetComponent<SpriteRenderer>())
+        {
+            player.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        }
         player.transform.parent = this.transform.GetChild(1);
         player.controllBool = false;
         player.elevation = elevation;

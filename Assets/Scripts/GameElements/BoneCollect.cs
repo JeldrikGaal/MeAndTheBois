@@ -5,10 +5,11 @@ using UnityEngine;
 public class BoneCollect : MonoBehaviour
 {
 
-    private GameManager gM;
-    private Grid ground;
-    private Vector3 currentCell;
-    private MovementController collectingPlayer;
+    public GameManager gM;
+    public Grid ground;
+    public Vector3 currentCell;
+    public MovementController collectingPlayer;
+    public int elevation;
 
 
     // Start is called before the first frame update
@@ -22,6 +23,7 @@ public class BoneCollect : MonoBehaviour
     void Update()
     {
         currentCell = ground.WorldToCell(this.transform.position);
+        currentCell = new Vector3(currentCell.x - elevation, currentCell.y - elevation, 0);
 
         if (playerOnCell())
         {

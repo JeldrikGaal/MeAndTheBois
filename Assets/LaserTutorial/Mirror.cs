@@ -199,6 +199,11 @@ public class Mirror : MonoBehaviour
             playerNear = true;
             playerNearInt = 2;
         }
+        else if (checkAdjacentCells(gM.p3))
+        {
+            playerNear = true;
+            playerNearInt = 3;
+        }
         else
         {
             playerNear = false;

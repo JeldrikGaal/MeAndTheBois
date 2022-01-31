@@ -44,13 +44,21 @@ public class GameManager : MonoBehaviour
 
     public Grid ground;
 
+    public Camera mainCam;
+    public CameraPositions camPos;
+
     private bool modifying;
 
     public List<int> elevSL = new List<int>();
     public Tilemap waterMap;
     public Tilemap boxPlacingMap;
 
-    public CameraPositions camPos;
+    public int currentCamPos;
+    public bool camMoving;
+    public float camSpeed;
+
+    public List<bool> camChangeCond = new List<bool>();
+    public List<bool> camChangeCondHelp = new List<bool>();
 
     public class movementSet
     {
@@ -96,6 +104,7 @@ public class GameManager : MonoBehaviour
     }
 
     public List<movementSet> controlls = new List<movementSet>();
+
 
     void Awake()
     {
@@ -143,6 +152,19 @@ public class GameManager : MonoBehaviour
         waterMap = ground.transform.GetChild(1).GetComponent<Tilemap>();
         boxPlacingMap = ground.transform.GetChild(2).GetComponent<Tilemap>();
 
+        camSpeed = 3;
+
+        camChangeCond.Add(this.p1.currentCell.x >= 31 && this.p2.currentCell.x >= 31);
+        foreach (bool b in camChangeCond)
+        {
+            camChangeCondHelp.Add(false);
+        }
+
+    }
+
+    public void updateCamChangeCond()
+    {
+        camChangeCond[0] = (this.p1.currentCell.x >= 31 && this.p2.currentCell.x >= 31);
     }
 
     public void Start()
@@ -225,7 +247,14 @@ public class GameManager : MonoBehaviour
         elevSL.Add(SortingLayer.NameToID("Elevation 4"));
         elevSL.Add(SortingLayer.NameToID("Elevation 5"));
 
+        camPos = GameObject.Find("CAMERASETTING").GetComponent<CameraPositions>();
+        mainCam = Camera.main;
 
+    }
+
+    public void setCameraPos(int pos)
+    {
+        mainCam.transform.position = camPos.cameraPositions[pos];
     }
 
     public bool isBoxOnCell(Vector3Int cell, Grid ground)
@@ -233,7 +262,9 @@ public class GameManager : MonoBehaviour
         //Debug.Log(cell);
         foreach (Box b in boxxes)
         {
-            if (ground.WorldToCell(b.transform.position) == cell)
+            Vector3Int check = ground.WorldToCell(b.transform.position);
+            check = new Vector3Int(check.x - b.elevation, check.y - b.elevation, check.z);
+            if (check == cell)
             {
                 return true;
             }
@@ -272,7 +303,9 @@ public class GameManager : MonoBehaviour
         
         foreach (Box b in boxxes)
         {
-            if (ground.WorldToCell(b.transform.position) == cell)
+            Vector3Int check = ground.WorldToCell(b.transform.position);
+            check = new Vector3Int(check.x - b.elevation, check.y - b.elevation, check.z);
+            if (check == cell)
             {
                 return b.gameObject;
             }
@@ -310,7 +343,9 @@ public class GameManager : MonoBehaviour
     {
         foreach (Box b in boxxes)
         {
-            if (ground.WorldToCell(b.transform.position) == cell)
+            Vector3Int check = ground.WorldToCell(b.transform.position);
+            check = new Vector3Int(check.x - b.elevation, check.y - b.elevation, check.z);
+            if (check == cell)
             {
                 return b;
             }
@@ -348,6 +383,45 @@ public class GameManager : MonoBehaviour
             Debug.Log(bones[0].bone.name);
         }
         
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            camStepUp();
+        }  
+        if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            camStepDown();
+        }
+        
+        if (camMoving)
+        {
+            if (Vector3.Distance(mainCam.transform.position, camPos.cameraPositions[currentCamPos]) <= 0.01f)
+            {
+                camMoving = false;
+            }
+            else
+            {
+                mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, camPos.cameraPositions[currentCamPos], Time.deltaTime * camSpeed);
+            }
+        }
+
+        updateCamChangeCond();
+        if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
+        {
+            camChangeCondHelp[currentCamPos] = false;
+            camStepUp();
+        }
+    }
+
+    public void camStepUp()
+    {
+        currentCamPos += 1;
+        camMoving = true;
+    }
+
+    public void camStepDown()
+    {
+        currentCamPos -= 1;
+        camMoving = true;
     }
 
     public void UpdateStableMirList()
@@ -552,7 +626,7 @@ public class GameManager : MonoBehaviour
             {
                 if (j > elv)
                 {
-                    elv = j;
+                    //elv = j;
                 }
             }
             j += 1;

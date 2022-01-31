@@ -209,10 +209,14 @@ public class CombiTile : MonoBehaviour
                             gM.p1.transform.parent = partnerTile.partenForEnergyReceiver.transform;
                         }
 
-
-                        //gM.p1.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask; LAYERMASK FIX NEEDED ALLAH
-                        //gM.p2.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask; LAYERMASK FIX NEEDED ALLAH
-                        gM.p2.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        foreach (SpriteRenderer sr in gM.p1.getAllSR())
+                        {
+                            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        }
+                        foreach (SpriteRenderer sr in gM.p2.getAllSR())
+                        {
+                            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        }
                     }
                     else
                     {
@@ -223,8 +227,10 @@ public class CombiTile : MonoBehaviour
                         plateGoal1 = new Vector3(plate.localPosition.x, plate.localPosition.y - 2, plate.localPosition.z);
 
                         gM.p3.transform.parent = this.partenForEnergyReceiver.transform;
-                        //gM.p3.sR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask; LAYERMASK FIX NEEDED ALLAH
-                        gM.p3.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        foreach (SpriteRenderer sr in gM.p3.getAllSR())
+                        {
+                            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        }
                     }
 
                 }

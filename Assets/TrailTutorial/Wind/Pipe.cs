@@ -155,7 +155,7 @@ public class Pipe : MonoBehaviour
             }
         }
 
-        ret = layerMaskList[0] | layerMaskList[1] | layerMaskList[2] | layerMaskList[3];
+        ret = ~(layerMaskList[0] | layerMaskList[1] | layerMaskList[2] | layerMaskList[3]);
 
         return ret;
         
@@ -178,22 +178,22 @@ public class Pipe : MonoBehaviour
             case 0:
                 ray = (directionPoint - directionPoint2).normalized;
                 startPoint = directionPoint2 + ray * 0.2f;
-                _hit = Physics2D.Raycast(startPoint, ray, ignore);
+                _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
                 break;
             case 1:
                 ray = (directionPoint2 - directionPoint).normalized;
                 startPoint = directionPoint2 + ray * 0.2f;
-                _hit = Physics2D.Raycast(startPoint, ray, ignore);
+                _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
                 break;
             case 2:
                 ray = (directionPoint - directionPoint2).normalized;
                 startPoint = directionPoint2 + ray * 0.2f;
-                _hit = Physics2D.Raycast(startPoint, ray, ignore);
+                _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
                 break;
             case 3:
                 ray = (directionPoint2 - directionPoint).normalized;
                 startPoint = directionPoint2 + ray * 0.2f;
-                _hit = Physics2D.Raycast(startPoint, ray, ignore);
+                _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
                 break;
         }
 
@@ -209,7 +209,7 @@ public class Pipe : MonoBehaviour
             
         if (_hit)
         {
-            //Debug.Log(_hit.transform.name);
+            Debug.Log(_hit.transform.name);
             hitH = _hit;
             foreach (ParticleSystem p in pList)
             {

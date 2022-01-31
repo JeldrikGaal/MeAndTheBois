@@ -13,6 +13,13 @@ public class cellDebugger : MonoBehaviour
 
     public int highest;
 
+    public int layer;
+    public Vector3Int checkVec;
+    public bool checkElv;
+
+    public bool checkCurrent;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,5 +33,8 @@ public class cellDebugger : MonoBehaviour
         currentCell = ground.WorldToCell(this.transform.position);
         p = this.transform.position;
         highest = gM.getHighestElevation(currentCell);
+
+        checkElv = gM.tilesList[layer].Contains(checkVec);
+        checkCurrent = gM.tilesList[layer].Contains(currentCell);
     }
 }
