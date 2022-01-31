@@ -301,11 +301,17 @@ public class Mirror : MonoBehaviour
         if (moving && portable)
         {
             this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, destination, 3 * Time.deltaTime);
+            midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
+            midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+            placeDirectionPoint();
             if (Vector3.Distance(this.transform.parent.position, destination) <= 0.01f)
             {
                 moving = false;
             }
         }
+
+        if (beingCarried) sR.sortingLayerID = SortingLayer.NameToID("Flying");
+        if (beingCarried) sR.sortingOrder = 1;
     }
 
     bool checkAdjacentCells(MovementController p)
@@ -317,7 +323,7 @@ public class Mirror : MonoBehaviour
         return false;
     }
 
-    void placeDirectionPoint()
+    public void placeDirectionPoint()
     {
         if (startingMir)
         {

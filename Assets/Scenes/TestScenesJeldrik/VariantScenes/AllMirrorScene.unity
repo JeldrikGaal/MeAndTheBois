@@ -123,6 +123,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &22974875
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122810, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5936877897977122813, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
+      propertyPath: m_Name
+      value: PMirrorT1-1Obj
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 19f34551e80d6fa4b86939e46ab8e81c, type: 3}
 --- !u!1 &43141483
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,6 +2733,10 @@ MonoBehaviour:
   currentCell: {x: 0, y: 0, z: 0}
   p: {x: 0, y: 0, z: 0}
   highest: 0
+  layer: 0
+  checkVec: {x: 0, y: 0, z: 0}
+  checkElv: 0
+  checkCurrent: 0
 --- !u!4 &861123475
 Transform:
   m_ObjectHideFlags: 0
@@ -3029,6 +3090,10 @@ MonoBehaviour:
   currentCell: {x: 0, y: 0, z: 0}
   p: {x: 0, y: 0, z: 0}
   highest: 0
+  layer: 0
+  checkVec: {x: 0, y: 0, z: 0}
+  checkElv: 0
+  checkCurrent: 0
 --- !u!4 &1212294326
 Transform:
   m_ObjectHideFlags: 0
@@ -3133,6 +3198,12 @@ MonoBehaviour:
   vineCell: {x: 0, y: 0, z: 0}
   vineMovS: {fileID: 927381315}
   vineRange: 0
+  highestElv: 0
+  gM: {fileID: 0}
+  movingPointATM: 0
+  mPGoal: {x: 0, y: 0, z: 0}
+  lR: {fileID: 0}
+  points2: []
 --- !u!114 &1492539896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3180,6 +3251,12 @@ MonoBehaviour:
   elevation: 0
   isMoving: 0
   sprites: []
+  blockage: 0
+  blockDist: 0
+  moAll: 0
+  newP: {x: 0, y: 0, z: 0}
+  tra: {x: 0, y: 0, z: 0}
+  p1Exceptions: []
 --- !u!4 &1492539897
 Transform:
   m_ObjectHideFlags: 0
@@ -3342,6 +3419,12 @@ MonoBehaviour:
   elevation: 0
   isMoving: 0
   sprites: []
+  blockage: 0
+  blockDist: 0
+  moAll: 0
+  newP: {x: 0, y: 0, z: 0}
+  tra: {x: 0, y: 0, z: 0}
+  p1Exceptions: []
 --- !u!4 &1720959471
 Transform:
   m_ObjectHideFlags: 0
@@ -3615,10 +3698,16 @@ MonoBehaviour:
   p2: {fileID: 1720959470}
   p3: {fileID: 2059044365}
   ground: {fileID: 0}
+  mainCam: {fileID: 0}
+  camPos: {fileID: 0}
   elevSL: 
   waterMap: {fileID: 0}
   boxPlacingMap: {fileID: 0}
-  camPos: {fileID: 0}
+  currentCamPos: 4
+  camMoving: 0
+  camSpeed: 0
+  camChangeCond: 
+  camChangeCondHelp: 
 --- !u!4 &2044340016
 Transform:
   m_ObjectHideFlags: 0
@@ -3720,9 +3809,17 @@ MonoBehaviour:
   shooting: 0
   tagsToErode: []
   mC: {fileID: 0}
+  gM: {fileID: 0}
   bomb: {fileID: 0}
   elevation: 0
   maxShootDist: 0
+  shadow: {fileID: 0}
+  shadowStartSize: 0
+  maxElevation: 0
+  movC: {fileID: 0}
+  highestElv: 0
+  highestElv2: 0
+  carryingBox: 0
 --- !u!114 &2059044365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3770,6 +3867,12 @@ MonoBehaviour:
   elevation: 0
   isMoving: 0
   sprites: []
+  blockage: 0
+  blockDist: 0
+  moAll: 0
+  newP: {x: 0, y: 0, z: 0}
+  tra: {x: 0, y: 0, z: 0}
+  p1Exceptions: []
 --- !u!4 &2059044366
 Transform:
   m_ObjectHideFlags: 0

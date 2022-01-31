@@ -182,7 +182,7 @@ public class Pipe : MonoBehaviour
                 break;
             case 1:
                 ray = (directionPoint2 - directionPoint).normalized;
-                startPoint = directionPoint2 + ray * 0.2f;
+                startPoint = directionPoint2 + ray * -0.5f;
                 _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
                 break;
             case 2:

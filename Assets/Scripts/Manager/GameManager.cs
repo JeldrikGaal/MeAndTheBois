@@ -380,7 +380,7 @@ public class GameManager : MonoBehaviour
     {
         if (bones.Count > 0)
         {
-            Debug.Log(bones[0].bone.name);
+            //Debug.Log(bones[0].bone.name);
         }
         
         if (Input.GetKeyDown(KeyCode.KeypadPlus))

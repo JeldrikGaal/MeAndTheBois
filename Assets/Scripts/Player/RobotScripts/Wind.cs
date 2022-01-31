@@ -139,7 +139,7 @@ public class Wind : MonoBehaviour
 
             // Picking Box Up
 
-            else if (gM.isBoxOnCell(movC.currentCell, movC.ground) && !carryingBox)
+            else if (gM.isBoxOnCell(movC.currentCell, movC.ground) && !carryingBox && !carryingMirror)
             {
                 box = gM.getBoxOnCell(movC.currentCell, movC.ground);
                 boxS = box.GetComponent<Box>();
@@ -163,24 +163,33 @@ public class Wind : MonoBehaviour
             // Setting Mirror down
             else if (carryingMirror)
             {
-                mir.transform.position = this.transform.position - offset;
+                Vector3 temp = movC.ground.GetCellCenterWorld(movC.ground.WorldToCell(this.transform.position));
+                mir.transform.position = new Vector3(temp.x, temp.y - movC.ground.cellSize.y * 0.75f, 0);
                 mirS.beingCarried = false;
+                mirS.sR.transform.localPosition = new Vector3(0, 0, 0);
+                mirS.laserG.SetActive(true);
+                mirS.placeDirectionPoint();
                 mir = null;
                 mirS = null;
                 carryingMirror = false;
                 offset = new Vector3();
+                
 
             }
 
             // Picking Mirror up
             else if (gM.isMirrorOnCell(movC.currentCell, movC.ground) && !carryingMirror && !carryingBox)
             {
+
                 mir = gM.getMirOnCell(movC.currentCell, movC.ground);
                 mirS = mir.GetComponent<Mirror>();
-                mirS.beingCarried = true;
-                carryingMirror = true;
-                offset = transform.position - mir.transform.position;
-                offset = new Vector3(offset.x, offset.y);
+                mir = mir.transform.parent.gameObject;
+                mirS.laserG.SetActive(false);
+                if (this.elevation > mirS.elevation)
+                {
+                    mirS.beingCarried = true;
+                    carryingMirror = true;
+                }
             }
 
         }
@@ -197,9 +206,11 @@ public class Wind : MonoBehaviour
 
         else if (carryingMirror && mir)
         {
-            mir.transform.position = this.transform.position - offset;
-
-            mirS.sR.transform.localPosition = new Vector3(0, elevation * 0.2f, 0);
+            Debug.Log(mir.name);
+            mir.transform.position = new Vector3(this.movC.currentFB.transform.position.x, this.movC.currentFB.transform.position.y - mirS.sR.sprite.bounds.size.y * 0.75f, this.movC.currentFB.transform.position.z);
+            mirS.sR.transform.localPosition = new Vector3(0, 0, 0);
+            mirS.sR.transform.position = new Vector3(mirS.sR.transform.position.x, mirS.sR.transform.position.y + ((movC.currentFB.transform.GetChild(11).TransformVector(movC.currentMovingBone.transform.localPosition).y - currentBoneStartY)), mirS.sR.transform.position.z);
+            mirS.elevation = this.elevation - 1;
         }
 
         // Shadow sorting layer
