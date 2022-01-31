@@ -131,26 +131,40 @@ public class Solar : MonoBehaviour
                 {
                     if (this.transform.position.y > vineMovS.currentBox.transform.position.y)
                     {
+                        Debug.Log("1");
                         newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x - 1, movC.currentCell.y - 1, movC.currentCell.z));
+                        newPosMP = help;
                     }
                     else
                     {
+                        Debug.Log("2");
                         newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x - 1, movC.currentCell.y + 1, movC.currentCell.z));
+                        newPosMP = help;
                     }
                 }
                 else
                 {
                     if (this.transform.position.y > vineMovS.currentBox.transform.position.y)
                     {
+                        Debug.Log("3");
                         newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
+                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x + 1, movC.currentCell.y - 1, movC.currentCell.z));
+                        newPosMP = help;
                     }
                     else
                     {
+                        Debug.Log("4");
                         newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
+                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x + 1, movC.currentCell.y, movC.currentCell.z));
+                        Debug.Log(help);
+                        newPosMP = help;
                     }
                 }
 
                 Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(newPosMP));
+                temp = newPosMP;
                 if (vineMovS.currentBox.GetComponent<Box>())
                 {
                     vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.72f), temp.z);
@@ -158,7 +172,7 @@ public class Solar : MonoBehaviour
                 }
                 if (vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>())
                 {
-                    vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.72f), temp.z);
+                    vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().destination = new Vector3(temp.x, temp.y, temp.z);
                     vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().moving = true;
                 }
 

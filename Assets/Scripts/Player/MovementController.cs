@@ -365,13 +365,13 @@ public class MovementController : MonoBehaviour
 
         if (Input.GetKeyDown(playerControlls.forward))
         {
-            Debug.Log(checkAgainst);
-            Debug.Log(gM.getHighestElevation(checkAgainst));
+            //Debug.Log(checkAgainst);
+            //Debug.Log(gM.getHighestElevation(checkAgainst));
         }
         if (Input.GetKeyDown(playerControlls.backward))
         {
-            Debug.Log(checkAgainst);
-            Debug.Log(gM.getHighestElevation(checkAgainst));
+            //Debug.Log(checkAgainst);
+            //Debug.Log(gM.getHighestElevation(checkAgainst));
         }
 
         Vector3Int hhh = ground.WorldToCell(newPosMP);

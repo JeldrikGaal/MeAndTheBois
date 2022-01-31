@@ -143,7 +143,7 @@ public class Mirror : MonoBehaviour
         {
             if (beingHit)
             {
-                if (angleReceived == angleToCharge)
+                if (angleReceivedStable == angleToCharge && angleReceived != -1)
                 {
                     if (!hitCalced)
                     {
@@ -152,6 +152,11 @@ public class Mirror : MonoBehaviour
                         timerSave = chargeTimer;
                         hitCalced = true;
                     }
+                }
+                else
+                {
+                    timed = false;
+                    hitCalced = false;
                 }
             }
             else

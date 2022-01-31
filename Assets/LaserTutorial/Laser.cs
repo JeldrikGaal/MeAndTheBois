@@ -120,7 +120,7 @@ public class Laser : MonoBehaviour
                     if (!gM.hitMirrosStable.Contains(m1)) gM.hitMirrosStable.Add(m1);
 
                     // Stop the Beam if it goes into a mirror that wants the energy
-                    if (m1.needsChargeToRotate && m1.beingHit && m1.angleReceived == m1.angleToCharge && m1.startingMir)
+                    if (m1.needsChargeToRotate && m1.beingHit && m1.angleReceivedStable == m1.angleToCharge && m1.startingMir)
                     {
                         points2.Add(_hit.point);
                         return;
