@@ -23,6 +23,30 @@ Material:
         m_Texture: {fileID: 2800000, guid: 8de05edf3bb7105449e1615949ecdc65, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_3ea64b6e2fd1448f93fb3f2075d6786f_Texture_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_62574ddf6d3f4a08ba84974ee67a0795_Texture_1:
+        m_Texture: {fileID: 2800000, guid: dfabb92925f191b45b99235f20d38316, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_66d20ba221924f6eb22506011267f7e6_Texture_1:
+        m_Texture: {fileID: 2800000, guid: dfabb92925f191b45b99235f20d38316, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_809d303bda51490d898f672b2790a6b1_Texture_1:
+        m_Texture: {fileID: 2800000, guid: dfabb92925f191b45b99235f20d38316, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_a4255c92be534898ab7c34ba1facd636_Texture_1:
+        m_Texture: {fileID: 2800000, guid: dfabb92925f191b45b99235f20d38316, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_bc3bb65140244ad9b3602783420a2cc9_Texture_1:
+        m_Texture: {fileID: 2800000, guid: dfabb92925f191b45b99235f20d38316, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -37,7 +61,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DissolveScale: 35
+    - _DissolveScale: 20
     - _Opasity: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -49,8 +73,8 @@ Material:
     - _Voronoi_Scaling: 6
     m_Colors:
     - _Base_Colour: {r: 0.2979263, g: 0.609409, b: 0.6132076, a: 0}
-    - _Color01: {r: 0.6714578, g: 0.745283, b: 0.72067463, a: 0.682353}
-    - _Color02: {r: 0.2798149, g: 0.40539047, b: 0.4528302, a: 1}
+    - _Color01: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 0.69411767}
+    - _Color02: {r: 0, g: 0, b: 0, a: 0.34117648}
     - _DissolveSpeed: {r: 0, g: 0.5, b: 0, a: 0}
     - _MainTexSpeed: {r: -0.1, g: 0, b: 0, a: 0}
     - _Noise_Colour: {r: 0.5651478, g: 0.8677464, b: 0.9433962, a: 0}
