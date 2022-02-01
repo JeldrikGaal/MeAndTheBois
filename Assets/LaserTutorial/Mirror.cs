@@ -80,6 +80,8 @@ public class Mirror : MonoBehaviour
     public bool specialCaseSixB;
     public Mirror specialCaseSixM;
 
+    public bool ignoreHits;
+
     private void Awake()
     {
 
@@ -162,16 +164,23 @@ public class Mirror : MonoBehaviour
                 }
                 else
                 {
-                    timed = false;
-                    hitCalced = false;
+                    if (!ignoreHits)
+                    {
+                        timed = false;
+                        hitCalced = false;
+                    }
+                    
                 }
             }
             else
             {
                 if (!gM.hitMirrosStable.Contains(this))
                 {
-                    hitCalced = false;
-                    timed = false;
+                    if (!ignoreHits)
+                    {
+                        timed = false;
+                        hitCalced = false;
+                    }
                 }
 
             }
@@ -278,8 +287,6 @@ public class Mirror : MonoBehaviour
             beingHit = false;
         }
 
-
-
         // Keep current cell updated
         if (startingMir)
         {
@@ -333,8 +340,10 @@ public class Mirror : MonoBehaviour
         }
 
         // Handle logic of a timed mirror turning
+        Debug.Log((transform.name, timed, !beingCarried));
         if (timed && !beingCarried)
         {
+            Debug.Log("187");
             timer -= Time.deltaTime;
             if (timer <= 0)
             {

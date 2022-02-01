@@ -133,14 +133,14 @@ public class Solar : MonoBehaviour
                     {
                         Debug.Log("1");
                         newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x - 1, movC.currentCell.y - 1, movC.currentCell.z));
+                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x, movC.currentCell.y - 1, movC.currentCell.z));
                         newPosMP = help;
                     }
                     else
                     {
                         Debug.Log("2");
                         newPosMP = new Vector3(this.transform.position.x - ((ground.cellSize.x / 2)), this.transform.position.y + (ground.cellSize.y / 2), this.transform.position.z);
-                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x - 1, movC.currentCell.y + 1, movC.currentCell.z));
+                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x, movC.currentCell.y + 1, movC.currentCell.z));
                         newPosMP = help;
                     }
                 }
@@ -150,7 +150,7 @@ public class Solar : MonoBehaviour
                     {
                         Debug.Log("3");
                         newPosMP = new Vector3(this.transform.position.x + ((ground.cellSize.x / 2)), this.transform.position.y - (ground.cellSize.y / 2), this.transform.position.z);
-                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x + 1, movC.currentCell.y - 1, movC.currentCell.z));
+                        Vector3 help = ground.CellToWorld(new Vector3Int(movC.currentCell.x - 1, movC.currentCell.y, movC.currentCell.z));
                         newPosMP = help;
                     }
                     else
@@ -167,7 +167,7 @@ public class Solar : MonoBehaviour
                 temp = newPosMP;
                 if (vineMovS.currentBox.GetComponent<Box>())
                 {
-                    vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.72f), temp.z);
+                    vineMovS.currentBox.GetComponent<Box>().destination = new Vector3(temp.x, temp.y, temp.z);
                     vineMovS.currentBox.GetComponent<Box>().moving = true;
                 }
                 if (vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>())

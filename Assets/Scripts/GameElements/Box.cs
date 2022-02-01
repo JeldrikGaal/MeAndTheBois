@@ -105,7 +105,7 @@ public class Box : MonoBehaviour
 
     public void updateGravity()
     {
-        if (!beingcarried)
+        if (!beingcarried && !moving)
         {
             elevation = newElv;
             if (elevation != -1)

@@ -52,10 +52,16 @@ public class Pipe : MonoBehaviour
     public Mirror specialCaseThreeM;
     public int specialCaseInt;
 
+    public bool specialCaseFourB;
+    public Box specialCaseFourBo;
+    public Pipe specialCasePipe;
+    public Mirror specialCaseFourMirror;
+
+    public bool specialCaseFiveB;
+
     // Start is called before the first frame update
     void Start()
     {
-        
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -76,6 +82,7 @@ public class Pipe : MonoBehaviour
 
         on = true;
         if (specialCaseTwoB) on = false;
+        if (specialCaseFiveB) on = false;
         timer = randomInterval;
 
         foreach (ParticleSystem p in pList)
@@ -343,6 +350,63 @@ public class Pipe : MonoBehaviour
                 on = false;
             }
         }
+
+        if (specialCaseFourB)
+        {
+            Vector3 ray = new Vector3();
+            RaycastHit2D _hit = new RaycastHit2D();
+            Vector2 startPoint = new Vector2();
+            switch (type)
+            {
+                case 0:
+                    ray = (directionPoint - directionPoint2).normalized;
+                    startPoint = directionPoint2 + ray * 0.2f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+                case 1:
+                    ray = (directionPoint2 - directionPoint).normalized;
+                    startPoint = directionPoint2 + ray * -0.5f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+                case 2:
+                    ray = (directionPoint - directionPoint2).normalized;
+                    startPoint = directionPoint2 + ray * 0.2f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+                case 3:
+                    ray = (directionPoint2 - directionPoint).normalized;
+                    startPoint = directionPoint2 + ray * 0.2f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+            }
+            hitH = _hit;
+
+            if (hitH)
+            {
+                //Debug.Log(hitH.transform.gameObject == specialCaseFourBo.transform.GetChild(0).gameObject);
+                if (hitH.transform.gameObject == specialCaseFourBo.transform.GetChild(0).gameObject)
+                {
+                    this.on = false;
+                    specialCasePipe.on = true;
+                    specialCaseFourMirror.timed = true;
+                }
+                else
+                {
+                    this.on = true;
+                    specialCasePipe.on = false;
+                    //specialCaseFourMirror.timed = false;
+                }
+            }
+            else
+            {
+                this.on = true;
+                specialCasePipe.on = false;
+                //specialCaseFourMirror.timed = false;
+            }
+
+
+        }
+
 
     }
 }
