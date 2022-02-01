@@ -45,7 +45,7 @@ public class CombiRobot : MonoBehaviour
     void Start()
     {
         shadow = this.transform.GetChild(4).GetComponent<SpriteRenderer>();
-        shadowStartSize = shadow.size.x - 0.05f;
+        shadowStartSize = 0.1f;
         movC = this.transform.GetComponent<MovementController>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         tagsToErode.Add("Obstacle");
@@ -88,16 +88,16 @@ public class CombiRobot : MonoBehaviour
         {
             if (highestElv > 0 && highestElv2 >= highestElv)
             {
-                shadow.transform.localPosition = new Vector3(0, highestElv2 * movC.ground.cellSize.y, 0);
+                shadow.transform.localPosition = new Vector3(0, highestElv2 * movC.ground.cellSize.y - (movC.ground.cellSize.y * 0.25f), 0);
             }
             else
             {
-                shadow.transform.localPosition = new Vector3(0, highestElv * movC.ground.cellSize.y, 0);
+                shadow.transform.localPosition = new Vector3(0, highestElv * movC.ground.cellSize.y - (movC.ground.cellSize.y * 0.25f), 0);
             }
         }
         else
         {
-            shadow.transform.localPosition = new Vector3(0, 0, 0);
+            shadow.transform.localPosition = new Vector3(0, -(movC.ground.cellSize.y * 0.25f), 0);
         }
 
         // Controll up and down movement / elevation of player

@@ -48,7 +48,7 @@ public class Wind : MonoBehaviour
         movC = this.transform.GetComponent<MovementController>();
 
         //robotSprite.transform.localPosition = new Vector3(0, movC.ground.cellSize.y * elevation, 0);
-        shadowStartSize = shadow.size.x - 0.05f;
+        shadowStartSize = 0.1f;
         spriteOffSet = 0f;
         box = null;
 
@@ -105,11 +105,11 @@ public class Wind : MonoBehaviour
         {
             if (highestElv > 0 && highestElv2 >= highestElv)
             {
-                shadow.transform.localPosition = new Vector3(0, highestElv2 * movC.ground.cellSize.y, 0);
+                shadow.transform.localPosition = new Vector3(0, highestElv2 * movC.ground.cellSize.y - (movC.ground.cellSize.y * 0.25f), 0);
             }
             else
             {
-                shadow.transform.localPosition = new Vector3(0, highestElv * movC.ground.cellSize.y, 0);
+                shadow.transform.localPosition = new Vector3(0, highestElv * movC.ground.cellSize.y - (movC.ground.cellSize.y * 0.25f), 0);
             }
            
             
@@ -117,7 +117,7 @@ public class Wind : MonoBehaviour
         }
         else
         {
-            shadow.transform.localPosition = new Vector3(0, 0, 0);
+            shadow.transform.localPosition = new Vector3(0, - (movC.ground.cellSize.y * 0.25f), 0);
         }
        
 
