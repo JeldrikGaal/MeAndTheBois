@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Menu Test.unity
+    guid: 07a8fcffbfd6d2e4e9832162dd6a6c93
+  - enabled: 1
+    path: Assets/Scenes/Annas Greybox Level.unity
+    guid: 80088bd4e8bcfe241b868fe760dbd8f2
   m_configObjects: {}
