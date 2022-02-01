@@ -59,6 +59,15 @@ public class Pipe : MonoBehaviour
 
     public bool specialCaseFiveB;
 
+    public bool specialCaseSixB;
+    public Pipe specialCaseSixP;
+    public Mirror specialCaseSixM1;
+    public Mirror specialCaseSixM2;
+    public Box specialCaseSixBo;
+
+    public bool specialCaseSevenB;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -290,8 +299,8 @@ public class Pipe : MonoBehaviour
 
      // Update is called once per frame
      void Update()
-     { 
-
+     {
+        
         if (Input.GetKeyDown(KeyCode.U))
         {
             on = !on;
@@ -299,6 +308,10 @@ public class Pipe : MonoBehaviour
         if (on)
         {
             determinWindArea();
+        }
+        else
+        {
+            //hitH = new RaycastHit2D();
         }
         toggleParticles(on);
         
@@ -410,6 +423,72 @@ public class Pipe : MonoBehaviour
 
         }
 
+        if (specialCaseSixB)
+        {
+            if (specialCaseSixM1.angle == 0 || specialCaseSixM1.angle == 1)
+            {
+                if (specialCaseSixP.hitH != new RaycastHit2D())
+                {
+                    if (specialCaseSixP.hitH.transform.gameObject == specialCaseSixBo.transform.GetChild(0).gameObject)
+                    {
+                        this.on = true;
+                        specialCaseSixP.on = false;
+                        specialCaseSixM2.timed = false;
+                    }
+                    else
+                    {
+                        this.on = false;
+                        specialCaseSixP.on = true;
+                        specialCaseSixM2.timed = true;
+                    }
+                }
+                else
+                {
+                    this.on = false;
+                    specialCaseSixP.on = true;
+                    specialCaseSixM2.timed = true;
+                }
+            }
+            else
+            {
+                this.on = false;
+                specialCaseSixP.on = false;
+                specialCaseSixM2.timed = false;
+            }
+        }
 
+        if (specialCaseSevenB)
+        {
+            Vector3 ray = new Vector3();
+            RaycastHit2D _hit = new RaycastHit2D();
+            Vector2 startPoint = new Vector2();
+            switch (type)
+            {
+                case 0:
+                    ray = (directionPoint - directionPoint2).normalized;
+                    startPoint = directionPoint2 + ray * 0.2f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+                case 1:
+                    ray = (directionPoint2 - directionPoint).normalized;
+                    startPoint = directionPoint2 + ray * -0.5f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+                case 2:
+                    ray = (directionPoint - directionPoint2).normalized;
+                    startPoint = directionPoint2 + ray * 0.2f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+                case 3:
+                    ray = (directionPoint2 - directionPoint).normalized;
+                    startPoint = directionPoint2 + ray * 0.2f;
+                    _hit = Physics2D.Raycast(startPoint, ray, Mathf.Infinity, ignore);
+                    break;
+            }
+            hitH = _hit;
+        }
+        {
+
+        }
     }
 }
