@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     public Tilemap waterMap;
     public Tilemap boxPlacingMap;
 
-    public int currentCamPos = 4;
+    public int currentCamPos = 0;
     public bool camMoving;
     public float camSpeed;
 
@@ -260,6 +260,7 @@ public class GameManager : MonoBehaviour
 
         camPos = GameObject.Find("CAMERASETTING").GetComponent<CameraPositions>();
         mainCam = Camera.main;
+        mainCam.transform.position = camPos.cameraPositions[0];
 
     }
 
@@ -414,14 +415,14 @@ public class GameManager : MonoBehaviour
                 mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, camPos.cameraPositions[currentCamPos], Time.deltaTime * camSpeed);
             }
         }
-
+        
         updateCamChangeCond();
-        mainCam.transform.position = camPos.cameraPositions[currentCamPos];
-        /*if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
+        //mainCam.transform.position = camPos.cameraPositions[currentCamPos];
+        if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
         {
             camChangeCondHelp[currentCamPos] = false;
             camStepUp();
-        }*/
+        }
     }
 
     public void camStepUp()

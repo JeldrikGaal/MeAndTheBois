@@ -204,7 +204,8 @@ public class CombiTile : MonoBehaviour
 
             if (!movePlayersDown)
             {
-                if ((checkForCombination() && readyToCombine) || (chargeTimer <= 0 && readyToCombine))
+                //  || (chargeTimer <= 0 && readyToCombine)
+                if ((checkForCombination() && readyToCombine))
                 {
                     if (combining)
                     {

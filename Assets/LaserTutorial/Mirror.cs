@@ -132,9 +132,6 @@ public class Mirror : MonoBehaviour
             mirrorSr = this.transform.GetChild(1).GetComponent<SpriteRenderer>();
             
         }
-
-
-
     }
 
 
