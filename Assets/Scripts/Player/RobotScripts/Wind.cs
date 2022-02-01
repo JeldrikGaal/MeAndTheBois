@@ -124,6 +124,18 @@ public class Wind : MonoBehaviour
         // Check if box is being carried or can be picked up
         if (Input.GetKeyDown(movC.playerControlls.ability1))
         {
+            Vector3Int helpV = new Vector3Int(movC.currentCell.x - 1, movC.currentCell.y - 1, movC.currentCell.z);
+            if (gM.isBoxOnCell(helpV, movC.ground))
+            {
+                box = gM.getBoxOnCell(helpV, movC.ground);
+                boxS = box.GetComponent<Box>();
+                if (boxS.saveTile == null) helpV = movC.currentCell;
+            }
+            else if (gM.isBoxOnCell(movC.currentCell, movC.ground))
+            {
+                helpV = movC.currentCell;
+            }
+
             // Putting Box back on the ground
             if (carryingBox )
             {
@@ -138,19 +150,20 @@ public class Wind : MonoBehaviour
             }
 
             // Picking Box Up
-
-            else if (gM.isBoxOnCell(movC.currentCell, movC.ground) && !carryingBox && !carryingMirror)
+            
+            else if (gM.isBoxOnCell(helpV, movC.ground) && !carryingBox && !carryingMirror)
             {
-                box = gM.getBoxOnCell(movC.currentCell, movC.ground);
+                box = gM.getBoxOnCell(helpV, movC.ground);
                 boxS = box.GetComponent<Box>();
                 
                 if (this.elevation > boxS.elevation)
                 {
                     if (boxS.saveTile != null)
                     {
-                        gM.waterMap.SetTile(movC.currentCell, boxS.saveTile);
-                        gM.boxPlacingMap.SetTile(movC.currentCell, null);
-                        gM.tilesList[0].Remove(movC.currentCell);
+                       
+                        gM.waterMap.SetTile(helpV, boxS.saveTile);
+                        gM.boxPlacingMap.SetTile(helpV, null);
+                        gM.tilesList[0].Remove(helpV);
                         boxS.saveTile = null;
                         boxS.boxSprite.enabled = true;
                     }

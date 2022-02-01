@@ -210,7 +210,7 @@ public class CombiRobot : MonoBehaviour
         }
         if (g1 == null)
         {
-            return;
+            //return;
         }
 
         hitObject = g1;

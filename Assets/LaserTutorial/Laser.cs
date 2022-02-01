@@ -27,10 +27,22 @@ public class Laser : MonoBehaviour
 
     public GameManager gM;
 
+    public GameObject materialHoldeR;
+    
     private void Awake()
     {
+        materialHoldeR = GameObject.Find("LaserMaterialHolder");
         m_transform = GetComponent<Transform>();
         s = e = sM = eM = cM = c2M = new Vector2();
+
+        if (this.transform.parent.parent.GetComponent<Pipe>() == null)
+        {
+            lineRenderer.material = materialHoldeR.GetComponent<MaterialH>().mat;
+            lineRenderer.startWidth = 0.66f;
+            lineRenderer.endWidth = 0.66f;
+        }
+            
+
     }
     // A = y2 - y1; B = x1 - x2; C = Ax1 + By1
     // 1 Shoot Ray from Laser to first mirror                                             |     Add Startingpoint, Add first Mirror hit

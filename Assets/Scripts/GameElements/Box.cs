@@ -117,14 +117,18 @@ public class Box : MonoBehaviour
             {
                 this.boxSprite.sortingLayerID = SortingLayer.NameToID("Layer1");
                 this.boxSprite.enabled = false;
+                Vector3Int helpV = new Vector3Int(currentCell.x - 1, currentCell.y - 1, currentCell.z);
                 if (saveTile == null)
                 {
-                    saveTile = (Tile)gM.waterMap.GetTile(currentCell);
-                    gM.tilesList[0].Add(currentCell);
-                    Debug.Log((currentCell, "HIER IST NE BOX"));
+                    //saveTile = (Tile)gM.waterMap.GetTile(currentCell);
+                    ///gM.tilesList[0].Add(currentCell);
+                    saveTile = (Tile)gM.waterMap.GetTile(helpV);
+                    gM.tilesList[0].Add(helpV);
+                    Debug.Log((helpV, "HIER IST NE BOX"));
                 }
                 //gM.waterMap.SetTile(currentCell, boxTile);
-                gM.boxPlacingMap.SetTile(currentCell, boxTile);
+                //gM.boxPlacingMap.SetTile(currentCell, boxTile);
+                gM.boxPlacingMap.SetTile(helpV, boxTile);
                 
 
                 //this.boxSprite.transform.localPosition = new Vector3(this.boxSprite.transform.localPosition.x, 0f, this.boxSprite.transform.localPosition.z);
