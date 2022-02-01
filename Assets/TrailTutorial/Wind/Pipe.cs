@@ -394,6 +394,7 @@ public class Pipe : MonoBehaviour
                 {
                     this.on = true;
                     specialCasePipe.on = false;
+                    Debug.Log("false 1");
                     //specialCaseFourMirror.timed = false;
                 }
             }
@@ -401,6 +402,7 @@ public class Pipe : MonoBehaviour
             {
                 this.on = true;
                 specialCasePipe.on = false;
+                Debug.Log("false 2");
                 //specialCaseFourMirror.timed = false;
             }
 

@@ -340,7 +340,7 @@ public class Mirror : MonoBehaviour
         }
 
         // Handle logic of a timed mirror turning
-        Debug.Log((transform.name, timed, !beingCarried));
+        //Debug.Log((transform.name, timed, !beingCarried));
         if (timed && !beingCarried)
         {
             Debug.Log("187");
