@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour
         waterMap = ground.transform.GetChild(1).GetComponent<Tilemap>();
         boxPlacingMap = ground.transform.GetChild(2).GetComponent<Tilemap>();
 
-        camSpeed = 3;
+        camSpeed = 2;
 
         for (int i = 0; i < 10; i++)
         {

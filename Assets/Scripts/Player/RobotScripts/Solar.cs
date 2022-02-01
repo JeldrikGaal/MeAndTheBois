@@ -174,6 +174,12 @@ public class Solar : MonoBehaviour
                 {
                     vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().destination = new Vector3(temp.x, temp.y, temp.z);
                     vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().moving = true;
+                    if (vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().specialCaseThreeB)
+                    {
+                        Vector3 hhh = movC.ground.CellToWorld(vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().specialCaseThreeVec);
+                        vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().destination = new Vector3(hhh.x, hhh.y + ground.cellSize.y * 0.1f, hhh.z);
+                        vineMovS.currentBox.transform.GetChild(0).GetComponent<Mirror>().moving = true;
+                    }
                 }
 
                 //vineMovS.currentBox.GetComponent<Box>().destination = temp; 

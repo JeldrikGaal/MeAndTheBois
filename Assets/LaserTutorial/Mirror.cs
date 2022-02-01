@@ -69,6 +69,7 @@ public class Mirror : MonoBehaviour
     public Pipe specialCaseTwoP;
 
     public bool specialCaseThreeB;
+    public bool specialCaseThreeB2;
     public Vector3Int specialCaseThreeVec;
     public Vector3Int specialCaseThreeVec2;
 
@@ -83,7 +84,18 @@ public class Mirror : MonoBehaviour
 
     public bool specialCaseSevenB;
 
+    public bool specialCaseEightB;
+    public Vector3Int specialCaseEightVec;
+    public Box specialCaseEightBo;
+    public bool specialCaseEightHelp;
+
+    public bool specialCaseNineB;
+
     public bool ignoreHits;
+
+    public GameObject materialHoldeR;
+    public Material hitMat;
+    public Material notHitMat;
 
     private void Awake()
     {
@@ -91,6 +103,9 @@ public class Mirror : MonoBehaviour
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         coll = this.GetComponent<EdgeCollider2D>();
+        materialHoldeR = GameObject.Find("LaserMaterialHolder");
+
+        
 
         // Save variables needed for ray placment
         midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
@@ -132,6 +147,8 @@ public class Mirror : MonoBehaviour
             mirrorSr = this.transform.GetChild(1).GetComponent<SpriteRenderer>();
             
         }
+        notHitMat = mirrorSr.material;
+        hitMat = materialHoldeR.GetComponent<MaterialH>().mat2;
     }
 
 
@@ -148,6 +165,8 @@ public class Mirror : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         if (needsChargeToRotate)
         {
             if (beingHit)
@@ -160,7 +179,9 @@ public class Mirror : MonoBehaviour
                         timer = chargeTimer;
                         timerSave = chargeTimer;
                         hitCalced = true;
+                        mirrorSr.material = hitMat;
                     }
+
                 }
                 else
                 {
@@ -168,6 +189,7 @@ public class Mirror : MonoBehaviour
                     {
                         timed = false;
                         hitCalced = false;
+                        mirrorSr.material = notHitMat;
                     }
                     
                 }
@@ -180,6 +202,7 @@ public class Mirror : MonoBehaviour
                     {
                         timed = false;
                         hitCalced = false;
+                        mirrorSr.material = notHitMat;
                     }
                 }
 
@@ -215,7 +238,13 @@ public class Mirror : MonoBehaviour
             if (currentCell == specialCaseThreeVec || currentCell == specialCaseThreeVec2)
             {
                 laserG.SetActive(true);
-                this.placeDirectionPoint();
+                midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
+                midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(reflectionPoint.position));
+                reflectionPoint.transform.position = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.25f) + yOffset, temp.z);
+                placeDirectionPoint();
+                refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
+                startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
             }
             else
             {
@@ -260,6 +289,8 @@ public class Mirror : MonoBehaviour
                 timed = false;
             }
         }
+
+       
 
 
         // Reset every 5 frames --> no other way found to reset those variables
@@ -369,6 +400,7 @@ public class Mirror : MonoBehaviour
             if (gravityAffected)
             {
                 newElv = gM.getHighestElevation(currentCell, this.gameObject);
+                if (specialCaseNineB) newElv = gM.getHighestElevation(new Vector3Int(currentCell.x + 1 , currentCell.y ,currentCell.z), this.gameObject);
                 if (newElv > elevation)
                 {
                     int diff = newElv - elevation;
@@ -403,7 +435,12 @@ public class Mirror : MonoBehaviour
                 refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
                 startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
             }
+
+
+
         }
+
+
 
         if (!startingMir && beingHit) 
         {
@@ -427,6 +464,33 @@ public class Mirror : MonoBehaviour
 
         if (beingCarried) sR.sortingLayerID = SortingLayer.NameToID("Flying");
         if (beingCarried) sR.sortingOrder = 1;
+
+        if (specialCaseEightB)
+        {
+            if (currentCell == specialCaseEightVec && specialCaseEightBo.currentCell == new Vector3(specialCaseEightVec.x, specialCaseEightVec.y, specialCaseEightVec.z) && !specialCaseEightHelp)
+            {
+                specialCaseEightHelp = true;
+            }
+            if (specialCaseEightHelp)
+            {
+                currentCell = specialCaseEightVec;
+                mirrorG.transform.position = new Vector3(specialCaseEightBo.transform.position.x, specialCaseEightBo.transform.position.y + ground.cellSize.y, specialCaseEightBo.transform.position.z);
+                laserG.transform.position = new Vector3(specialCaseEightBo.transform.position.x, specialCaseEightBo.transform.position.y + ground.cellSize.y * 4, specialCaseEightBo.transform.position.z);
+                //reflectionPoint.transform.position = new Vector3(reflectionPoint.transform.position.x + ground.cellSize.x, reflectionPoint.transform.position.y + ground.cellSize.y, reflectionPoint.transform.position.z);
+                //reflectionPoint.transform.localPosition = new Vector3(0.5f, 0.5f, 0);
+                laserG.SetActive(true);
+                //placeDirectionPoint();
+                portable = false;
+
+                midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
+                midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
+                Vector3 temp = ground.GetCellCenterWorld(ground.WorldToCell(reflectionPoint.position));
+                reflectionPoint.transform.position = new Vector3(temp.x, temp.y - (ground.cellSize.y * 0.25f) + yOffset, temp.z);
+                placeDirectionPoint();
+                refStartCell = ground.WorldToCell(reflectionPoint.transform.position);
+                startingPos = new Vector2(reflectionPoint.position.x, reflectionPoint.position.y);
+            }
+        }
     }
 
     bool checkAdjacentCells(MovementController p)

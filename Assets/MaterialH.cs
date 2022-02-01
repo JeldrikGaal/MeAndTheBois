@@ -6,6 +6,7 @@ public class MaterialH : MonoBehaviour
 {
     // Start is called before the first frame update
     public Material mat;
+    public Material mat2;
     void Start()
     {
         
