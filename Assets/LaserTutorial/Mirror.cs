@@ -74,6 +74,12 @@ public class Mirror : MonoBehaviour
     public bool specialCaseFourB;
     public Pipe specialCaseFourP;
 
+    public bool specialCaseFiveB;
+    public Pipe specialCaseFiveP;
+
+    public bool specialCaseSixB;
+    public Mirror specialCaseSixM;
+
     private void Awake()
     {
 
@@ -134,6 +140,7 @@ public class Mirror : MonoBehaviour
         sR.sprite = sprites[angle];
         Flip();
         collOffset = coll.bounds.center - midPoint;
+        if (specialCaseFiveB) this.laserG.SetActive(false);
     }
 
     // Update is called once per frame
@@ -219,6 +226,29 @@ public class Mirror : MonoBehaviour
             }
         }
 
+        if (specialCaseFiveB)
+        {
+            if (specialCaseFiveP.on)
+            {
+                this.timed = true;
+                this.laserG.SetActive(true);
+            }
+            else
+            {
+                this.timed = false;
+                this.laserG.SetActive(false);
+            }
+        }
+
+        if (specialCaseSixB && specialCaseSixM.angle == 3 && beingHit)
+        {
+            timed = true;
+        }
+        else
+        {
+            timed = false;
+        }
+
         // Reset every 5 frames --> no other way found to reset those variables
         counter -= 1;
         if (counter == 5)
@@ -235,10 +265,13 @@ public class Mirror : MonoBehaviour
             
             angleReceived = -1;
         }
+
+
         if (angleReceivedStable != -1)
         {
-            angleReceivedStable = correctAngleRec(angleReceivedStableHelp);
             beingHit = true;
+            angleReceivedStable = correctAngleRec(angleReceivedStableHelp);
+            
         }
         else
         {

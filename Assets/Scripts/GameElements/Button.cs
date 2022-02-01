@@ -59,7 +59,7 @@ public class Button : MonoBehaviour
             return false;
         }
 
-        if (p.currentCell == currentCell)
+        if (p.currentCell == new Vector3(currentCell.x -1 ,currentCell.y -1, currentCell.z))
         {
             return true;
         }

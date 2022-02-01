@@ -77,10 +77,14 @@ public class CombiTile : MonoBehaviour
 
     public bool specialCaseOne;
 
+    public float safeTimer;
+
+    public bool cancelFirstCharge;
 
     // Start is called before the first frame update
     void Start()
     {
+        safeTimer = chargeTimer;
         spriteMask = transform.Find("Sprite Mask");
         left = transform.Find("Sprite Mask/Shift/left");
         right = transform.Find("Sprite Mask/Shift/right");
@@ -141,8 +145,17 @@ public class CombiTile : MonoBehaviour
             if (checkEnergy())
             {
                 if (chargeTimer > 0) charging = true;
-                if (windNeeded != -1) anim.SetTrigger("Go");
+                if (windNeeded != -1 && cancelFirstCharge) anim.SetTrigger("Go");
 
+            }
+            else
+            {
+                if (!cancelFirstCharge)
+                {
+                    charging = false;
+                    cancelFirstCharge = true;
+                }
+               
             }
             if (charging)
             {
@@ -191,11 +204,20 @@ public class CombiTile : MonoBehaviour
 
             if (!movePlayersDown)
             {
-                if (checkForCombination() && readyToCombine)
+                if ((checkForCombination() && readyToCombine) || (chargeTimer <= 0 && readyToCombine))
                 {
                     if (combining)
                     {
                         movePlayersDown = true;
+
+                        foreach (SpriteRenderer sr in gM.p1.getAllSR())
+                        {
+                            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        }
+                        foreach (SpriteRenderer sr in gM.p2.getAllSR())
+                        {
+                            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        }
 
                         playerGoal1 = new Vector3(gM.p1.transform.position.x, gM.p1.transform.position.y - 2, gM.p1.transform.position.z);
                         playerGoal2 = new Vector3(gM.p2.transform.position.x, gM.p2.transform.position.y - 2, gM.p2.transform.position.z);
@@ -214,14 +236,7 @@ public class CombiTile : MonoBehaviour
                             gM.p1.transform.parent = partnerTile.partenForEnergyReceiver.transform;
                         }
 
-                        foreach (SpriteRenderer sr in gM.p1.getAllSR())
-                        {
-                            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-                        }
-                        foreach (SpriteRenderer sr in gM.p2.getAllSR())
-                        {
-                            sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-                        }
+
                     }
                     else
                     {

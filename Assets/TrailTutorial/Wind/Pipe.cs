@@ -48,6 +48,10 @@ public class Pipe : MonoBehaviour
     public Box specialCaseTwo;
     public Vector3Int specialCaseTwoVec;
 
+    public bool specialCaseThreeB;
+    public Mirror specialCaseThreeM;
+    public int specialCaseInt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -328,7 +332,17 @@ public class Pipe : MonoBehaviour
             }
         }
 
-        
+        if (specialCaseThreeB)
+        {
+            if (specialCaseThreeM.angle == specialCaseInt)
+            {
+                on = true;
+            }
+            else
+            {
+                on = false;
+            }
+        }
 
     }
 }
