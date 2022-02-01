@@ -61,8 +61,9 @@ public class Box : MonoBehaviour
         //if (beingcarried) boxSprite.sortingLayerID = gM.elevSL[elevation + 1];
         if (beingcarried) boxSprite.sortingLayerID = SortingLayer.NameToID("Flying");
         if (beingcarried) boxSprite.sortingOrder = 1;
-        newElv = gM.getHighestElevation(currentCell, this.gameObject);
-        //newElv = gM.getHighestElevation(currentCell);
+        Vector3Int helpV = new Vector3Int(currentCell.x - 1, currentCell.y - 1, currentCell.z);
+        newElv = gM.getHighestElevation(helpV, this.gameObject);
+        //newElv = gM.getHighestElevation(currentCell, this.gameObject);
 
         updateGravity();
     }
