@@ -70,11 +70,11 @@ TagManager:
   - name: Elevation 2
     uniqueID: 2476809557
     locked: 0
-  - name: Water
-    uniqueID: 3141189843
-    locked: 0
   - name: Elevation 3
     uniqueID: 3075908909
+    locked: 0
+  - name: Water
+    uniqueID: 3141189843
     locked: 0
   - name: Elevation 4
     uniqueID: 846601297
