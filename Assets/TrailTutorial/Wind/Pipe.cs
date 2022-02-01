@@ -388,22 +388,23 @@ public class Pipe : MonoBehaviour
                 {
                     this.on = false;
                     specialCasePipe.on = true;
-                    specialCaseFourMirror.timed = true;
+                    specialCaseFourMirror.timed = false;
+                    //Debug.Log("true");
                 }
                 else
                 {
                     this.on = true;
                     specialCasePipe.on = false;
-                    Debug.Log("false 1");
-                    //specialCaseFourMirror.timed = false;
+                    //Debug.Log("false 1");
+                    specialCaseFourMirror.timed = true;
                 }
             }
             else
             {
                 this.on = true;
                 specialCasePipe.on = false;
-                Debug.Log("false 2");
-                //specialCaseFourMirror.timed = false;
+                //Debug.Log("false 2");
+                specialCaseFourMirror.timed = true;
             }
 
 

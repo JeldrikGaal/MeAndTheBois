@@ -28,7 +28,7 @@ public class Solar : MonoBehaviour
         energyLevel = startingEnergy;
         movC = this.transform.GetComponent<MovementController>();
         vineMovS = vineMovementPoint.GetComponent<VineMovingPoint>();
-        vineRange = 3;
+        vineRange = 4;
         lR = this.GetComponent<LineRenderer>();
     }
 

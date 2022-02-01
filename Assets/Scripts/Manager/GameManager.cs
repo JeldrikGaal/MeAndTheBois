@@ -154,7 +154,10 @@ public class GameManager : MonoBehaviour
 
         camSpeed = 3;
 
-        camChangeCond.Add(this.p1.currentCell.x >= 31 && this.p2.currentCell.x >= 31);
+        for (int i = 0; i < 10; i++)
+        {
+            camChangeCond.Add(false);
+        }
         foreach (bool b in camChangeCond)
         {
             camChangeCondHelp.Add(false);
@@ -165,6 +168,14 @@ public class GameManager : MonoBehaviour
     public void updateCamChangeCond()
     {
         camChangeCond[0] = (this.p1.currentCell.x >= 31 && this.p2.currentCell.x >= 31);
+        camChangeCond[1] = camChangeCond[0] && (this.p3.currentCell.x >= 49 );
+        camChangeCond[2] = camChangeCond[1] && (this.p1.currentCell.x >= 59 && this.p2.currentCell.x >= 59);
+        camChangeCond[3] = camChangeCond[2] && (this.p3.currentCell.x >= 76); 
+        camChangeCond[4] = camChangeCond[3] && (this.p1.currentCell.x >= 92 && this.p2.currentCell.x >= 92);
+        camChangeCond[5] = camChangeCond[4] && (this.p1.currentCell.x >= 98 && this.p2.currentCell.x >= 98);
+        camChangeCond[6] = camChangeCond[5] && (this.p3.currentCell.x >= 117);
+        camChangeCond[7] = camChangeCond[6] && (this.p1.currentCell.x >= 112 && this.p2.currentCell.x >= 112);
+        camChangeCond[8] = camChangeCond[7] && (this.p3.currentCell.x >= 154);
     }
 
     public void Start()

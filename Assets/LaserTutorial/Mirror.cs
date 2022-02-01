@@ -70,6 +70,7 @@ public class Mirror : MonoBehaviour
 
     public bool specialCaseThreeB;
     public Vector3Int specialCaseThreeVec;
+    public Vector3Int specialCaseThreeVec2;
 
     public bool specialCaseFourB;
     public Pipe specialCaseFourP;
@@ -79,6 +80,8 @@ public class Mirror : MonoBehaviour
 
     public bool specialCaseSixB;
     public Mirror specialCaseSixM;
+
+    public bool specialCaseSevenB;
 
     public bool ignoreHits;
 
@@ -212,14 +215,14 @@ public class Mirror : MonoBehaviour
 
         if (specialCaseThreeB)
         {
-            if (currentCell != specialCaseThreeVec)
-            {
-                laserG.SetActive(false);
-            }
-            else
+            if (currentCell == specialCaseThreeVec || currentCell == specialCaseThreeVec2)
             {
                 laserG.SetActive(true);
                 this.placeDirectionPoint();
+            }
+            else
+            {
+                laserG.SetActive(false);
             }
         }
 
@@ -249,14 +252,18 @@ public class Mirror : MonoBehaviour
             }
         }
 
-        if (specialCaseSixB && specialCaseSixM.angle == 3 && beingHit)
+        if (specialCaseSixB)
         {
-            timed = true;
+            if (specialCaseSixM.angle == 3 && beingHit)
+            {
+                timed = true;
+            }
+            else
+            {
+                timed = false;
+            }
         }
-        else
-        {
-            timed = false;
-        }
+
 
         // Reset every 5 frames --> no other way found to reset those variables
         counter -= 1;
@@ -341,9 +348,9 @@ public class Mirror : MonoBehaviour
 
         // Handle logic of a timed mirror turning
         //Debug.Log((transform.name, timed, !beingCarried));
+        if (specialCaseSevenB) Debug.Log((timed, !beingCarried));
         if (timed && !beingCarried)
         {
-            Debug.Log("187");
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
@@ -408,8 +415,9 @@ public class Mirror : MonoBehaviour
 
         if (moving && portable)
         {
-            if (specialCaseThreeB) this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, new Vector3(destination.x, destination.y + 0.1f, destination.z), 3 * Time.deltaTime);
-            else this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, destination, 3 * Time.deltaTime);
+            //if (specialCaseThreeB) this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, new Vector3(destination.x, destination.y + 0.1f, destination.z), 3 * Time.deltaTime);
+            //else this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, destination, 3 * Time.deltaTime);
+            this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, destination, 3 * Time.deltaTime);
 
             midPoint = ground.GetCellCenterWorld(ground.WorldToCell(transform.position));
             midPoint = new Vector3(midPoint.x, midPoint.y - (ground.cellSize.y * 0.25f));
