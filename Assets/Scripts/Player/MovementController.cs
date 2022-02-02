@@ -163,11 +163,11 @@ public class MovementController : MonoBehaviour
         if (playerIndex != 3)
         {
             Vector3 tempPos = ground.GetCellCenterWorld(ground.WorldToCell(spawnPoint.transform.position));
-            this.transform.position = new Vector3(tempPos.x, tempPos.y - ground.cellSize.y - 0.25f, tempPos.z);
-            this.transform.position = tempPos;
+            //this.transform.position = new Vector3(tempPos.x, tempPos.y - ground.cellSize.y - 0.25f, tempPos.z);
+            //this.transform.position = tempPos;
         }
 
-        //this.transform.position = spawnPoint.transform.position;
+        if (playerIndex == 3)this.transform.position = spawnPoint.transform.position;
         this.movingPoint.transform.position = this.transform.position;
 
         playerControlls = gM.controlls[playerIndex - 1];

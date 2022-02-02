@@ -125,8 +125,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307057943320135483}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 846601297
+  m_SortingLayer: 10
   m_SortingOrder: 8
 --- !u!1 &307057943629346383
 GameObject:
@@ -396,6 +396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animSpeed: 2
   single: 0
+  elevation: 0
   left: {fileID: 0}
   plate: {fileID: 0}
   right: {fileID: 0}
@@ -408,6 +409,7 @@ MonoBehaviour:
   player3Goal: {x: 0, y: 0, z: 0}
   currentCell: {x: 0, y: 0, z: 0}
   openGate: 0
+  sG: {fileID: 0}
 --- !u!1 &307057944708132903
 GameObject:
   m_ObjectHideFlags: 0

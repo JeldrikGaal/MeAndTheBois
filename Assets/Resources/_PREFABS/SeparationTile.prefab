@@ -658,8 +658,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4628725019645534199}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1219058387
+  m_SortingLayer: 8
   m_SortingOrder: 4
 --- !u!1 &8449609379006432709
 GameObject:
@@ -780,6 +780,10 @@ MonoBehaviour:
   movePlayersDown: 0
   receiving: 0
   readyToCombine: 0
+  elevation: 0
+  specialCaseOne: 0
+  safeTimer: 0
+  cancelFirstCharge: 0
 --- !u!1 &8662839302016878290
 GameObject:
   m_ObjectHideFlags: 0

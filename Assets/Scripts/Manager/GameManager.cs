@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
     public List<bool> camChangeCond = new List<bool>();
     public List<bool> camChangeCondHelp = new List<bool>();
 
+    public bool sceneShowCase;
+
     public class movementSet
     {
         public int playerId;
@@ -108,7 +110,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        
+        currentCamPos = 0;
         DontDestroyOnLoad(this);
 
         movementSet p1 = new movementSet();
@@ -404,7 +406,7 @@ public class GameManager : MonoBehaviour
             camStepDown();
         }
         
-        if (camMoving)
+        if (camMoving && !sceneShowCase)
         {
             if (Vector3.Distance(mainCam.transform.position, camPos.cameraPositions[currentCamPos]) <= 0.01f)
             {
@@ -417,11 +419,23 @@ public class GameManager : MonoBehaviour
         }
         
         updateCamChangeCond();
-        //mainCam.transform.position = camPos.cameraPositions[currentCamPos];
+        mainCam.transform.position = camPos.cameraPositions[currentCamPos];
         if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
         {
             camChangeCondHelp[currentCamPos] = false;
             camStepUp();
+        }
+
+        if (sceneShowCase)
+        {
+            if (Vector3.Distance(mainCam.transform.position, camPos.cameraPositions[currentCamPos]) <= 0.1f)
+            {
+                camStepUp();
+            }
+            else
+            {
+                mainCam.transform.position = Vector3.MoveTowards(mainCam.transform.position, camPos.cameraPositions[currentCamPos], Time.deltaTime * 3f);
+            }
         }
     }
 

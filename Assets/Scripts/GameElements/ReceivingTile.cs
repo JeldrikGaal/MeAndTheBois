@@ -28,6 +28,7 @@ public class ReceivingTile : MonoBehaviour
     
     public bool openGate = false;
     public SortingGroup sG;
+    public bool keepElv;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,7 @@ public class ReceivingTile : MonoBehaviour
         plate = transform.Find("Sprite Mask/Shift/plate");
 
         sG = transform.GetChild(0).GetComponent<SortingGroup>();
-        elevation = gM.elevSL.IndexOf(sG.sortingLayerID);
+        if (!keepElv) elevation = gM.elevSL.IndexOf(sG.sortingLayerID);
     }
 
     // Update is called once per frame
@@ -56,6 +57,16 @@ public class ReceivingTile : MonoBehaviour
 
             player.transform.position = Vector3.Lerp(player.transform.position, player3Goal, Time.deltaTime * animSpeed);
 
+
+            foreach (SpriteRenderer sr in player.getAllSR())
+            {
+                sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            }
+            if (player.GetComponent<SpriteRenderer>())
+            {
+                player.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            }
+            
 
             if (Vector3.Distance(left.localPosition, leftGoal) <= 0.01f && Vector3.Distance(right.localPosition, rightGoal) <= 0.01f && Vector3.Distance(plate.localPosition, plateGoal) <= 0.01f)
             {
