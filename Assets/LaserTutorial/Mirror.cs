@@ -99,14 +99,18 @@ public class Mirror : MonoBehaviour
 
     public bool specialCaseTenB;
 
+    public AudioSource soundPlayer;
+    public SoundManager sM;
+
     private void Awake()
     {
 
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
+        sM = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         coll = this.GetComponent<EdgeCollider2D>();
         materialHoldeR = GameObject.Find("LaserMaterialHolder");
-
+        soundPlayer = this.transform.parent.GetComponent<AudioSource>();
         
 
         // Save variables needed for ray placment
@@ -167,7 +171,30 @@ public class Mirror : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (gM.p1.isActiveAndEnabled && gM.p2.isActiveAndEnabled)
+        {
+            if (Vector3.Distance(gM.p1.transform.position, this.transform.position) > 10f && Vector3.Distance(gM.p2.transform.position, this.transform.position) > 10f)
+            {
+                this.soundPlayer.volume = 0;
+            }
+            else
+            {
+                //this.soundPlayer.volume = Vector3.Distance(gM.p1.transform.position, this.transform.position) / 10;
+                this.soundPlayer.volume = 1;
+            }
+        }
+        else if (gM.p3.isActiveAndEnabled)
+        {
+            if (Vector3.Distance(gM.p3.transform.position, this.transform.position) > 10f)
+            {
+                this.soundPlayer.volume = 0;
+            }
+            else
+            {
+                //this.soundPlayer.volume = Vector3.Distance(gM.p1.transform.position, this.transform.position) / 10;
+                this.soundPlayer.volume = 1;
+            }
+        }
 
         if (needsChargeToRotate)
         {
@@ -700,7 +727,8 @@ public class Mirror : MonoBehaviour
         placeDirectionPoint();
         sR.sprite = sprites[angle];
         Flip();
-        
+        soundPlayer.clip = sM.objectSounds[0];
+        soundPlayer.Play();
     }
 
     // Turn refelection point one step to the right and update sprite
@@ -717,5 +745,7 @@ public class Mirror : MonoBehaviour
         placeDirectionPoint();
         sR.sprite = sprites[angle];
         Flip();
+        soundPlayer.clip = sM.objectSounds[0];
+        soundPlayer.Play();
     }
 }

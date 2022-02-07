@@ -12,6 +12,8 @@ public class SoundManager : MonoBehaviour
 
     public List<AudioClip> combiTiles;
 
+    public List<AudioClip> objectSounds;
+
     public List<List<AudioClip>> sound = new List<List<AudioClip>>();
     // Start is called before the first frame update
 

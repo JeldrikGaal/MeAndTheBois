@@ -164,6 +164,7 @@ public class CombiTile : MonoBehaviour
             {
                 chargeTimer -= Time.deltaTime;
                 this.soundPlayer.clip = gM.sM.combiTiles[1];
+                //this.soundPlayer.Play();
 
             }
 
@@ -174,6 +175,7 @@ public class CombiTile : MonoBehaviour
 
                 decendER = true;
                 this.soundPlayer.clip = gM.sM.combiTiles[0];
+                this.soundPlayer.Play();
             }
 
 
@@ -214,6 +216,7 @@ public class CombiTile : MonoBehaviour
                 if ((checkForCombination() && readyToCombine))
                 {
                     this.soundPlayer.clip = gM.sM.combiTiles[2];
+                    this.soundPlayer.Play();
                     if (combining)
                     {
                         movePlayersDown = true;

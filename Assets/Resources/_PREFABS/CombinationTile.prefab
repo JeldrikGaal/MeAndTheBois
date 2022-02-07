@@ -335,6 +335,7 @@ MonoBehaviour:
   specialCaseOne: 0
   safeTimer: 0
   cancelFirstCharge: 0
+  soundPlayer: {fileID: 0}
 --- !u!82 &1411186388568192250
 AudioSource:
   m_ObjectHideFlags: 0
@@ -346,7 +347,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

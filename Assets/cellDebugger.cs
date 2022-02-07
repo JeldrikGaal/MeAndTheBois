@@ -19,6 +19,9 @@ public class cellDebugger : MonoBehaviour
 
     public bool checkCurrent;
 
+    public float distance;
+    public GameObject distanceGameObject;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,5 +39,7 @@ public class cellDebugger : MonoBehaviour
 
         checkElv = gM.tilesList[layer].Contains(checkVec);
         checkCurrent = gM.tilesList[layer].Contains(currentCell);
+
+        distance = Vector3.Distance(this.transform.position, distanceGameObject.transform.position);
     }
 }
