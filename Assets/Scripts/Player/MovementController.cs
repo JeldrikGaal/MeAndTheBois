@@ -76,11 +76,21 @@ public class MovementController : MonoBehaviour
     public Vector3 tra;
     private Solar so;
     public List<Vector3Int> p1Exceptions = new List<Vector3Int>();
+
+    public GameObject soundManager;
+    public List<List<AudioClip>> sounds;
+    public AudioSource soundPlayer;
+
+
     void Start()
     {
         idling = true;
         gM = GameObject.Find("GameManager").GetComponent<GameManager>();
         ground = GameObject.Find("Grid").GetComponent<Grid>();
+        soundManager = GameObject.Find("SoundManager");
+
+        sounds = soundManager.GetComponent<SoundManager>().sound;
+        soundPlayer = this.GetComponent<AudioSource>();
 
         moving = true;
         sprites.Add(sprite4);
@@ -276,8 +286,10 @@ public class MovementController : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(this.transform.position, movingPoint.transform.position, 1* Time.deltaTime);
         }
 
-        if (isMoving && Vector3.Distance(this.transform.position, movingPoint.transform.position) < 0.01f)
+        if (isMoving && Vector3.Distance(this.transform.position, movingPoint.transform.position) > 0.01f)
         {
+            soundPlayer.clip = (sounds[playerIndex - 1][0]);
+            if (!soundPlayer.isPlaying) soundPlayer.Play();
             idling = false;
         }
 
@@ -297,6 +309,8 @@ public class MovementController : MonoBehaviour
             {
                 this.currentAnimator.SetTrigger("Idle");
                 idling = true;
+
+                if (soundPlayer.clip == (sounds[playerIndex - 1][0])) soundPlayer.Stop();
             }
             
         }

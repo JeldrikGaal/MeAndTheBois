@@ -113,6 +113,8 @@ public class Solar : MonoBehaviour
 
     void TryVineMove()
     {
+        this.movC.soundPlayer.clip = movC.sounds[0][1];
+        this.movC.soundPlayer.Play();
         Vector3 newPosMP = this.transform.position;
         Grid ground = movC.ground;
         if (!vineExtended)

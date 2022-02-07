@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -61,6 +62,9 @@ public class GameManager : MonoBehaviour
     public List<bool> camChangeCondHelp = new List<bool>();
 
     public bool sceneShowCase;
+    public KeyCode exitGame;
+
+    public SoundManager sM;
 
     public class movementSet
     {
@@ -164,7 +168,9 @@ public class GameManager : MonoBehaviour
         {
             camChangeCondHelp.Add(false);
         }
+        exitGame = KeyCode.Escape;
 
+        sM = GameObject.Find("SoundManager").GetComponent<SoundManager>();
     }
 
     public void updateCamChangeCond()
@@ -419,7 +425,7 @@ public class GameManager : MonoBehaviour
         }
         
         updateCamChangeCond();
-        mainCam.transform.position = camPos.cameraPositions[currentCamPos];
+        //mainCam.transform.position = camPos.cameraPositions[currentCamPos];
         if (camChangeCond[currentCamPos] && !camChangeCondHelp[currentCamPos])
         {
             camChangeCondHelp[currentCamPos] = false;
@@ -436,6 +442,10 @@ public class GameManager : MonoBehaviour
             {
                 mainCam.transform.position = Vector3.MoveTowards(mainCam.transform.position, camPos.cameraPositions[currentCamPos], Time.deltaTime * 3f);
             }
+        }
+        if (Input.GetKeyDown(exitGame))
+        {
+            SceneManager.LoadScene(2);
         }
     }
 

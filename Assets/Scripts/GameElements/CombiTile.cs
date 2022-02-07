@@ -81,6 +81,8 @@ public class CombiTile : MonoBehaviour
 
     public bool cancelFirstCharge;
 
+    public AudioSource soundPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,6 +97,7 @@ public class CombiTile : MonoBehaviour
         ground = GameObject.Find("Grid").GetComponent<Grid>();
         openAnim = this.GetComponent<Animation>();
 
+        soundPlayer = this.GetComponent<AudioSource>();
         spawnFittingEnergy();
 
         anim = this.GetComponentInChildren<Animator>();
@@ -160,6 +163,8 @@ public class CombiTile : MonoBehaviour
             if (charging)
             {
                 chargeTimer -= Time.deltaTime;
+                this.soundPlayer.clip = gM.sM.combiTiles[1];
+
             }
 
             if (chargeTimer <= 0 && charging)
@@ -168,6 +173,7 @@ public class CombiTile : MonoBehaviour
                 //energyReceiver.SetActive(false);
 
                 decendER = true;
+                this.soundPlayer.clip = gM.sM.combiTiles[0];
             }
 
 
@@ -207,6 +213,7 @@ public class CombiTile : MonoBehaviour
                 //  || (chargeTimer <= 0 && readyToCombine)
                 if ((checkForCombination() && readyToCombine))
                 {
+                    this.soundPlayer.clip = gM.sM.combiTiles[2];
                     if (combining)
                     {
                         movePlayersDown = true;

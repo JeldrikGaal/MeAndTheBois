@@ -138,6 +138,12 @@ public class Laser : MonoBehaviour
                         return;
                     }
 
+                    if (m1.specialCaseTenB && m1.angle == 2)
+                    {
+                        points2.Add(_hit.point);
+                        return;
+                    }
+
 
                 }
                 else

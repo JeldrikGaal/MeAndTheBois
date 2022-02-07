@@ -97,6 +97,8 @@ public class Mirror : MonoBehaviour
     public Material hitMat;
     public Material notHitMat;
 
+    public bool specialCaseTenB;
+
     private void Awake()
     {
 

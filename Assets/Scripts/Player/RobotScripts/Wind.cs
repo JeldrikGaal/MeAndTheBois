@@ -124,6 +124,8 @@ public class Wind : MonoBehaviour
         // Check if box is being carried or can be picked up
         if (Input.GetKeyDown(movC.playerControlls.ability1))
         {
+            this.movC.soundPlayer.clip = movC.sounds[1][1];
+            this.movC.soundPlayer.Play();
 
             Vector3Int helpV = new Vector3Int(movC.currentCell.x - 1, movC.currentCell.y - 1, movC.currentCell.z);
             Vector3Int helpV2 = new Vector3Int(movC.currentCell.x + 1, movC.currentCell.y + 1, movC.currentCell.z);

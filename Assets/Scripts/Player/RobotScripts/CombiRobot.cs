@@ -142,6 +142,8 @@ public class CombiRobot : MonoBehaviour
         // Check if box is being carried or can be picked up
         if (Input.GetKeyDown(movC.playerControlls.ability2))
         {
+            this.movC.soundPlayer.clip = movC.sounds[0][1];
+            this.movC.soundPlayer.Play();
             // Putting Box back on the ground
             if (carryingBox)
             {
@@ -181,6 +183,8 @@ public class CombiRobot : MonoBehaviour
     public void shootSeedBomb()
     {
         if (shooting) return;
+        this.movC.soundPlayer.clip = movC.sounds[2][1];
+        this.movC.soundPlayer.Play();
 
         Vector3 pos1 = mC.ground.GetCellCenterWorld(mC.currentCell);
         pos1 = movC.currentFB.transform.position;
