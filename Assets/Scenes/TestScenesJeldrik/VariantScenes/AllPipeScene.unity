@@ -2387,7 +2387,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -203332585
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 7
   m_Sprite: {fileID: 21300000, guid: 5eeb5d6d7a06436428418fa3aa486e7d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2593,7 +2593,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 15
+  m_SortingLayer: 16
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 11375a30d30e071469898c5f7900cab2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2752,6 +2752,8 @@ MonoBehaviour:
   checkVec: {x: 0, y: 0, z: 0}
   checkElv: 0
   checkCurrent: 0
+  distance: 0
+  distanceGameObject: {fileID: 0}
 --- !u!4 &861123475
 Transform:
   m_ObjectHideFlags: 0
@@ -2999,6 +3001,8 @@ MonoBehaviour:
   checkVec: {x: 0, y: 0, z: 0}
   checkElv: 0
   checkCurrent: 0
+  distance: 0
+  distanceGameObject: {fileID: 0}
 --- !u!4 &1212294326
 Transform:
   m_ObjectHideFlags: 0
@@ -3072,7 +3076,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 15
+  m_SortingLayer: 16
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 11375a30d30e071469898c5f7900cab2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3162,6 +3166,8 @@ MonoBehaviour:
   newP: {x: 0, y: 0, z: 0}
   tra: {x: 0, y: 0, z: 0}
   p1Exceptions: []
+  soundManager: {fileID: 0}
+  soundPlayer: {fileID: 0}
 --- !u!4 &1492539897
 Transform:
   m_ObjectHideFlags: 0
@@ -3236,7 +3242,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -736644809
-  m_SortingLayer: 15
+  m_SortingLayer: 16
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -3330,6 +3336,8 @@ MonoBehaviour:
   newP: {x: 0, y: 0, z: 0}
   tra: {x: 0, y: 0, z: 0}
   p1Exceptions: []
+  soundManager: {fileID: 0}
+  soundPlayer: {fileID: 0}
 --- !u!4 &1720959471
 Transform:
   m_ObjectHideFlags: 0
@@ -3363,6 +3371,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1483623420, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483623421, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483623421, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483623421, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.2588191
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483623421, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483623421, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483623421, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.9659258
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483623421, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 3085355795235372804, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3406,6 +3446,14 @@ PrefabInstance:
     - target: {fileID: 3085355795235372804, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3085355795235372805, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_SortingLayer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3085355795235372805, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1818157739
       objectReference: {fileID: 0}
     - target: {fileID: 3085355795235372806, guid: 8bd16a6074964244b873fcfac201b894, type: 3}
       propertyPath: m_Name
@@ -3609,6 +3657,9 @@ MonoBehaviour:
   camSpeed: 0
   camChangeCond: 
   camChangeCondHelp: 
+  sceneShowCase: 0
+  exitGame: 0
+  sM: {fileID: 0}
 --- !u!4 &2044340016
 Transform:
   m_ObjectHideFlags: 0
@@ -3774,6 +3825,8 @@ MonoBehaviour:
   newP: {x: 0, y: 0, z: 0}
   tra: {x: 0, y: 0, z: 0}
   p1Exceptions: []
+  soundManager: {fileID: 0}
+  soundPlayer: {fileID: 0}
 --- !u!4 &2059044366
 Transform:
   m_ObjectHideFlags: 0

@@ -93,6 +93,7 @@ public class ReceivingTile : MonoBehaviour
     {
         openGate = true;
         player = p;
+        
 
         player.gameObject.SetActive(true);
         player.transform.position = new Vector3(plate.transform.position.x, plate.transform.position.y, plate.transform.position.z) ;
@@ -107,7 +108,17 @@ public class ReceivingTile : MonoBehaviour
         }
         player.transform.parent = this.transform.GetChild(1);
         player.controllBool = false;
-        player.elevation = elevation;
+        switch (p.playerIndex)
+        {
+            case 1:
+                break;
+            case 2:
+                p.w.elevation = elevation;
+                break;
+            case 3:
+                p.cR.elevation = elevation;
+                break;
+        }
 
         player3Goal = this.transform.position;
     }

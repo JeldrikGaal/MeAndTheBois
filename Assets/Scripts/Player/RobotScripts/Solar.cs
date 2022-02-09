@@ -43,6 +43,7 @@ public class Solar : MonoBehaviour
         if (!vineExtended)
         {
             vineMovementPoint.transform.position = this.transform.position;
+            mPGoal = this.transform.position;
         }
         else
         {
