@@ -129,7 +129,7 @@ public class CombiRobot : MonoBehaviour
 
         if (eroding && !onlyFlying)
         {
-            applyErosion(hitObject);
+            if (hitObject) applyErosion(hitObject);
             
         }
 
@@ -263,7 +263,7 @@ public class CombiRobot : MonoBehaviour
         currentTime += Time.deltaTime;
         g_sR.material.SetFloat("_Fade", 0.7f - someValueFrom0To1);
         //Debug.Log(someValueFrom0To1);
-        if (someValueFrom0To1 >= 1)
+        if (someValueFrom0To1 >= 0.7f)
         {
             eroding = false;
             hitObject.SetActive(false);

@@ -38,7 +38,7 @@ public class MovementController : MonoBehaviour
     public bool moving = true;
 
     private bool s = false;
-    private Wind w;
+    public Wind w;
     //public SpriteRenderer sR;
     public SortingGroup sR;
     public GameObject forward;
@@ -54,7 +54,7 @@ public class MovementController : MonoBehaviour
 
     public Vector3 startScale;
 
-    private CombiRobot cR;
+    public CombiRobot cR;
 
     public Sprite sprite1;
     public Sprite sprite2;
