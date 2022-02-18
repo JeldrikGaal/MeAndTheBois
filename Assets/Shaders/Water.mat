@@ -27,7 +27,15 @@ Material:
         m_Texture: {fileID: 2800000, guid: 59c2b9d03646c094888ec979e0b1665b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_c6e2fc1ec5324ddab3930896b4714d04_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 16cfa7e2391da5c439eb70a1a8eaefbb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_d273489725c8451db7934bb4dd40d43d_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 16cfa7e2391da5c439eb70a1a8eaefbb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_ed8a436a556e41e7a3485e20d51054f2_Texture_1:
         m_Texture: {fileID: 2800000, guid: 16cfa7e2391da5c439eb70a1a8eaefbb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -59,6 +67,7 @@ Material:
     - _Voronoi_Power: 3
     - _Voronoi_Scaling: 6
     - _Wave_Opasity: 1.59
+    - _Wave_Range: 0.12
     m_Colors:
     - _Base_Colour: {r: 1, g: 1, b: 1, a: 0}
     - _Intensity: {r: 0, g: 0, b: 0, a: 0}
@@ -69,7 +78,7 @@ Material:
     - _Refection_Speed: {r: 0, g: 0.1, b: 0, a: 0}
     - _Second_Noise_Colour: {r: 0.7877358, g: 1, b: 0.94917053, a: 0.7294118}
     - _Second_Noise_Direction: {r: -0.01, g: 0.025, b: 0, a: 0}
-    - _Voronoi_Colour: {r: 1.7098039, g: 1.7960784, b: 1.3254902, a: 0}
+    - _Voronoi_Colour: {r: 1.0204521, g: 1.0592737, b: 0.78197694, a: 0}
     - _Voronoi_Speed: {r: 0, g: 0.2, b: 0, a: 0}
     - _Wave_Contrast_Time: {r: 2, g: 0, b: 0, a: 0}
     - _Wave_Direction: {r: 0.05, g: 0, b: 0, a: 0}
