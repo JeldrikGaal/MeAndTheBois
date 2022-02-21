@@ -54,7 +54,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Float: 0.62
-    - _Opasity: 0.25
+    - _Opasity: 0.35
     - _Power: 4
     - _Refection_Amount: 0.05
     - _Refection_Movement: -4.5
@@ -69,7 +69,7 @@ Material:
     - _Wave_Opasity: 1.59
     - _Wave_Range: 0.12
     m_Colors:
-    - _Base_Colour: {r: 1, g: 1, b: 1, a: 0}
+    - _Base_Colour: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 0}
     - _Intensity: {r: 0, g: 0, b: 0, a: 0}
     - _Noise_Colour: {r: 0.3920879, g: 0.7873594, b: 0.8396226, a: 0.72156864}
     - _Noise_Direction: {r: -0.05, g: 0, b: 0, a: 0}
@@ -78,7 +78,7 @@ Material:
     - _Refection_Speed: {r: 0, g: 0.1, b: 0, a: 0}
     - _Second_Noise_Colour: {r: 0.7877358, g: 1, b: 0.94917053, a: 0.7294118}
     - _Second_Noise_Direction: {r: -0.01, g: 0.025, b: 0, a: 0}
-    - _Voronoi_Colour: {r: 1.0204521, g: 1.0592737, b: 0.78197694, a: 0}
+    - _Voronoi_Colour: {r: 0.25511304, g: 0.26481843, b: 0.19549423, a: 0}
     - _Voronoi_Speed: {r: 0, g: 0.2, b: 0, a: 0}
     - _Wave_Contrast_Time: {r: 2, g: 0, b: 0, a: 0}
     - _Wave_Direction: {r: 0.05, g: 0, b: 0, a: 0}

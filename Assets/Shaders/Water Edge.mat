@@ -92,9 +92,11 @@ Material:
     m_Floats:
     - _Distortion_Amount: 3.65
     - _Distortion_Speed: 0.05
+    - _Opasity: 0.23
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
+    - _Color: {r: 0.6666667, g: 0.9019608, b: 0.9607843, a: 0}
     - _Distortion_Position: {r: 1, g: 1, b: 0, a: 0}
     - _Distortion_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Vector2: {r: 1, g: 1, b: 0, a: 0}

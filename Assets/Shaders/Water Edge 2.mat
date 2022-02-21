@@ -36,6 +36,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_1a4310c6d06744dd9a754afd9072f087_Texture_1:
+        m_Texture: {fileID: 2800000, guid: dbbfc5047c5d3534bad39a1ac9129f6f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_21725aa0f1034d2dbf13b8b4fa5550b2_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 0fbe8e1be6973a840b376a9a768ca58c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c211d5b42fc147979f2239e71252a611_Texture_1:
         m_Texture: {fileID: 2800000, guid: 25fde5baa93bb5f44a84f211aad948c8, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -56,8 +64,10 @@ Material:
     m_Floats:
     - _Distortion_Amount: 1
     - _Distortion_Speed: 0.05
+    - _Opasity: 0.25
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
+    - _Color: {r: 0.66723037, g: 0.9028943, b: 0.9622642, a: 1}
     - _Distortion_Tiling: {r: -1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
